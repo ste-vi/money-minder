@@ -15,13 +15,7 @@ import { NavigationEnd, Router } from '@angular/router';
 export class NavComponent {
   protected currentPage: string = '';
 
-  constructor(
-    private router: Router,
-    private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer,
-  ) {
-    this.initSvgIcons();
-
+  constructor(private router: Router) {
     router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const currentUrl = this.router.url;
@@ -31,27 +25,6 @@ export class NavComponent {
         }
       }
     });
-  }
-
-  private initSvgIcons() {
-    this.matIconRegistry.addSvgIcon(
-      'dashboard',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(
-        '../assets/icons/svg/chart-square-svgrepo-com.svg',
-      ),
-    );
-    this.matIconRegistry.addSvgIcon(
-      'wallet',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(
-        '../assets/icons/svg/wallet-svgrepo-com.svg',
-      ),
-    );
-    this.matIconRegistry.addSvgIcon(
-      'settings',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(
-        '../assets/icons/svg/settings-svgrepo-com.svg',
-      ),
-    );
   }
 
   navigateTo(path: string) {

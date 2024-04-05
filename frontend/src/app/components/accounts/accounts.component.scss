@@ -1,0 +1,56 @@
+.accounts-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.8rem;
+  justify-content: center;
+  gap: 10px;
+
+  .net-worth-container {
+    background-color: var(--secondary);
+    width: 100%;
+    min-height: 120px;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .account-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+
+    .account-category {
+      background-color: var(--secondary);
+      width: 100%;
+      min-height: 80px;
+      border-radius: 8px;
+      padding: 0.5rem 0.8rem;
+
+
+
+      .account-category-header {
+        display: flex;
+        justify-content: end;
+        align-items: start;
+        width: 100%;
+      }
+
+      .account-category-header > *:first-child {
+        flex: 1;
+      }
+
+      .account-category-header:nth-child(2) {
+        margin-left: auto;
+      }
+
+
+
+    }
+
+    .account {
+
+    }
+  }
+
+
+}

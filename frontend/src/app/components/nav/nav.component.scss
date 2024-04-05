@@ -15,7 +15,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
     cursor: pointer;
     transition: all 0.2s ease;
 
@@ -26,22 +25,8 @@
   }
 
   .nav-item-selected {
-    stroke: var(--accent);
-    fill: var(--accent);
-    filter: var(--accent);
     color: var(--accent);
   }
 
 }
 
-@keyframes bubble {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
-}

@@ -1,0 +1,39 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.8rem 0 0.8rem;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+
+  .space {
+
+    .space-body {
+      display: flex;
+      align-items: center;
+
+      &:active {
+        color: var(--accent);
+        animation: bubble 0.4s ease-in-out;
+      }
+    }
+
+
+  }
+
+  .actions {
+    margin-left: auto;
+
+    .icon {
+      margin-left: 10px;
+
+      &:active {
+        color: var(--accent);
+        animation: bubble 0.4s ease-in-out;
+      }
+    }
+  }
+
+
+}
+
