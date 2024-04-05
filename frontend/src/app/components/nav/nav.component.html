@@ -1,0 +1,11 @@
+<div class="nav-container">
+  <div class="nav-item" [class.nav-item-selected]="currentPage === 'accounts'" (click)="navigateTo('/accounts')">
+    <mat-icon svgIcon="wallet"></mat-icon>
+  </div>
+  <div class="nav-item" [class.nav-item-selected]="currentPage === 'dashboard'" (click)="navigateTo('/dashboard')">
+    <mat-icon svgIcon="dashboard"></mat-icon>
+  </div>
+  <div class="nav-item" [class.nav-item-selected]="currentPage === 'settings'" (click)="navigateTo('/settings')">
+    <mat-icon svgIcon="settings"></mat-icon>
+  </div>
+</div>
