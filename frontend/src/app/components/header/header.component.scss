@@ -9,6 +9,7 @@
   .space {
 
     .space-body {
+      cursor: pointer;
       display: flex;
       align-items: center;
 
@@ -25,6 +26,7 @@
     margin-left: auto;
 
     .icon {
+      cursor: pointer;
       margin-left: 10px;
 
       &:active {

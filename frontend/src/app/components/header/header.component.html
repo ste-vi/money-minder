@@ -10,8 +10,10 @@
   </div>
 
   <div class="actions">
-    <mat-icon svgIcon="reload" class="icon small-icon"></mat-icon>
-    <mat-icon svgIcon="edit" class="icon small-icon"></mat-icon>
+    <mat-icon svgIcon="reload" class="icon small-icon" *ngIf="showReload"></mat-icon>
+    <mat-icon svgIcon="add" class="icon small-icon active" *ngIf="showAdd"></mat-icon>
+    <mat-icon svgIcon="edit" class="icon small-icon" *ngIf="showEdit"></mat-icon>
+    <mat-icon svgIcon="dots" class="icon small-icon" *ngIf="showDots"></mat-icon>
   </div>
 
 </div>

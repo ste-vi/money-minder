@@ -11,6 +11,7 @@
   --background: #FBFBFE;
   --primary: #2F27CE;
   --secondary: #d9e5ff;
+  --secondary-border: #edf2fd;
   --accent: #2781f6;
   --text: #050315;
 }
@@ -25,6 +26,14 @@ body {
 
 .small-icon {
   transform: scale(0.8);
+}
+
+.p-l-4 {
+  padding-left: 4px;
+}
+
+.active {
+  color: var(--accent);
 }
 
 @keyframes bubble {

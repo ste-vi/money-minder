@@ -59,5 +59,17 @@ export class AppComponent {
         '../assets/icons/svg/layers-minimalistic-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'add',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/add-circle-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'dots',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/menu-dots-svgrepo-com.svg',
+      ),
+    );
   }
 }
