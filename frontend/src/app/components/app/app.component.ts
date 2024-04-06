@@ -4,11 +4,17 @@ import { NavComponent } from '../nav/nav.component';
 import { HeaderComponent } from '../header/header.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SelectAccountCategoryComponent } from '../accounts/select-account-category/select-account-category.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavComponent, HeaderComponent],
+  imports: [
+    RouterOutlet,
+    NavComponent,
+    HeaderComponent,
+    SelectAccountCategoryComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -69,6 +75,30 @@ export class AppComponent {
       'dots',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/menu-dots-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'box',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/box-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'card',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/card-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'money-bag',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/money-bag-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'align',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/align-vertical-center-svgrepo-com.svg',
       ),
     );
   }

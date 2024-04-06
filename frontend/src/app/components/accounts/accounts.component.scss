@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0.8rem;
-  justify-content: center;
+  justify-content: start;
+  align-items: center;
   gap: 10px;
 
   .net-worth-container {
@@ -23,7 +24,7 @@
       background-color: var(--secondary);
       width: 100%;
       min-height: 80px;
-      border-radius: 8px;
+      border-radius: 12px;
 
       .account-category-header {
         display: flex;

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
+import { SelectAccountCategoryServiceService } from '../../services/select-account-category-service.service';
 
 @Component({
   selector: 'app-header',
@@ -17,8 +18,15 @@ export class HeaderComponent {
   protected showReload: boolean = false;
   protected showDots: boolean = false;
 
-  constructor(private router: Router) {
-    router.events.subscribe((event) => {
+  constructor(
+    private router: Router,
+    private selectAccountCategoryServiceService: SelectAccountCategoryServiceService,
+  ) {
+    this.initButtons();
+  }
+
+  private initButtons() {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const currentUrl = this.router.url;
         const path = currentUrl.split('/').pop();
@@ -40,5 +48,9 @@ export class HeaderComponent {
         }
       }
     });
+  }
+
+  openAddCategoryModal() {
+    this.selectAccountCategoryServiceService.openModal(true);
   }
 }

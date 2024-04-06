@@ -1,1 +1,27 @@
-<p>select-account-category works!</p>
+<div class="page-mask" *ngIf="isOpened" (click)="closeModal()"></div>
+
+<div class="select-account-category-container" *ngIf="isOpened">
+
+  <div class="row">
+    <div class="category-item">
+      <mat-icon svgIcon="card"></mat-icon>
+      <div>Bank accounts</div>
+    </div>
+    <div class="category-item">
+      <mat-icon svgIcon="money-bag"></mat-icon>
+      <div>Cash</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="category-item">
+      <mat-icon svgIcon="align"></mat-icon>
+      <div>Stocks & Crypto</div>
+    </div>
+    <div class="category-item">
+      <mat-icon svgIcon="box"></mat-icon>
+      <div>Other assets</div>
+    </div>
+  </div>
+
+</div>
