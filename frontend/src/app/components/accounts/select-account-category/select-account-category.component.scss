@@ -1,18 +1,11 @@
 .select-account-category-container {
   height: 240px;
   width: 100%;
-  position: fixed;
-  bottom: 0;
   background: var(--background);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid var(--secondary-border);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  animation: rise-from-bottom 0.2s ease-in-out;
-  z-index: 10;
   padding-top: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -37,9 +30,9 @@
     margin-bottom: 1rem;
     cursor: pointer;
 
-   &:hover {
-     background-color: #3b33d3;
-   }
+    &:hover {
+      background-color: #3b33d3;
+    }
 
     &:active {
       background-color: #463fd9;
@@ -48,23 +41,4 @@
 
 }
 
-.page-mask {
-  background: rgba(17, 17, 17, 0.6);
-  transition: background-color 0.2s ease-in-out;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 9;
-}
 
-@keyframes rise-from-bottom {
-  from {
-    transform: translateY(100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}

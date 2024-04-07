@@ -2,7 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
-import { SelectAccountCategoryServiceService } from '../../services/select-account-category-service.service';
+import { SelectAccountCategoryServiceService } from '../../services/communication/select-account-category-service.service';
 
 @Component({
   selector: 'app-header',

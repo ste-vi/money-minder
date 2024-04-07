@@ -5,6 +5,7 @@ import { HeaderComponent } from '../header/header.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SelectAccountCategoryComponent } from '../accounts/select-account-category/select-account-category.component';
+import {CreateAccountComponent} from "../accounts/create-account/create-account.component";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { SelectAccountCategoryComponent } from '../accounts/select-account-categ
     NavComponent,
     HeaderComponent,
     SelectAccountCategoryComponent,
+    CreateAccountComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -99,6 +101,12 @@ export class AppComponent {
       'align',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/align-vertical-center-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'close',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/close-circle-svgrepo-com.svg',
       ),
     );
   }

@@ -1,7 +1,7 @@
 import { Currency } from './currency';
 
 export interface Account {
-  id: number;
+  id?: number;
   name: string;
   balance: number;
   currency: Currency;

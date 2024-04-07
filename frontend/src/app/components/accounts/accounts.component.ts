@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { Category } from '../../models/category';
 import { Currency } from '../../models/currency';
 import { NgForOf } from '@angular/common';
+import { AccountService } from '../../services/api/account-service';
 
 @Component({
   selector: 'app-accounts',
@@ -15,42 +16,10 @@ import { NgForOf } from '@angular/common';
 export class AccountsComponent {
   protected categories: Category[] = [];
 
-  constructor() {
-    this.initDummyData();
-  }
-
-  private initDummyData() {
-    const dollarCurrency: Currency = { id: 1, name: 'Dollar', sign: '$' };
-    const hryvniaCurrency: Currency = { id: 2, name: 'Hryvnia', sign: '₴' };
-
-    this.categories = [
-      {
-        id: 1,
-        name: 'Bank accounts',
-        accounts: [
-          { id: 1, name: 'Mono', balance: 10000, currency: hryvniaCurrency },
-          { id: 2, name: 'Privat', balance: 5000, currency: hryvniaCurrency },
-        ],
-        defaultCurrency: hryvniaCurrency,
-      },
-      {
-        id: 1,
-        name: 'Cash',
-        accounts: [
-          { id: 1, name: 'Wallet', balance: 1000, currency: hryvniaCurrency },
-          { id: 2, name: 'Dollar', balance: 50000, currency: dollarCurrency },
-        ],
-        defaultCurrency: hryvniaCurrency,
-      },
-      {
-        id: 1,
-        name: 'Stocks & Crypto',
-        accounts: [
-          { id: 1, name: 'Wallet', balance: 1000, currency: dollarCurrency },
-        ],
-        defaultCurrency: hryvniaCurrency,
-      },
-    ];
+  constructor(private accountService: AccountService) {
+    this.accountService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
   }
 
   calculateCategoryTotal(category: Category): string {
