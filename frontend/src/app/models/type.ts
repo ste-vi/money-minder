@@ -1,7 +1,7 @@
 import { Account } from './account';
 import {Currency} from "./currency";
 
-export interface Category {
+export interface Type {
   id: number;
   name: string;
   accounts: Account[];

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { TypeSelect } from '../../models/type-select';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreateAccountService {
-  private openModalSource = new Subject<TypeSelect>();
+export class SelectAccountTypeServiceService {
+  private openModalSource = new Subject<boolean>();
 
   modalOpened$ = this.openModalSource.asObservable();
 
-  openModal(opened: TypeSelect) {
+  openModal(opened: boolean) {
     this.openModalSource.next(opened);
   }
 }

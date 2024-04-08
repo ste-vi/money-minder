@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Currency } from '../../models/currency';
 import { Observable, of } from 'rxjs';
-import { Category } from '../../models/category';
+import { Type } from '../../models/type';
 import { Account } from '../../models/account';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  protected categories: Category[] = [];
+  protected categories: Type[] = [];
 
-  getCategories(): Observable<Category[]> {
+  getCategories(): Observable<Type[]> {
     const dollarCurrency: Currency = {
       id: 1,
       name: 'Dollar',
@@ -55,13 +55,13 @@ export class AccountService {
     return of(this.categories);
   }
 
-  createAccount(account: Account, category: Category): void {
-    let categoryFound = this.categories.find((c) => c.id === category.id);
-    if (!categoryFound) {
-      categoryFound = { ...category, accounts: [] };
-      categoryFound.defaultCurrency = account.currency;
-      this.categories.push(categoryFound);
+  createAccount(account: Account, type: Type): void {
+    let typeFound = this.categories.find((c) => c.id === type.id);
+    if (!typeFound) {
+      typeFound = { ...type, accounts: [] };
+      typeFound.defaultCurrency = account.currency;
+      this.categories.push(typeFound);
     }
-    categoryFound.accounts.push(account);
+    typeFound.accounts.push(account);
   }
 }

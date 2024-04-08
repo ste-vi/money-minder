@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavComponent } from '../common/nav/nav.component';
 import { MatIcon } from '@angular/material/icon';
-import { Category } from '../../models/category';
+import { Type } from '../../models/type';
 import { Currency } from '../../models/currency';
 import { NgForOf } from '@angular/common';
 import { AccountService } from '../../services/api/account-service';
@@ -14,7 +14,7 @@ import { AccountService } from '../../services/api/account-service';
   styleUrl: './accounts.component.scss',
 })
 export class AccountsComponent {
-  protected categories: Category[] = [];
+  protected categories: Type[] = [];
 
   constructor(private accountService: AccountService) {
     this.accountService.getCategories().subscribe((categories) => {
@@ -22,9 +22,9 @@ export class AccountsComponent {
     });
   }
 
-  calculateCategoryTotal(category: Category): string {
+  calculateTypeTotal(type: Type): string {
     let total = 0;
-    for (const account of category.accounts) {
+    for (const account of type.accounts) {
       total += account.balance;
     }
     return total.toFixed(2);

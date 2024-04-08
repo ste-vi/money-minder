@@ -1,4 +1,4 @@
-.select-account-category-container {
+.select-account-type-container {
   height: 240px;
   width: 100%;
   background: var(--background);
@@ -17,7 +17,7 @@
     gap: 1rem
   }
 
-  .category-item {
+  .type-item {
     background-color: var(--primary);
     border-radius: 12px;
     color: #fff;

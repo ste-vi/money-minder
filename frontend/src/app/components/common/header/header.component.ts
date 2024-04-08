@@ -2,7 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
-import { SelectAccountCategoryServiceService } from '../../../services/communication/select-account-category-service.service';
+import { SelectAccountTypeServiceService } from '../../../services/communication/select-account-type-service.service';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +20,7 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private selectAccountCategoryServiceService: SelectAccountCategoryServiceService,
+    private selectAccountTypeServiceService: SelectAccountTypeServiceService,
   ) {
     this.initButtons();
   }
@@ -50,7 +50,7 @@ export class HeaderComponent {
     });
   }
 
-  openAddCategoryModal() {
-    this.selectAccountCategoryServiceService.openModal(true);
+  openAddTypeModal() {
+    this.selectAccountTypeServiceService.openModal(true);
   }
 }

@@ -46,14 +46,14 @@ export class CreateAccountComponent {
   ) {
     this.accountForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      category: new FormControl(Validators.required),
+      type: new FormControl(Validators.required),
       currency: new FormControl(this.currencies[0], Validators.required),
       balance: new FormControl('0.00', [Validators.required]),
     });
 
-    this.createAccountService.modalOpened$.subscribe((category) => {
+    this.createAccountService.modalOpened$.subscribe((type) => {
       this.showModal();
-      this.accountForm.controls['category'].setValue(category);
+      this.accountForm.controls['type'].setValue(type);
     });
 
     this.currencyService.getCurrencies().subscribe((currencies) => {
@@ -95,9 +95,9 @@ export class CreateAccountComponent {
         parseFloat(this.accountForm.controls['balance'].value).toFixed(2),
       ),
     };
-    let category = this.accountForm.controls['category'].value;
+    let type = this.accountForm.controls['type'].value;
 
-    this.accountService.createAccount(account, category);
+    this.accountService.createAccount(account, type);
 
     this.closeModal();
     this.resetForm();
@@ -106,7 +106,7 @@ export class CreateAccountComponent {
   private resetForm() {
     this.accountForm.reset({
       title: '',
-      category: Validators.required,
+      type: Validators.required,
       currency: this.currencies[0],
       balance: '0.00',
     });

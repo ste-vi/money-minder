@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
-import { SelectAccountCategoryServiceService } from '../../../services/communication/select-account-category-service.service';
+import { SelectAccountTypeServiceService } from '../../../services/communication/select-account-type-service.service';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { CategorySelect } from '../../../models/category-select';
+import { TypeSelect } from '../../../models/type-select';
 import { CreateAccountService } from '../../../services/communication/create-account-service';
 
 @Component({
-  selector: 'app-select-account-category',
+  selector: 'app-select-account-type',
   standalone: true,
   imports: [NgIf, MatIcon, NgForOf],
-  templateUrl: './select-account-category.component.html',
-  styleUrl: './select-account-category.component.scss',
+  templateUrl: './select-account-type.component.html',
+  styleUrl: './select-account-type.component.scss',
 })
-export class SelectAccountCategoryComponent {
+export class SelectAccountTypeComponent {
   protected isOpened: boolean = false;
-  protected categoriesSelect: CategorySelect[] = [];
+  protected categoriesSelect: TypeSelect[] = [];
   protected categoriesRows: number = 0;
 
   constructor(
-    private selectAccountCategoryServiceService: SelectAccountCategoryServiceService,
+    private selectAccountTypeServiceService: SelectAccountTypeServiceService,
     private createAccountService: CreateAccountService,
   ) {
     this.categoriesSelect = [
@@ -29,7 +29,7 @@ export class SelectAccountCategoryComponent {
     ];
     this.categoriesRows = this.categoriesSelect.length / 2;
 
-    this.selectAccountCategoryServiceService.modalOpened$.subscribe(
+    this.selectAccountTypeServiceService.modalOpened$.subscribe(
       (isOpened) => {
         this.showModal();
       },
@@ -44,8 +44,8 @@ export class SelectAccountCategoryComponent {
     this.isOpened = false;
   }
 
-  createAccountWithCategory(category: CategorySelect) {
+  createAccountWithType(type: TypeSelect) {
     this.isOpened = false;
-    this.createAccountService.openModal(category);
+    this.createAccountService.openModal(type);
   }
 }

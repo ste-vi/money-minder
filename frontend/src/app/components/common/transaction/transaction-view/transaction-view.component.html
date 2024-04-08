@@ -1,0 +1,15 @@
+<div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
+
+<div *ngIf="isOpened">
+  <div class="transaction-view-container bottom-modal">
+    <form [formGroup]="transactionForm">
+      <div class="transaction-view-header">
+        <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+        <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="delete()"></mat-icon>
+      </div>
+      <div class="transaction-view-body">
+      </div>
+    </form>
+
+  </div>
+</div>

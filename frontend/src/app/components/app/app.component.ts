@@ -4,8 +4,9 @@ import { NavComponent } from '../common/nav/nav.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SelectAccountCategoryComponent } from '../accounts/select-account-category/select-account-category.component';
+import { SelectAccountTypeComponent } from '../accounts/select-account-type/select-account-type.component';
 import {CreateAccountComponent} from "../accounts/create-account/create-account.component";
+import {TransactionViewComponent} from "../common/transaction/transaction-view/transaction-view.component";
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,9 @@ import {CreateAccountComponent} from "../accounts/create-account/create-account.
     RouterOutlet,
     NavComponent,
     HeaderComponent,
-    SelectAccountCategoryComponent,
+    SelectAccountTypeComponent,
     CreateAccountComponent,
+    TransactionViewComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -120,6 +122,6 @@ export class AppComponent {
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/wallet-2-svgrepo-com.svg',
       ),
-    )
+    );
   }
 }

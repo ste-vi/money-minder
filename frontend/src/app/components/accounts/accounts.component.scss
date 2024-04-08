@@ -20,13 +20,13 @@
     width: 100%;
     gap: 10px;
 
-    .account-category {
+    .account-type {
       background-color: var(--secondary);
       width: 100%;
       min-height: 80px;
       border-radius: 12px;
 
-      .account-category-header {
+      .account-type-header {
         display: flex;
         justify-content: end;
         align-items: start;
@@ -35,11 +35,11 @@
         width: 100%;
       }
 
-      .account-category-header > *:first-child {
+      .account-type-header > *:first-child {
         flex: 1;
       }
 
-      .account-category-header:nth-child(2) {
+      .account-type-header:nth-child(2) {
         margin-left: auto;
       }
 
