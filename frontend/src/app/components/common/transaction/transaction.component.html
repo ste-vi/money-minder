@@ -1,4 +1,4 @@
-<div class="transaction" [ngClass]="{'no-border': isLast}">
+<div class="transaction" [ngClass]="{'no-border': isLast}" (click)="openTransactionView(transaction)">
   <div class="transaction-group">
     <div class="transaction-header">
       <mat-icon svgIcon="wallet" class="small-icon"></mat-icon>

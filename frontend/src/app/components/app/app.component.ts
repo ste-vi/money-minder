@@ -123,5 +123,17 @@ export class AppComponent {
         '../assets/icons/svg/wallet-2-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'delete',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/trash-bin-trash-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'arrow-left',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/arrow-left-svgrepo-com.svg',
+      ),
+    );
   }
 }

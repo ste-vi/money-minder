@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Transaction } from '../../../models/transaction';
-import {MatIcon} from "@angular/material/icon";
-import {DatePipe, DecimalPipe, NgClass, NgIf} from "@angular/common";
+import { MatIcon } from '@angular/material/icon';
+import { DatePipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
+import { ViewTransactionService } from '../../../services/communication/view-transaction-service';
 
 @Component({
   selector: 'app-transaction',
@@ -14,5 +15,9 @@ export class TransactionComponent {
   @Input() transaction!: Transaction;
   @Input() isLast: boolean = false;
 
-  constructor() {}
+  constructor(private viewTransactionService: ViewTransactionService) {}
+
+  openTransactionView(transaction: Transaction) {
+    this.viewTransactionService.openModal(transaction);
+  }
 }

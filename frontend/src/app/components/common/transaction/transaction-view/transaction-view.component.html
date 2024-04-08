@@ -4,10 +4,24 @@
   <div class="transaction-view-container bottom-modal">
     <form [formGroup]="transactionForm">
       <div class="transaction-view-header">
-        <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
-        <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="delete()"></mat-icon>
+        <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+        <mat-icon svgIcon="delete" class="red-icon small-icon" (click)="delete()"></mat-icon>
       </div>
-      <div class="transaction-view-body">
+
+      <div class="transaction-header">
+        <div class="transaction-amount">
+          <b>
+            {{ transaction.amount | number:'1.2-2' }}{{ transaction.account.currency.sign }}
+          </b>
+        </div>
+        <div class="transaction-name">{{ transaction.name }}</div>
+        <div class="secondary-text transaction-date">{{ transaction.date | date: 'dd.MM.yyyy' }}</div>
+      </div>
+      <div class="transaction-body">
+
+      </div>
+      <div class="transaction-footer">
+
       </div>
     </form>
 
