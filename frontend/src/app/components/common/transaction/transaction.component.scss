@@ -1,0 +1,53 @@
+
+.transaction {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--secondary-border);
+
+  .transaction-group {
+    display: flex;
+    align-items: center;
+
+    .transaction-header {
+      height: 33px;
+      width: 33px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #b1c8fc;
+      color: #FBFBFE;
+    }
+
+    .transaction-body {
+      padding-left: 8px;
+      padding-right: 8px;
+
+      .transaction-title {
+        font-size: 13px;
+      }
+
+      .transaction-account {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        .transaction-account-icon {
+          height: 13px;
+          width: 13px;
+        }
+      }
+    }
+  }
+
+  .transaction-tail {
+    text-align: end;
+
+    .transaction-amount {
+      font-size: 13px;
+    }
+  }
+}

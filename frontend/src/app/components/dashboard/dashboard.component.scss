@@ -1,0 +1,35 @@
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+  width: 100%;
+
+  .last-transactions-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    background-color: var(--secondary);
+    border-radius: 12px;
+
+    .last-transactions-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.6rem;
+    }
+
+    .last-transactions-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .transaction-component {
+      border-bottom: none;
+    }
+
+  }
+}

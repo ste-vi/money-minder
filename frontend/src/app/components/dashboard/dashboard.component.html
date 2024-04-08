@@ -1,1 +1,15 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+
+  <div class="last-transactions-container">
+    <div class="last-transactions-header">
+      <div><b>Last 5 transactions</b></div>
+      <mat-icon svgIcon="calendar-search" class="small-icon active"></mat-icon>
+    </div>
+    <div class="last-transactions-body">
+      <div *ngFor="let transaction of transactions; let i = index">
+        <app-transaction [transaction]="transaction" [isLast]="i === transactions.length - 1"></app-transaction>
+      </div>
+    </div>
+  </div>
+
+</div>

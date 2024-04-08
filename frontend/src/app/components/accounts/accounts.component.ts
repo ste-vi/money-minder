@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavComponent } from '../nav/nav.component';
+import { NavComponent } from '../common/nav/nav.component';
 import { MatIcon } from '@angular/material/icon';
 import { Category } from '../../models/category';
 import { Currency } from '../../models/currency';

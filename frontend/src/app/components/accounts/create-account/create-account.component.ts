@@ -53,7 +53,6 @@ export class CreateAccountComponent {
 
     this.createAccountService.modalOpened$.subscribe((category) => {
       this.showModal();
-      console.log(category);
       this.accountForm.controls['category'].setValue(category);
     });
 

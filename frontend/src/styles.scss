@@ -11,6 +11,7 @@
   --primary: #2F27CE;
   --secondary: #d9e5ff;
   --secondary-border: #edf2fd;
+  --secondary-text: #7a7a7a;
   --accent: #2781f6;
   --text: #050315;
 }
@@ -45,13 +46,21 @@ option {
   margin: 0.1rem 0.2rem;
 }
 
-
 .p-l-4 {
   padding-left: 4px;
 }
 
 .active {
   color: var(--accent);
+}
+
+.secondary-text {
+  color: var(--secondary-text);
+  font-size: 11px;
+}
+
+.no-border {
+  border-bottom: none !important;
 }
 
 .bottom-modal {

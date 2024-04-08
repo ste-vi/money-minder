@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { NavComponent } from '../nav/nav.component';
-import { HeaderComponent } from '../header/header.component';
+import { NavComponent } from '../common/nav/nav.component';
+import { HeaderComponent } from '../common/header/header.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SelectAccountCategoryComponent } from '../accounts/select-account-category/select-account-category.component';
@@ -109,5 +109,17 @@ export class AppComponent {
         '../assets/icons/svg/close-circle-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'calendar-search',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/calendar-search-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'wallet-2',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/wallet-2-svgrepo-com.svg',
+      ),
+    )
   }
 }

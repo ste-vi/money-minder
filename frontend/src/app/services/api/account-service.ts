@@ -56,8 +56,12 @@ export class AccountService {
   }
 
   createAccount(account: Account, category: Category): void {
-    this.categories
-      .filter((c) => c.id === category.id)[0]
-      .accounts.push(account);
+    let categoryFound = this.categories.find((c) => c.id === category.id);
+    if (!categoryFound) {
+      categoryFound = { ...category, accounts: [] };
+      categoryFound.defaultCurrency = account.currency;
+      this.categories.push(categoryFound);
+    }
+    categoryFound.accounts.push(account);
   }
 }
