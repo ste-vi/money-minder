@@ -6,4 +6,5 @@ export interface Transaction {
   amount: number;
   date: Date;
   account: Account;
+  notes?: string;
 }

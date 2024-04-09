@@ -135,5 +135,11 @@ export class AppComponent {
         '../assets/icons/svg/arrow-left-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'textarea',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/sort-by-alphabet-svgrepo-com.svg',
+      ),
+    );
   }
 }

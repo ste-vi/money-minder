@@ -11,17 +11,55 @@
       <div class="transaction-header">
         <div class="transaction-amount">
           <b>
-            {{ transaction.amount | number:'1.2-2' }}{{ transaction.account.currency.sign }}
+            {{ transactionForm.value.amount | number:'1.2-2' }}{{ transactionForm.value.account.currency.sign }}
           </b>
         </div>
-        <div class="transaction-name">{{ transaction.name }}</div>
-        <div class="secondary-text transaction-date">{{ transaction.date | date: 'dd.MM.yyyy' }}</div>
+        <div *ngIf="!editName; else nameInputTemplate" class="transaction-name"
+             (click)="editName = true">{{ transactionForm.value.name }}
+        </div>
+        <ng-template #nameInputTemplate>
+          <input #nameInput class="transaction-name-input" placeholder="Transaction name" formControlName="name"
+                 (blur)="inputTransactionNameBlue()">
+        </ng-template>
+        <div class="secondary-text transaction-date">{{ transactionForm.value.date | date: 'dd.MM.yyyy' }}</div>
       </div>
       <div class="transaction-body">
-
+        <div class="transaction-account">
+          <div class="icon-container">
+            <mat-icon svgIcon="wallet-2" class="icon"></mat-icon>
+          </div>
+          <div class="transaction-account-body">
+            <div class="secondary-text">From account</div>
+            <div>Mono black</div>
+          </div>
+        </div>
+        <div class="transaction-category">
+          <div class="transaction-category-header">
+            <div class="icon-container">
+              <mat-icon svgIcon="box" class="icon"></mat-icon>
+            </div>
+            <div class="transaction-account-body">
+              <div class="secondary-text">Category</div>
+              <div><b>Delivery</b></div>
+            </div>
+          </div>
+          <div>
+            <input #amountInput appAutoResize formControlName="amount"
+                   type="number" min="0.00"
+                   (blur)="formatAmount()">$
+          </div>
+        </div>
+        <div class="transaction-notes">
+          <div class="notes-icon-container">
+            <mat-icon svgIcon="textarea" class="notes-icon"></mat-icon>
+          </div>
+          <div class="notes-textarea-container">
+            <textarea placeholder="Notes"></textarea>
+          </div>
+        </div>
       </div>
       <div class="transaction-footer">
-
+        <div class="save-button" [class.disabled-button]="transactionForm.invalid">Save</div>
       </div>
     </form>
 

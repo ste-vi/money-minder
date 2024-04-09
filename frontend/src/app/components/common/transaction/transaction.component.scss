@@ -6,10 +6,11 @@
   align-items: center;
   padding: 0.4rem 0;
   border-bottom: 1px solid var(--secondary-border);
+  cursor: pointer;
 
-    &:active {
-      transform: scale(1.02);
-    }
+  &:active {
+    transform: scale(1.02);
+  }
 
   .transaction-group {
     display: flex;
