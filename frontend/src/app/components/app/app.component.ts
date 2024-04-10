@@ -141,5 +141,17 @@ export class AppComponent {
         '../assets/icons/svg/sort-by-alphabet-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'alt-arrow-right',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/alt-arrow-right-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'clipboard-check',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/clipboard-check-svgrepo-com.svg',
+      ),
+    );
   }
 }

@@ -17,6 +17,9 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { Transaction } from '../../../../models/transaction';
 import { ViewTransactionService } from '../../../../services/communication/view-transaction-service';
+import {MatFormField, MatSuffix} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-transaction-view',
@@ -30,6 +33,12 @@ import { ViewTransactionService } from '../../../../services/communication/view-
     ReactiveFormsModule,
     DatePipe,
     DecimalPipe,
+    MatFormField,
+    MatInput,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatSuffix,
   ],
   templateUrl: './transaction-view.component.html',
   styleUrl: './transaction-view.component.scss',
@@ -120,7 +129,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
 
   delete() {}
 
-  // todo: add date picker and ability to change transaction date
   // todo: add categories select modal
   // todo: implement form validation logic
   // todo: implement save to service
