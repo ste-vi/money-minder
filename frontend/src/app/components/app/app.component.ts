@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SelectAccountTypeComponent } from '../accounts/select-account-type/select-account-type.component';
 import {CreateAccountComponent} from "../accounts/create-account/create-account.component";
 import {TransactionViewComponent} from "../common/transaction/transaction-view/transaction-view.component";
+import {CategorySettingsComponent} from "../settings/category-settings/category-settings.component";
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import {TransactionViewComponent} from "../common/transaction/transaction-view/t
     SelectAccountTypeComponent,
     CreateAccountComponent,
     TransactionViewComponent,
+    CategorySettingsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

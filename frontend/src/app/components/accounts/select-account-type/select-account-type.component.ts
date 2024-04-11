@@ -14,20 +14,20 @@ import { CreateAccountService } from '../../../services/communication/create-acc
 })
 export class SelectAccountTypeComponent {
   protected isOpened: boolean = false;
-  protected categoriesSelect: TypeSelect[] = [];
-  protected categoriesRows: number = 0;
+  protected typesSelect: TypeSelect[] = [];
+  protected typesRows: number = 0;
 
   constructor(
     private selectAccountTypeServiceService: SelectAccountTypeServiceService,
     private createAccountService: CreateAccountService,
   ) {
-    this.categoriesSelect = [
+    this.typesSelect = [
       { id: 1, name: 'Bank accounts', iconName: 'card' },
       { id: 2, name: 'Cash', iconName: 'money-bag' },
       { id: 3, name: 'Stocks & Crypto', iconName: 'align' },
       { id: 4, name: 'Other assets', iconName: 'box' },
     ];
-    this.categoriesRows = this.categoriesSelect.length / 2;
+    this.typesRows = this.typesSelect.length / 2;
 
     this.selectAccountTypeServiceService.modalOpened$.subscribe(
       (isOpened) => {

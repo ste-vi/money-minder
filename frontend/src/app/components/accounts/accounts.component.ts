@@ -14,11 +14,11 @@ import { AccountService } from '../../services/api/account-service';
   styleUrl: './accounts.component.scss',
 })
 export class AccountsComponent {
-  protected categories: Type[] = [];
+  protected types: Type[] = [];
 
   constructor(private accountService: AccountService) {
-    this.accountService.getCategories().subscribe((categories) => {
-      this.categories = categories;
+    this.accountService.getTypes().subscribe((types) => {
+      this.types = types;
     });
   }
 

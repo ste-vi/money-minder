@@ -129,7 +129,7 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
 
   delete() {}
 
-  // todo: add categories select modal
+  // todo: add types select modal
   // todo: implement form validation logic
   // todo: implement save to service
   // todo: implement delete

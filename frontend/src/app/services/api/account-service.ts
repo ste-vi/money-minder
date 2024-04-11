@@ -8,9 +8,9 @@ import { Account } from '../../models/account';
   providedIn: 'root',
 })
 export class AccountService {
-  protected categories: Type[] = [];
+  protected types: Type[] = [];
 
-  getCategories(): Observable<Type[]> {
+  getTypes(): Observable<Type[]> {
     const dollarCurrency: Currency = {
       id: 1,
       name: 'Dollar',
@@ -24,7 +24,7 @@ export class AccountService {
       sign: '₴',
     };
 
-    this.categories = [
+    this.types = [
       {
         id: 1,
         name: 'Bank accounts',
@@ -52,15 +52,15 @@ export class AccountService {
         defaultCurrency: hryvniaCurrency,
       },
     ];
-    return of(this.categories);
+    return of(this.types);
   }
 
   createAccount(account: Account, type: Type): void {
-    let typeFound = this.categories.find((c) => c.id === type.id);
+    let typeFound = this.types.find((c) => c.id === type.id);
     if (!typeFound) {
       typeFound = { ...type, accounts: [] };
       typeFound.defaultCurrency = account.currency;
-      this.categories.push(typeFound);
+      this.types.push(typeFound);
     }
     typeFound.accounts.push(account);
   }
