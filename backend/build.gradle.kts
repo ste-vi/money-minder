@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.4"
 	kotlin("jvm") version "1.9.23"
 	kotlin("plugin.spring") version "1.9.23"
+	id("org.jetbrains.kotlin.plugin.jpa") version "2.0.0"
 }
 
 group = "com.stevi"
@@ -19,9 +20,10 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
