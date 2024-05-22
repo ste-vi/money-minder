@@ -10,6 +10,9 @@ import java.util.*
 @Entity
 @Table(name = "users")
 open class User(
-    @Id @GeneratedValue(strategy = GenerationType.UUID) open var id: UUID? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    open var id: UUID? = null,
+
     open var username: String
 )

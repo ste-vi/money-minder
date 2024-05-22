@@ -7,24 +7,21 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.util.*
 
 @Entity
-@Table(name = "mono_bank_info")
-open class MonoBankInfo(
+@Table(name = "spaces")
+open class Space(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    open var id: UUID?,
+    open var id: UUID? = null,
 
-    @Column(unique = true, nullable = false)
-    open var clientId: String,
+    @Column(name = "name", nullable = false)
+    open var name: String,
 
-    @Column(unique = true, nullable = false)
-    open var token: String,
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false, unique = true)
-    open var space: Space
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
+    open var user: User
 )

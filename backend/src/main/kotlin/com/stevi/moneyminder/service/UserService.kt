@@ -1,15 +1,17 @@
 package com.stevi.moneyminder.service
 
+import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.User
+import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(val userRepository: UserRepository) {
+class UserService(val userRepository: UserRepository, val spaceRepository: SpaceRepository) {
 
     fun login() {
-        userRepository.save(User(null, "user"))
+        val user = userRepository.save(User(null, "user"))
+        spaceRepository.save(Space(null, "Default", user))
     }
-
 
 }

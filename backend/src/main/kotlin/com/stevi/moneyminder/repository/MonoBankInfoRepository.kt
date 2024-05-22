@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface MonoBankInfoRepository : JpaRepository<MonoBankInfo, UUID> {
 
-    fun findByUserId(userId: UUID): Optional<MonoBankInfo>
+    fun findBySpaceId(spaceId: UUID): Optional<MonoBankInfo>
 }
