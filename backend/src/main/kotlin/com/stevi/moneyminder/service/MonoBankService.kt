@@ -3,6 +3,7 @@ package com.stevi.moneyminder.service
 import com.stevi.moneyminder.entity.Account
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.MonoBankInfo
+import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.model.request.LinkMonoBankAccountRequest
 import com.stevi.moneyminder.model.response.MonoBankAccountResponse
 import com.stevi.moneyminder.model.response.MonoBankTransactionResponse
@@ -120,7 +121,7 @@ class MonoBankService(
             throw RuntimeException("Error fetching client info");
         }
 
-        return response.body?: emptyList()
+        return response.body ?: emptyList()
     }
 
     @Transactional
@@ -138,6 +139,7 @@ class MonoBankService(
                 accountName,
                 request.balance,
                 Currency.fromCode(request.currencyCode),
+                AccountType.BANK_ACCOUNTS,
                 request.id,
                 space
             )

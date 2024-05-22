@@ -53,7 +53,8 @@ class MonoBankTransactionScheduler(
                     Currency.fromCode(monoTransaction.currencyCode),
                     LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC),
                     monoTransaction.id,
-                    projection.getAccount()
+                    projection.getAccount(),
+                    null
                 )
             }.toList()
 

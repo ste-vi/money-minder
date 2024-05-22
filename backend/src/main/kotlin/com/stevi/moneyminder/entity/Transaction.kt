@@ -43,6 +43,10 @@ open class Transaction(
     open var monoBankId: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     open var account: Account,
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
+    open var category: Category?
 )

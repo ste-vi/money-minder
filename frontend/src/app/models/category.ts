@@ -4,7 +4,7 @@ export interface Category {
   icon: string;
   order: number;
   type: CategoryType;
-  subTypes?: Category[];
+  subCategories?: Category[];
 }
 
 export enum CategoryType {

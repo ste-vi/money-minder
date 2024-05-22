@@ -1,0 +1,13 @@
+package com.stevi.moneyminder.model.response
+
+import com.stevi.moneyminder.entity.CategoryType
+import java.io.Serializable
+import java.util.*
+
+data class CategoryResponse(
+    val id: UUID? = null,
+    val name: String? = null,
+    val icon: String? = null,
+    val order: Int? = null,
+    val type: CategoryType? = null
+) : Serializable

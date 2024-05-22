@@ -11,12 +11,11 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import java.math.BigDecimal
 import java.util.*
 
 @Entity
-@Table(name = "accounts")
-open class Account(
+@Table(name = "categoriess")
+open class Category(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
@@ -25,21 +24,17 @@ open class Account(
     @Column(name = "name", nullable = false)
     open var name: String,
 
-    @Column(name = "balance", nullable = false)
-    open var balance: BigDecimal = BigDecimal.ZERO,
+    @Column(name = "icon", nullable = false)
+    open var icon: String,
+
+    @Column(name = "order", nullable = false)
+    open var order: Int,
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "currency", nullable = false, updatable = false)
-    open var currency: Currency,
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    open var type: AccountType,
-
-    @Column(name = "mono_bank_id", nullable = true, updatable = false)
-    open var monoBankId: String? = null,
+    @Column(name = "type", nullable = false, updatable = false)
+    open var type: CategoryType,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
-    open var space: Space,
+    open var space: Space
 )
