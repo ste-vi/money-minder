@@ -1,0 +1,14 @@
+package com.stevi.moneyminder.model.request
+
+import java.io.Serializable
+import java.time.LocalDateTime
+import java.util.*
+
+data class TransactionSearchRequest(
+    val accountId: UUID? = null,
+    val categoryId: UUID? = null,
+    val dateFrom: LocalDateTime? = LocalDateTime.now().withDayOfMonth(1),
+    val dateTo: LocalDateTime? = LocalDateTime.now().withDayOfMonth(1).plusMonths(1).minusDays(1),
+    val page: Int? = 0,
+    val size: Int? = 5
+) : Serializable

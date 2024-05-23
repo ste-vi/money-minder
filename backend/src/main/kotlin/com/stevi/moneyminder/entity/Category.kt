@@ -14,7 +14,7 @@ import jakarta.persistence.Table
 import java.util.*
 
 @Entity
-@Table(name = "categoriess")
+@Table(name = "categories")
 open class Category(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,8 +27,8 @@ open class Category(
     @Column(name = "icon", nullable = false)
     open var icon: String,
 
-    @Column(name = "order", nullable = false)
-    open var order: Int,
+    @Column(name = "position", nullable = false)
+    open var position: Int,
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type", nullable = false, updatable = false)

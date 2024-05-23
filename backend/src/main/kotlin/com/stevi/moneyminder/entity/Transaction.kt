@@ -46,7 +46,7 @@ open class Transaction(
     @JoinColumn(name = "account_id", nullable = false)
     open var account: Account,
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false)
-    open var category: Category?
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "category_id")
+    open var category: Category? = null
 )

@@ -6,7 +6,7 @@ class SecurityUtil {
 
     companion object {
         fun getCurrentUserSpaceId(): UUID {
-            return UUID.fromString("f6ced947-1e08-4d91-9549-1fbc3361905f")
+            return UUID.fromString("d88d5b63-204e-425d-9d58-5d42140cf300")
         }
     }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CategoryRepository : JpaRepository<Category, UUID> {
 
-    fun findAllBySpaceIdOrderByOrder(spaceId: UUID): List<Category>
+    fun findAllBySpaceIdOrderByPosition(spaceId: UUID): List<Category>
 }

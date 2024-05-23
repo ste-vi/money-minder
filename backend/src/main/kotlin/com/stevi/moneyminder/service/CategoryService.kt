@@ -15,7 +15,7 @@ class CategoryService(val categoryRepository: CategoryRepository, val spaceRepos
 
     @Transactional(readOnly = true)
     fun getAllCategoriesForSpace(spaceId: UUID): List<CategoryResponse> {
-        return categoryRepository.findAllBySpaceIdOrderByOrder(spaceId)
+        return categoryRepository.findAllBySpaceIdOrderByPosition(spaceId)
             .stream()
             .map { category ->
                 mapToResponse(category)
@@ -30,7 +30,7 @@ class CategoryService(val categoryRepository: CategoryRepository, val spaceRepos
             null,
             categoryRequest.name,
             categoryRequest.icon,
-            categoryRequest.order,
+            categoryRequest.position,
             categoryRequest.type,
             space
         )
@@ -42,7 +42,7 @@ class CategoryService(val categoryRepository: CategoryRepository, val spaceRepos
         category.id,
         category.name,
         category.icon,
-        category.order,
+        category.position,
         category.type
     )
 
