@@ -25,4 +25,6 @@ interface AccountRepository : JpaRepository<Account, UUID> {
     """
     )
     fun findAllByMonoBankIdIsNotNull(): List<AccountMonoBankTokenProjection>
+
+    fun findAllBySpaceId(spaceId: UUID): List<Account>
 }

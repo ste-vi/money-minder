@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping
-class UserController(val userService: UserService) {
+class UserController(private val userService: UserService) {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")

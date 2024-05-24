@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class MonoBankTransactionScheduler(
-    val monoBankService: MonoBankService,
-    val accountService: AccountService,
-    val transactionRepository: TransactionRepository
+    private val monoBankService: MonoBankService,
+    private val accountService: AccountService,
+    private val transactionRepository: TransactionRepository
 ) {
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -46,15 +46,16 @@ class MonoBankTransactionScheduler(
             .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
             .map { monoTransaction ->
                 Transaction(
-                    null,
-                    monoTransaction.description,
-                    monoTransaction.comment,
-                    monoTransaction.amount.toBigDecimal().divide(BigDecimal.valueOf(100)),
-                    Currency.fromCode(monoTransaction.currencyCode),
-                    LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC),
-                    monoTransaction.id,
-                    projection.getAccount(),
-                    null
+                    id = null,
+                    name = monoTransaction.description,
+                    notes = monoTransaction.comment,
+                    amount = monoTransaction.amount.toBigDecimal().divide(BigDecimal.valueOf(100)),
+                    currency = Currency.fromCode(monoTransaction.currencyCode),
+                    date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC),
+                    monoBankId = monoTransaction.id,
+                    fromAccount = projection.getAccount(),
+                    toAccount = null,
+                    category = null
                 )
             }.toList()
 

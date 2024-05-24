@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/categories")
-class CategoryController(val categoryService: CategoryService) {
+class CategoryController(private val categoryService: CategoryService) {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping

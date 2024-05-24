@@ -23,11 +23,11 @@ import org.springframework.web.client.exchange
 
 @Service
 class MonoBankService(
-    val monoBankInfoRepository: MonoBankInfoRepository,
-    val spaceRepository: SpaceRepository,
-    val accountService: AccountService,
-    val restTemplate: RestTemplate,
-    @Value("\${monobank.api.url}") val monoBankUrl: String
+    private val monoBankInfoRepository: MonoBankInfoRepository,
+    private val spaceRepository: SpaceRepository,
+    private val accountService: AccountService,
+    private val restTemplate: RestTemplate,
+    @Value("\${monobank.api.url}") private val monoBankUrl: String
 ) {
 
     @Transactional

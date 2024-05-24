@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/mono")
-class MonoBankController(var monoBankService: MonoBankService) {
+class MonoBankController(private val monoBankService: MonoBankService) {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/link")

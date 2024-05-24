@@ -1,5 +1,6 @@
 package com.stevi.moneyminder.entity
 
+import com.stevi.moneyminder.model.response.TransactionResponse
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -33,7 +34,7 @@ open class Transaction(
     open var amount: BigDecimal = BigDecimal.ZERO,
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "currency", nullable = false, updatable = false)
+    @Column(name = "currency", nullable = false, updatable = true)
     open var currency: Currency,
 
     @Column(name = "date", nullable = false)
@@ -43,10 +44,25 @@ open class Transaction(
     open var monoBankId: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
-    open var account: Account,
+    @JoinColumn(name = "from_account_id", nullable = false)
+    open var fromAccount: Account,
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "to_account_id", nullable = true)
+    open var toAccount: Account?,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "category_id")
     open var category: Category? = null
+)
+fun Transaction.mapToResponse() = TransactionResponse(
+    id = this.id ?: UUID.randomUUID(),
+    name = this.name,
+    notes = this.notes,
+    amount = this.amount,
+    currency = this.currency,
+    fromAccountId = this.fromAccount.id ?: UUID.randomUUID(),
+    toAccountId = this.toAccount?.id,
+    date = this.date,
+    categoryId = this.category?.id,
 )

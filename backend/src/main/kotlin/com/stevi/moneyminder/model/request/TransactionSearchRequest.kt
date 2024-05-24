@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 data class TransactionSearchRequest(
-    val accountId: UUID? = null,
+    val fromAccountId: UUID? = null,
     val categoryId: UUID? = null,
     val dateFrom: LocalDateTime? = LocalDateTime.now().withDayOfMonth(1),
     val dateTo: LocalDateTime? = LocalDateTime.now().withDayOfMonth(1).plusMonths(1).minusDays(1),

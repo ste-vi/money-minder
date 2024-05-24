@@ -1,5 +1,6 @@
 package com.stevi.moneyminder.entity
 
+import com.stevi.moneyminder.model.response.CategoryResponse
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -37,4 +38,12 @@ open class Category(
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     open var space: Space
+)
+
+fun Category.mapToResponse() = CategoryResponse(
+    id = this.id,
+    name = this.name,
+    icon = this.icon,
+    position = this.position,
+    type = this.type
 )

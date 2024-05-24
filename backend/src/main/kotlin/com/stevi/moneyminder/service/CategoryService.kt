@@ -1,6 +1,7 @@
 package com.stevi.moneyminder.service
 
 import com.stevi.moneyminder.entity.Category
+import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.CategoryRequest
 import com.stevi.moneyminder.repository.CategoryRepository
 import com.stevi.moneyminder.model.response.CategoryResponse
@@ -11,14 +12,17 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CategoryService(val categoryRepository: CategoryRepository, val spaceRepository: SpaceRepository) {
+class CategoryService(
+    private val categoryRepository: CategoryRepository,
+    private val spaceRepository: SpaceRepository
+) {
 
     @Transactional(readOnly = true)
     fun getAllCategoriesForSpace(spaceId: UUID): List<CategoryResponse> {
         return categoryRepository.findAllBySpaceIdOrderByPosition(spaceId)
             .stream()
             .map { category ->
-                mapToResponse(category)
+                category.mapToResponse()
             }
             .collect(Collectors.toList())
     }
@@ -34,16 +38,7 @@ class CategoryService(val categoryRepository: CategoryRepository, val spaceRepos
             categoryRequest.type,
             space
         )
-        val savedCategory = categoryRepository.save(category)
-        return mapToResponse(savedCategory)
+        return categoryRepository.save(category).mapToResponse()
     }
-
-    private fun mapToResponse(category: Category) = CategoryResponse(
-        category.id,
-        category.name,
-        category.icon,
-        category.position,
-        category.type
-    )
 
 }

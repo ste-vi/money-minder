@@ -7,7 +7,7 @@ import com.stevi.moneyminder.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(val userRepository: UserRepository, val spaceRepository: SpaceRepository) {
+class UserService(private val userRepository: UserRepository, private val spaceRepository: SpaceRepository) {
 
     fun login() {
         val user = userRepository.save(User(null, "user"))

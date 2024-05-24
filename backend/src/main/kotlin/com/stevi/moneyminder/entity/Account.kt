@@ -1,5 +1,6 @@
 package com.stevi.moneyminder.entity
 
+import com.stevi.moneyminder.model.response.AccountResponse
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -43,3 +44,13 @@ open class Account(
     @JoinColumn(nullable = false)
     open var space: Space,
 )
+
+fun Account.mapToResponse(): AccountResponse {
+    return AccountResponse(
+        id = id,
+        name = name,
+        balance = balance,
+        currency = currency,
+        type = type,
+    )
+}

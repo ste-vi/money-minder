@@ -14,7 +14,7 @@ import java.util.*
 import org.springframework.data.jpa.domain.Specification
 
 class TransactionSpecification(
-    private val accountId: UUID? = null,
+    private val fromAccountId: UUID? = null,
     private val categoryId: UUID? = null,
     private val dateFrom: LocalDateTime? = null,
     private val dateTo: LocalDateTime? = null,
@@ -48,11 +48,11 @@ class TransactionSpecification(
             predicates.add(cb.lessThanOrEqualTo(root.get("date"), dateTo))
         }
 
-        val accountRoot = root.join<Transaction, Account>("account", JoinType.INNER)
-        accountId?.let { accountId ->
-            predicates.add(cb.equal(accountRoot.get<UUID>("id"), accountId))
+        val fromAccountRoot = root.join<Transaction, Account>("fromAccount", JoinType.INNER)
+        fromAccountId?.let { fromAccountId ->
+            predicates.add(cb.equal(fromAccountRoot.get<UUID>("id"), fromAccountId))
         } ?: run {
-            predicates.add(cb.equal(accountRoot.get<Space>("space").get<UUID>("id"), spaceId))
+            predicates.add(cb.equal(fromAccountRoot.get<Space>("space").get<UUID>("id"), spaceId))
         }
 
         return predicates.takeIf { it.isNotEmpty() }?.let { cb.and(*it.toTypedArray()) }
