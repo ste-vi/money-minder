@@ -1,5 +1,6 @@
 package com.stevi.moneyminder.service
 
+import com.stevi.moneyminder.entity.Rule
 import com.stevi.moneyminder.entity.Transaction
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.CreateTransactionRequest
@@ -9,7 +10,8 @@ import com.stevi.moneyminder.model.response.PageResponse
 import com.stevi.moneyminder.model.response.TransactionResponse
 import com.stevi.moneyminder.repository.CategoryRepository
 import com.stevi.moneyminder.repository.TransactionRepository
-import com.stevi.moneyminder.repository.specification.TransactionSpecification
+import com.stevi.moneyminder.repository.specification.TransactionRuleSpecification
+import com.stevi.moneyminder.repository.specification.TransactionSearchSpecification
 import java.util.*
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -25,7 +27,9 @@ class TransactionService(
 
     @Transactional(readOnly = true)
     fun searchTransactions(spaceId: UUID, searchRequest: TransactionSearchRequest): PageResponse<TransactionResponse> {
-        val specification = TransactionSpecification(
+        val specification = TransactionSearchSpecification(
+            searchRequest.name,
+            searchRequest.notes,
             searchRequest.fromAccountId,
             searchRequest.categoryId,
             searchRequest.dateFrom,
@@ -120,6 +124,17 @@ class TransactionService(
     private fun getTransactionById(id: UUID): Transaction {
         return transactionRepository.findById(id)
             .orElseThrow { IllegalArgumentException("Transaction not found") }
+    }
+
+    @Transactional
+    fun applyRuleToExistingTransactions(spaceId: UUID, rule: Rule) {
+        val ruleSpecification = TransactionRuleSpecification(rule, spaceId)
+        val transactions = transactionRepository.findAll(ruleSpecification)
+        val categoryToAssign = categoryRepository.findById(rule.assignCategoryId).orElseThrow()
+
+        transactions.map { t -> t.category = categoryToAssign }.toString()
+
+        transactionRepository.saveAll(transactions)
     }
 
 }

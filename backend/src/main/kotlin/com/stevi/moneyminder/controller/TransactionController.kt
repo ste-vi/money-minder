@@ -28,6 +28,8 @@ class TransactionController(private var transactionService: TransactionService) 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
     fun searchTransactions(
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) notes: String?,
         @RequestParam(required = false) accountId: UUID?,
         @RequestParam(required = false) categoryId: UUID?,
         @RequestParam(required = false) dateFrom: LocalDateTime?,
@@ -36,6 +38,8 @@ class TransactionController(private var transactionService: TransactionService) 
         @RequestParam(required = false) size: Int?
     ): PageResponse<TransactionResponse> {
         val transactionSearchRequest = TransactionSearchRequest(
+            name,
+            notes,
             accountId,
             categoryId,
             dateFrom,

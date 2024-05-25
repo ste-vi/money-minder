@@ -13,7 +13,9 @@ import java.time.LocalDateTime
 import java.util.*
 import org.springframework.data.jpa.domain.Specification
 
-class TransactionSpecification(
+class TransactionSearchSpecification(
+    private val name: String?,
+    private val notes: String?,
     private val fromAccountId: UUID? = null,
     private val categoryId: UUID? = null,
     private val dateFrom: LocalDateTime? = null,
@@ -21,20 +23,20 @@ class TransactionSpecification(
     private val spaceId: UUID
 ) : Specification<Transaction> {
 
-    /**
-     * Converts the given specification into a JPA CriteriaQuery.
-     *
-     * @param root the root of the query
-     * @param query the query
-     * @param cb the criteria builder
-     * @return the predicate for the query
-     */
     override fun toPredicate(
         root: Root<Transaction>,
         query: CriteriaQuery<*>,
         cb: CriteriaBuilder
     ): Predicate? {
         val predicates = mutableListOf<Predicate>()
+
+        name?.let { name ->
+            predicates.add(cb.like(cb.lower(root.get("name")), "%${name.lowercase()}%"))
+        }
+
+        notes?.let { notes ->
+            predicates.add(cb.like(cb.lower(root.get("notes")), "%${notes.lowercase()}%"))
+        }
 
         categoryId?.let { categoryId ->
             predicates.add(cb.equal(root.get<Category>("category").get<UUID>("id"), categoryId))
