@@ -2,6 +2,7 @@ package com.stevi.moneyminder.service
 
 import com.stevi.moneyminder.entity.Rule
 import com.stevi.moneyminder.entity.Transaction
+import com.stevi.moneyminder.entity.applyRule
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.CreateTransactionRequest
 import com.stevi.moneyminder.model.request.TransactionSearchRequest
@@ -9,6 +10,7 @@ import com.stevi.moneyminder.model.request.UpdateTransactionRequest
 import com.stevi.moneyminder.model.response.PageResponse
 import com.stevi.moneyminder.model.response.TransactionResponse
 import com.stevi.moneyminder.repository.CategoryRepository
+import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.TransactionRepository
 import com.stevi.moneyminder.repository.specification.TransactionRuleSpecification
 import com.stevi.moneyminder.repository.specification.TransactionSearchSpecification
@@ -22,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional
 class TransactionService(
     private val transactionRepository: TransactionRepository,
     private val categoryRepository: CategoryRepository,
-    private val accountService: AccountService
+    private val accountService: AccountService,
+    private val ruleRepository: RuleRepository
 ) {
 
     @Transactional(readOnly = true)
@@ -64,6 +67,7 @@ class TransactionService(
     fun createTransaction(currentUserSpaceId: UUID, request: CreateTransactionRequest): TransactionResponse {
         val fromAccount = accountService.getAccountById(request.fromAccountId)
         val toAccount = request.toAccountId?.let { accountService.getAccountById(it) }
+        val rules = ruleRepository.findAllBySpaceId(currentUserSpaceId)
 
         fromAccount.monoBankId?.let {
             throw IllegalArgumentException("Account is linked to Monobank, manual transaction is not allowed")
@@ -85,6 +89,8 @@ class TransactionService(
             toAccount = toAccount,
             category = category
         )
+
+        rules.stream().anyMatch { rule -> transaction.applyRule(rule) }
 
         val savedTransaction = transactionRepository.save(transaction)
 
@@ -130,9 +136,8 @@ class TransactionService(
     fun applyRuleToExistingTransactions(spaceId: UUID, rule: Rule) {
         val ruleSpecification = TransactionRuleSpecification(rule, spaceId)
         val transactions = transactionRepository.findAll(ruleSpecification)
-        val categoryToAssign = categoryRepository.findById(rule.assignCategoryId).orElseThrow()
 
-        transactions.map { t -> t.category = categoryToAssign }.toString()
+        transactions.map { t -> t.category = rule.assignCategory }.toString()
 
         transactionRepository.saveAll(transactions)
     }

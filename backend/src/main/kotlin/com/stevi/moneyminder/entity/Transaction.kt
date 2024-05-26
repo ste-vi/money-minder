@@ -55,6 +55,7 @@ open class Transaction(
     @JoinColumn(name = "category_id")
     open var category: Category? = null
 )
+
 fun Transaction.mapToResponse() = TransactionResponse(
     id = this.id ?: UUID.randomUUID(),
     name = this.name,
@@ -66,3 +67,14 @@ fun Transaction.mapToResponse() = TransactionResponse(
     date = this.date,
     categoryId = this.category?.id,
 )
+
+fun Transaction.applyRule(rule: Rule) : Boolean {
+    if (rule.condition.type == ConditionType.TEXT_CONTAINS && this.name.contains(rule.condition.textToApply)) {
+        this.category = rule.assignCategory
+        return true
+    } else if (rule.condition.type == ConditionType.TEXT_EQUALS && this.name == rule.condition.textToApply) {
+        this.category = rule.assignCategory
+        return true
+    }
+    return false
+}

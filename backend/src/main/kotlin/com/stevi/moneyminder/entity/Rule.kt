@@ -26,8 +26,9 @@ open class Rule(
     @JoinColumn(nullable = false, unique = true)
     open var condition: Condition,
 
-    @Column(name = "assign_category_id", nullable = false)
-    open var assignCategoryId: UUID,
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "assign_category_id", nullable = false)
+    open var assignCategory: Category,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
@@ -38,6 +39,6 @@ fun Rule.mapToResponse(): RuleResponse {
     return RuleResponse(
         id = this.id ?: UUID.randomUUID(),
         condition = this.condition.mapToResponse(),
-        assignCategoryId = this.assignCategoryId,
+        assignCategoryId = this.assignCategory.id,
     )
 }

@@ -2,6 +2,8 @@ package com.stevi.moneyminder.scheduler
 
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Transaction
+import com.stevi.moneyminder.entity.applyRule
+import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.TransactionRepository
 import com.stevi.moneyminder.repository.projection.AccountMonoBankTokenProjection
 import com.stevi.moneyminder.service.AccountService
@@ -20,7 +22,8 @@ import org.springframework.stereotype.Component
 class MonoBankTransactionScheduler(
     private val monoBankService: MonoBankService,
     private val accountService: AccountService,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val ruleRepository: RuleRepository
 ) {
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -34,7 +37,8 @@ class MonoBankTransactionScheduler(
     }
 
     private fun fetchRecentTransactionsFromMono(projection: AccountMonoBankTokenProjection) {
-        val monoBankAccountId = projection.getAccount().monoBankId ?: throw RuntimeException();
+        val account = projection.getAccount()
+        val monoBankAccountId = account.monoBankId ?: throw RuntimeException();
 
         val monoTransactions =
             monoBankService.fetchResentTransactions(monoBankAccountId, projection.getMonoBankToken())
@@ -42,10 +46,12 @@ class MonoBankTransactionScheduler(
         val recentTransactionsMonoIds =
             transactionRepository.findMonoBankIdsByDateGreaterThan(LocalDateTime.now().minusMonths(1));
 
+        val rules = ruleRepository.findAllBySpaceId(account.space.id!!)
+
         val newTransactions = monoTransactions.stream()
             .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
             .map { monoTransaction ->
-                Transaction(
+                val transaction = Transaction(
                     id = null,
                     name = monoTransaction.description,
                     notes = monoTransaction.comment,
@@ -53,14 +59,18 @@ class MonoBankTransactionScheduler(
                     currency = Currency.fromCode(monoTransaction.currencyCode),
                     date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC),
                     monoBankId = monoTransaction.id,
-                    fromAccount = projection.getAccount(),
+                    fromAccount = account,
                     toAccount = null,
                     category = null
                 )
+
+                rules.stream().anyMatch { rule -> transaction.applyRule(rule) }
+
+                return@map transaction
             }.toList()
 
         if (monoTransactions.isNotEmpty()) {
-            accountService.updateAccountBalance(projection.getAccount(), monoTransactions.first().balance)
+            accountService.updateAccountBalance(account, monoTransactions.first().balance)
         }
 
         transactionRepository.saveAll(newTransactions)
