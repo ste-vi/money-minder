@@ -27,7 +27,7 @@
               <mat-icon svgIcon="wallet" class="icon small-icon"></mat-icon>
             </div>
             <div class="account-item p-l-4">{{ account.name }}</div>
-            <div class="account-item">{{ account.balance }} {{ account.currency.sign }}</div>
+            <div class="account-item">{{ account.balance.toFixed(2) }} {{ account.currency.sign }}</div>
           </div>
         </div>
       </div>

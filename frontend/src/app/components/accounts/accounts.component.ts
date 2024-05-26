@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import { NavComponent } from '../common/nav/nav.component';
-import { MatIcon } from '@angular/material/icon';
-import { Type } from '../../models/type';
-import { Currency } from '../../models/currency';
-import { NgForOf } from '@angular/common';
-import { AccountService } from '../../services/api/account-service';
+import {Component} from '@angular/core';
+import {NavComponent} from '../common/nav/nav.component';
+import {MatIcon} from '@angular/material/icon';
+import {Type} from '../../models/type';
+import {NgForOf} from '@angular/common';
+import {AccountService} from '../../services/api/account-service';
 
 @Component({
   selector: 'app-accounts',
@@ -17,8 +16,28 @@ export class AccountsComponent {
   protected types: Type[] = [];
 
   constructor(private accountService: AccountService) {
-    this.accountService.getTypes().subscribe((types) => {
-      this.types = types;
+    this.loadAccounts();
+    this.accountService.newAccount$.subscribe(() => {
+      this.loadAccounts();
+    });
+  }
+
+  private loadAccounts() {
+    this.accountService.getAccounts().subscribe((accounts) => {
+      this.types = accounts.reduce((acc: Type[], account) => {
+        const type = acc.find((t) => t.id === account.type.id);
+        if (type) {
+          type.accounts.push(account);
+        } else {
+          acc.push({
+            id: account.type.id,
+            name: account.type.fullName,
+            accounts: [account],
+            defaultCurrency: account.currency,
+          });
+        }
+        return acc;
+      }, []);
     });
   }
 

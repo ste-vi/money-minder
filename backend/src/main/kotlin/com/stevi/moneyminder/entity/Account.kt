@@ -50,7 +50,7 @@ fun Account.mapToResponse(): AccountResponse {
         id = id,
         name = name,
         balance = balance,
-        currency = currency,
-        type = type,
+        currency = currency.mapToResponse(),
+        type = type.mapToResponse(),
     )
 }

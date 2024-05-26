@@ -1,6 +1,6 @@
 export interface Currency {
-  id: number;
-  name: string;
+  code: number;
+  fullName: string;
   shortName: string;
   sign: string;
 }

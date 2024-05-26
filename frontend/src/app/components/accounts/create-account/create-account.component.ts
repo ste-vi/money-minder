@@ -1,19 +1,12 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { DecimalPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { CreateAccountService } from '../../../services/communication/create-account-service';
-import { MatIcon } from '@angular/material/icon';
-import { CurrencyService } from '../../../services/api/currency-service';
-import { Currency } from '../../../models/currency';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { AutoResizeDirective } from '../../../directives/auto-resize.directive';
-import { AccountService } from '../../../services/api/account-service';
-import { Account } from '../../../models/account';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {CreateAccountService} from '../../../services/communication/create-account-service';
+import {MatIcon} from '@angular/material/icon';
+import {CurrencyService} from '../../../services/api/currency-service';
+import {Currency} from '../../../models/currency';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {AutoResizeDirective} from '../../../directives/auto-resize.directive';
+import {AccountService} from '../../../services/api/account-service';
 
 @Component({
   selector: 'app-create-account',
@@ -88,19 +81,17 @@ export class CreateAccountComponent {
   }
 
   createAccount() {
-    let account: Account = {
+    this.accountService.createAccount({
       name: this.accountForm.controls['title'].value,
-      currency: this.accountForm.controls['currency'].value,
+      currencyCode: this.accountForm.controls['currency'].value.code,
       balance: parseFloat(
         parseFloat(this.accountForm.controls['balance'].value).toFixed(2),
       ),
-    };
-    let type = this.accountForm.controls['type'].value;
-
-    this.accountService.createAccount(account, type);
-
-    this.closeModal();
-    this.resetForm();
+      typeId: this.accountForm.controls['type'].value.id,
+    }).subscribe(() => {
+      this.closeModal();
+      this.resetForm();
+    });
   }
 
   private resetForm() {

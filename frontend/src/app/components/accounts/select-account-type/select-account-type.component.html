@@ -7,7 +7,7 @@
            *ngFor="let type of typesSelect.slice(i * 2, i * 2 + 2);"
            (click)="createAccountWithType(type)">
         <mat-icon svgIcon="{{type.iconName}}"></mat-icon>
-        <div>{{ type.name }}</div>
+        <div>{{ type.fullName }}</div>
       </div>
     </div>
   </div>

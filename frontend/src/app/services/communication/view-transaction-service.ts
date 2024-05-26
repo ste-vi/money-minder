@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { TypeSelect } from '../../models/type-select';
+import { AccountType } from '../../models/account-type';
 import {Transaction} from "../../models/transaction";
 
 @Injectable({

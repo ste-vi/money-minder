@@ -1,6 +1,8 @@
 package com.stevi.moneyminder.service
 
 import com.stevi.moneyminder.entity.Account
+import com.stevi.moneyminder.entity.AccountType
+import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Transaction
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.AccountRequest
@@ -77,8 +79,8 @@ class AccountService(
             name = accountRequest.name,
             balance = accountRequest.balance ?: BigDecimal.ZERO,
             monoBankId = null,
-            currency = accountRequest.currency,
-            type = accountRequest.type,
+            currency = Currency.fromCode(accountRequest.currencyCode),
+            type = AccountType.fromId(accountRequest.typeId),
             space = spaceRepository.findById(currentUserSpaceId).orElseThrow()
         )
 
@@ -91,8 +93,8 @@ class AccountService(
         val oldBalance = account.balance;
 
         account.name = accountRequest.name
-        account.type = accountRequest.type
-        account.currency = accountRequest.currency
+        account.type =  AccountType.fromId(accountRequest.typeId)
+        account.currency = Currency.fromCode(accountRequest.currencyCode)
         account.balance = accountRequest.balance ?: BigDecimal.ZERO
 
         accountRepository.save(account)

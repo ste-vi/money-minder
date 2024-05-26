@@ -11,7 +11,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './category-settings.component.scss',
 })
 export class CategorySettingsComponent {
-  protected isOpened: boolean = true;
+  protected isOpened: boolean = false;
 
   constructor(private categorySettingsService: CategorySettingsService) {
     this.categorySettingsService.modalOpened$.subscribe((isOpened) => {

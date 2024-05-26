@@ -27,7 +27,7 @@ class MonoBankTransactionScheduler(
 ) {
 
     @OptIn(DelicateCoroutinesApi::class)
-    @Scheduled(fixedRate = 1000 * 60 * 3)
+    @Scheduled(fixedRate = 1000 * 60 * 10)
     fun run() {
         accountService.getAllMonobankAccounts().stream().forEach { projection ->
             GlobalScope.async {

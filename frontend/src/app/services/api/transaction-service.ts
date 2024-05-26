@@ -8,15 +8,16 @@ import { Account } from '../../models/account';
 })
 export class TransactionService {
   private account: Account = {
-    id: 1,
+    id: "1",
     name: 'Mono Black',
     balance: 0,
     currency: {
-      id: 1,
-      name: 'Hryvnia',
+      code: 1,
+      fullName: 'Hryvnia',
       shortName: 'UAH',
       sign: '₴',
     },
+    type: {id: 1, fullName: "Bank account", iconName: "bank-account"},
   };
 
   protected transactions: Transaction[] = [

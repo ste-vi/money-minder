@@ -11,7 +11,7 @@ data class TransactionResponse(
     val name: String,
     val notes: String? = null,
     val amount: BigDecimal = BigDecimal.ZERO,
-    val currency: Currency,
+    val currency: CurrencyResponse,
     val fromAccountId: UUID,
     val toAccountId: UUID?,
     val date: LocalDateTime,

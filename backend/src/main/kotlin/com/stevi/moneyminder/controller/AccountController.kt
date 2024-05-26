@@ -1,9 +1,10 @@
 package com.stevi.moneyminder.controller
 
-import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.AccountType
+import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
+import com.stevi.moneyminder.model.response.AccountTypeResponse
 import com.stevi.moneyminder.service.AccountService
 import com.stevi.moneyminder.util.SecurityUtil
 import java.util.*
@@ -23,14 +24,11 @@ class AccountController(private val accountService: AccountService) {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/types")
-    fun getTypes(): List<AccountType> {
-        return AccountType.entries.toList();
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/currencies")
-    fun getCurrencies(): List<Currency> {
-        return Currency.entries.toList();
+    fun getTypes(): List<AccountTypeResponse> {
+        return AccountType
+            .entries
+            .map { a -> a.mapToResponse() }
+            .toList();
     }
 
     @ResponseStatus(HttpStatus.OK)

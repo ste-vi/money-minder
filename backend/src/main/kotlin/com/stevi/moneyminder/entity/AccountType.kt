@@ -1,10 +1,12 @@
 package com.stevi.moneyminder.entity
 
-enum class AccountType(val id: Int, val fullName: String) {
-    BANK_ACCOUNTS(1, "Bank accounts"),
-    CASH(2, "Cash"),
-    STOCKS_CRYPTO(3, "Stocks & Crypto"),
-    OTHER_ASSETS(4, "Other assets");
+import com.stevi.moneyminder.model.response.AccountTypeResponse
+
+enum class AccountType(val id: Int, val fullName: String, val iconName: String) {
+    BANK_ACCOUNTS(1, "Bank accounts", "card"),
+    CASH(2, "Cash", "money-bag"),
+    STOCKS_CRYPTO(3, "Stocks & Crypto", "align"),
+    OTHER_ASSETS(4, "Other assets", "box");
 
     companion object {
         fun fromId(id: Int): AccountType {
@@ -12,4 +14,12 @@ enum class AccountType(val id: Int, val fullName: String) {
                 ?: throw IllegalArgumentException("Type with id $id not found")
         }
     }
+}
+
+fun AccountType.mapToResponse(): AccountTypeResponse {
+    return AccountTypeResponse(
+        id = this.id,
+        fullName = this.fullName,
+        iconName = this.iconName
+    )
 }
