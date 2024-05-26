@@ -1,10 +1,19 @@
-import { Account } from './account';
+import {Account} from './account';
+import {Currency} from "./currency";
 
 export interface Transaction {
-  id: number;
+  id: string;
   name: string;
   amount: number;
+  currency: Currency;
   date: Date;
-  account: Account;
+  fromAccount: Account;
+  toAccount: Account;
   notes?: string;
+  type: TransactionType
+}
+
+export enum TransactionType {
+  EXPENSE = "EXPENSE",
+  INCOME = "INCOME",
 }

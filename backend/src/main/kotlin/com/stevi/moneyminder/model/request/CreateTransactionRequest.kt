@@ -1,6 +1,7 @@
 package com.stevi.moneyminder.model.request
 
 import com.stevi.moneyminder.entity.Currency
+import com.stevi.moneyminder.entity.TransactionType
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -14,5 +15,6 @@ data class CreateTransactionRequest(
     val date: LocalDateTime,
     val fromAccountId: UUID,
     val toAccountId: UUID?,
-    val categoryId: UUID?
+    val categoryId: UUID?,
+    val type: TransactionType
 ) : Serializable

@@ -4,6 +4,7 @@ import com.stevi.moneyminder.entity.Account
 import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Transaction
+import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
@@ -93,7 +94,7 @@ class AccountService(
         val oldBalance = account.balance;
 
         account.name = accountRequest.name
-        account.type =  AccountType.fromId(accountRequest.typeId)
+        account.type = AccountType.fromId(accountRequest.typeId)
         account.currency = Currency.fromCode(accountRequest.currencyCode)
         account.balance = accountRequest.balance ?: BigDecimal.ZERO
 
@@ -105,16 +106,18 @@ class AccountService(
     }
 
     private fun createBalanceCorrectionTransaction(account: Account, oldBalance: BigDecimal) {
+        val newAmount = account.balance.subtract(oldBalance)
         val transaction = Transaction(
             id = null,
             name = "Balance correction",
             notes = "Happened due to account update",
-            amount = account.balance.subtract(oldBalance),
+            amount = newAmount,
             currency = account.currency,
             fromAccount = account,
             toAccount = null,
             date = LocalDateTime.now(),
-            category = null
+            category = null,
+            type = if (newAmount > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
         )
         transactionRepository.save(transaction)
     }

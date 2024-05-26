@@ -87,7 +87,8 @@ class TransactionService(
             monoBankId = null,
             fromAccount = fromAccount,
             toAccount = toAccount,
-            category = category
+            category = category,
+            type = request.type
         )
 
         rules.stream().anyMatch { rule -> transaction.applyRule(rule) }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Transaction } from '../../../models/transaction';
+import {Transaction, TransactionType} from '../../../models/transaction';
 import { MatIcon } from '@angular/material/icon';
 import { DatePipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
 import { ViewTransactionService } from '../../../services/communication/view-transaction-service';
@@ -20,4 +20,6 @@ export class TransactionComponent {
   openTransactionView(transaction: Transaction) {
     this.viewTransactionService.openModal(transaction);
   }
+
+  protected readonly TransactionType = TransactionType;
 }

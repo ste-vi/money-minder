@@ -37,6 +37,10 @@ open class Transaction(
     @Column(name = "currency", nullable = false, updatable = true)
     open var currency: Currency,
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    open var type: TransactionType,
+
     @Column(name = "date", nullable = false)
     open var date: LocalDateTime,
 
@@ -62,10 +66,11 @@ fun Transaction.mapToResponse() = TransactionResponse(
     notes = this.notes,
     amount = this.amount,
     currency = this.currency.mapToResponse(),
-    fromAccountId = this.fromAccount.id ?: UUID.randomUUID(),
-    toAccountId = this.toAccount?.id,
+    fromAccount = this.fromAccount.mapToResponse(),
+    toAccount = this.toAccount?.mapToResponse(),
     date = this.date,
-    categoryId = this.category?.id,
+    category = this.category?.mapToResponse(),
+    type = this.type
 )
 
 fun Transaction.applyRule(rule: Rule) : Boolean {

@@ -2,6 +2,7 @@ package com.stevi.moneyminder.scheduler
 
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Transaction
+import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.applyRule
 import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.TransactionRepository
@@ -51,6 +52,9 @@ class MonoBankTransactionScheduler(
         val newTransactions = monoTransactions.stream()
             .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
             .map { monoTransaction ->
+                val transactionType =
+                    if (monoTransaction.amount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
+
                 val transaction = Transaction(
                     id = null,
                     name = monoTransaction.description,
@@ -61,7 +65,8 @@ class MonoBankTransactionScheduler(
                     monoBankId = monoTransaction.id,
                     fromAccount = account,
                     toAccount = null,
-                    category = null
+                    category = null,
+                    type = transactionType
                 )
 
                 rules.stream().anyMatch { rule -> transaction.applyRule(rule) }

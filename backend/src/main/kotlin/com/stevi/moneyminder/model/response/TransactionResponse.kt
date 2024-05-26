@@ -1,6 +1,6 @@
 package com.stevi.moneyminder.model.response
 
-import com.stevi.moneyminder.entity.Currency
+import com.stevi.moneyminder.entity.TransactionType
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -12,8 +12,9 @@ data class TransactionResponse(
     val notes: String? = null,
     val amount: BigDecimal = BigDecimal.ZERO,
     val currency: CurrencyResponse,
-    val fromAccountId: UUID,
-    val toAccountId: UUID?,
+    val fromAccount: AccountResponse,
+    val toAccount: AccountResponse?,
     val date: LocalDateTime,
-    val categoryId: UUID?
+    val category: CategoryResponse?,
+    val type: TransactionType
 ) : Serializable

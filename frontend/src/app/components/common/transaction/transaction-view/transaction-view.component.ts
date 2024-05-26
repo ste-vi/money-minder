@@ -79,7 +79,7 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
       this.transactionForm.controls['name'].setValue(transaction.name);
       this.transactionForm.controls['amount'].setValue(transaction.amount);
       this.transactionForm.controls['date'].setValue(transaction.date);
-      this.transactionForm.controls['account'].setValue(transaction.account);
+      this.transactionForm.controls['account'].setValue(transaction.fromAccount);
       this.transactionForm.controls['notes'].setValue(transaction.notes);
 
       this.showModal();

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { Transaction } from '../../models/transaction';
-import { TransactionService } from '../../services/api/transaction-service';
+import {Component} from '@angular/core';
+import {MatIcon} from '@angular/material/icon';
+import {Transaction, TransactionType} from '../../models/transaction';
+import {TransactionService} from '../../services/api/transaction-service';
 import {DatePipe, DecimalPipe, NgForOf} from "@angular/common";
 import {TransactionComponent} from "../common/transaction/transaction.component";
 
@@ -17,7 +17,9 @@ export class DashboardComponent {
 
   constructor(private transactionService: TransactionService) {
     this.transactionService
-      .getLastTransactions()
-      .subscribe((transactions) => (this.transactions = transactions));
+      .getLastTransactions(5)
+      .subscribe((pageResponse) => {
+        this.transactions = pageResponse.content;
+      });
   }
 }
