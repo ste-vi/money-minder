@@ -3,7 +3,7 @@
   <div class="last-transactions-container">
     <div class="last-transactions-header">
       <div><b>Last 5 transactions</b></div>
-      <mat-icon svgIcon="calendar-search" class="small-icon active"></mat-icon>
+      <mat-icon svgIcon="calendar-search" class="small-icon active" (click)="openSearchTransactionsModal()"></mat-icon>
     </div>
     <div class="last-transactions-body">
       <div *ngFor="let transaction of transactions; let i = index">

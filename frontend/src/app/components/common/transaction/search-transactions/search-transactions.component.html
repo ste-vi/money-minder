@@ -1,0 +1,31 @@
+<div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
+
+<div *ngIf="isOpened">
+  <div class="transaction-search-container bottom-modal">
+    <div class="container-header">
+      <div>
+        <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+      </div>
+      <div>
+        <b>Transaction history</b>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="search-header">
+      <div class="input-container">
+        <mat-icon svgIcon="search" class="gray-icon small-icon"></mat-icon>
+        <input placeholder="Search by name or notes" [(ngModel)]="searchQuery" (keyup)="search()">
+      </div>
+      <div class="search-filters">
+        <div class="filter">All accounts</div>
+        <div class="filter active">All dates</div>
+        <div class="filter">All categories</div>
+        <div class="filter">Sort by date</div>
+      </div>
+    </div>
+    <div class="transactions-container">
+      <app-transaction *ngFor="let transaction of transactions"  #scrollContainer (scroll)="onScroll()" [transaction]="transaction"></app-transaction>
+    </div>
+  </div>
+</div>

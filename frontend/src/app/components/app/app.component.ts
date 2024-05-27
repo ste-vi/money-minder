@@ -8,6 +8,7 @@ import { SelectAccountTypeComponent } from '../accounts/select-account-type/sele
 import {CreateAccountComponent} from "../accounts/create-account/create-account.component";
 import {TransactionViewComponent} from "../common/transaction/transaction-view/transaction-view.component";
 import {CategorySettingsComponent} from "../settings/category-settings/category-settings.component";
+import {SearchTransactionsComponent} from "../common/transaction/search-transactions/search-transactions.component";
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ import {CategorySettingsComponent} from "../settings/category-settings/category-
     CreateAccountComponent,
     TransactionViewComponent,
     CategorySettingsComponent,
+    SearchTransactionsComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -153,6 +155,12 @@ export class AppComponent {
       'clipboard-check',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/clipboard-check-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'search',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/magnifer-svgrepo-com.svg',
       ),
     );
   }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Transaction} from '../../models/transaction';
 import {environment} from "../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {PageResponse} from "../../models/page-response";
 
 @Injectable({
@@ -17,5 +17,15 @@ export class TransactionService {
 
   getLastTransactions(size: number): Observable<PageResponse<Transaction>> {
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + '/search?size=' + size);
+  }
+
+  searchTransactions(page: number, size: number, searchQuery: string): Observable<PageResponse<Transaction>> {
+    let path = '/search?size=' + size + '&page=' + page;
+
+    if (searchQuery) {
+      path = path + '&name=' + searchQuery + '&notes=' + searchQuery;
+    }
+
+    return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + path);
   }
 }
