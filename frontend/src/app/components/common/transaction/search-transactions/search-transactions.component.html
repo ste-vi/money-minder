@@ -1,5 +1,3 @@
-<div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
-
 <div *ngIf="isOpened">
   <div class="transaction-search-container bottom-modal">
     <div class="container-header">
@@ -27,6 +25,7 @@
     <div class="transactions-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="20"
          [scrollWindow]="false" (scrolled)="loadMore()">
       <app-transaction *ngFor="let transaction of transactions" [transaction]="transaction"></app-transaction>
+      <app-loader *ngIf="isLoading"></app-loader>
     </div>
   </div>
 </div>

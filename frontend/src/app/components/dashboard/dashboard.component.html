@@ -9,6 +9,7 @@
       <div *ngFor="let transaction of transactions; let i = index">
         <app-transaction [transaction]="transaction" [isLast]="i === transactions.length - 1"></app-transaction>
       </div>
+      <app-loader *ngIf="isLoading"></app-loader>
     </div>
   </div>
 

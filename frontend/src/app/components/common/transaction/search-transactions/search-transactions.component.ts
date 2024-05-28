@@ -7,6 +7,7 @@ import {Transaction} from "../../../../models/transaction";
 import {TransactionService} from "../../../../services/api/transaction-service";
 import {FormsModule} from "@angular/forms";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {LoaderComponent} from "../../loader/loader.component";
 
 @Component({
   selector: 'app-search-transactions',
@@ -17,19 +18,21 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     TransactionComponent,
     NgForOf,
     FormsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    LoaderComponent,
   ],
   templateUrl: './search-transactions.component.html',
   styleUrl: './search-transactions.component.scss'
 })
 export class SearchTransactionsComponent {
-  protected isOpened: boolean = true;
+  protected isOpened: boolean = false;
   protected transactions: Transaction[] = [];
 
   protected currentPage: number = 0;
   protected itemsPerPage: number = 20;
   protected hasMoreTransactions: boolean = true;
   protected searchQuery: string = '';
+  protected isLoading: boolean = true;
 
   constructor(private searchTransactionsService: SearchTransactionsService,
               private transactionService: TransactionService) {
@@ -41,10 +44,16 @@ export class SearchTransactionsComponent {
   }
 
   private loadTransactions(isSearch: boolean = false) {
+    this.isLoading = true;
+    if (isSearch) {
+      this.transactions = [];
+    }
+
     this.transactionService.searchTransactions(this.currentPage, this.itemsPerPage, this.searchQuery)
       .subscribe((pageResponse) => {
         this.transactions = isSearch ? pageResponse.content : this.transactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;
+        this.isLoading = false;
       })
   }
 
