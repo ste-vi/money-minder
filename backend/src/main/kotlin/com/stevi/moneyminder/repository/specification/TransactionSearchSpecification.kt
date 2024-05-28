@@ -30,12 +30,19 @@ class TransactionSearchSpecification(
     ): Predicate? {
         val predicates = mutableListOf<Predicate>()
 
-        name?.let { name ->
-            predicates.add(cb.like(cb.lower(root.get("name")), "%${name.lowercase()}%"))
+        val namePredicate = name?.let { name ->
+            cb.like(cb.lower(root.get("name")), "%${name.lowercase()}%")
         }
 
-        notes?.let { notes ->
-            predicates.add(cb.like(cb.lower(root.get("notes")), "%${notes.lowercase()}%"))
+        val notesPredicate = notes?.let { notes ->
+            cb.like(cb.lower(root.get("notes")), "%${notes.lowercase()}%")
+        }
+
+        if (namePredicate != null && notesPredicate != null) {
+            predicates.add(cb.or(namePredicate, notesPredicate))
+        } else {
+            namePredicate?.let { predicates.add(it) }
+            notesPredicate?.let { predicates.add(it) }
         }
 
         categoryId?.let { categoryId ->

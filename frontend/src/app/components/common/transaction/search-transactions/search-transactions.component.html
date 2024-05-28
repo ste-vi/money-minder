@@ -14,7 +14,7 @@
     </div>
     <div class="search-header">
       <div class="input-container">
-        <mat-icon svgIcon="search" class="gray-icon small-icon"></mat-icon>
+        <mat-icon svgIcon="search" class="gray-icon small-icon" (click)="search()"></mat-icon>
         <input placeholder="Search by name or notes" [(ngModel)]="searchQuery" (keyup)="search()">
       </div>
       <div class="search-filters">
@@ -24,8 +24,9 @@
         <div class="filter">Sort by date</div>
       </div>
     </div>
-    <div class="transactions-container">
-      <app-transaction *ngFor="let transaction of transactions"  #scrollContainer (scroll)="onScroll()" [transaction]="transaction"></app-transaction>
+    <div class="transactions-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="20"
+         [scrollWindow]="false" (scrolled)="loadMore()">
+      <app-transaction *ngFor="let transaction of transactions" [transaction]="transaction"></app-transaction>
     </div>
   </div>
 </div>

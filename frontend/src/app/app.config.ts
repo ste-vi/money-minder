@@ -5,7 +5,8 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {DecimalPipe} from "@angular/common";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), provideAnimations(), DecimalPipe],
+  providers: [provideRouter(routes), provideHttpClient(), provideAnimations(), DecimalPipe, InfiniteScrollModule],
 };
