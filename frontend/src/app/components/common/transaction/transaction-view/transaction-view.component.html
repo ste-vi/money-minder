@@ -5,13 +5,15 @@
     <form [formGroup]="transactionForm">
       <div class="transaction-view-header">
         <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
-        <mat-icon svgIcon="delete" class="red-icon small-icon" (click)="delete()"></mat-icon>
+        <mat-icon svgIcon="delete" class="red-icon small-icon"
+                  (click)="delete()"
+                  *ngIf="!transaction.isBankTransaction"></mat-icon>
       </div>
 
       <div class="transaction-header">
         <div class="transaction-amount">
           <b>
-            {{ transactionForm.value.amount | number:'1.2-2' }}{{ transactionForm.value.account.currency.sign }}
+            {{ this.transactionForm.controls['amount'].value | number:'1.2-2' }}{{ transactionForm.value.account.currency.sign }}
           </b>
         </div>
         <div *ngIf="!editName; else nameInputTemplate" class="transaction-name"
@@ -49,7 +51,7 @@
           <div>
             <input #amountInput appAutoResize formControlName="amount"
                    type="number" min="0.00"
-                   (blur)="formatAmount()">$
+                   (blur)="formatAmount()">{{ transaction.currency.sign }}
           </div>
         </div>
         <div class="transaction-notes">
@@ -57,12 +59,12 @@
             <mat-icon svgIcon="textarea" class="notes-icon"></mat-icon>
           </div>
           <div class="notes-textarea-container">
-            <textarea placeholder="Notes"></textarea>
+            <textarea placeholder="Notes" formControlName="notes"></textarea>
           </div>
         </div>
       </div>
       <div class="transaction-footer">
-        <div class="save-button" [class.disabled-button]="transactionForm.invalid">Save</div>
+        <div class="save-button" (click)="save()">Save</div>
       </div>
     </form>
 

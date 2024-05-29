@@ -152,6 +152,11 @@
       width: 100%;
       color: white;
       border-radius: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background: #5d55fb;
+      }
 
       &:active {
         background: #5952e3;

@@ -10,7 +10,8 @@ export interface Transaction {
   fromAccount: Account;
   toAccount: Account;
   notes?: string;
-  type: TransactionType
+  type: TransactionType,
+  isBankTransaction: boolean;
 }
 
 export enum TransactionType {

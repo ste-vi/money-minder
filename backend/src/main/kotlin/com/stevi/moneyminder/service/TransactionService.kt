@@ -104,14 +104,19 @@ class TransactionService(
     @Transactional
     fun updateTransaction(id: UUID, request: UpdateTransactionRequest) {
         val transaction = getTransactionById(id)
-
         transaction.name = request.name
         transaction.notes = request.notes
-        transaction.currency = request.currency
         transaction.date = request.date
 
         transaction.category = request.categoryId?.let {
             categoryRepository.findById(it).orElseThrow { IllegalArgumentException("Category not found") }
+        }
+
+        request.amount?.let {
+            if (transaction.monoBankId == null) {
+                transaction.amount = it
+                accountService.increaseAccountBalanceByAmount(transaction.fromAccount, it)
+            }
         }
 
         transactionRepository.save(transaction)

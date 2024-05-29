@@ -28,4 +28,12 @@ export class TransactionService {
 
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + path);
   }
+
+  update(id: string, updateRequest: { date: any; amount: any; notes: any; name: any; categoryId: string }) {
+    return this.httpClient.put(this.rootUrl + '/' + id, updateRequest);
+  }
+
+  delete(id: string) {
+    return this.httpClient.delete(this.rootUrl + '/' + id);
+  }
 }

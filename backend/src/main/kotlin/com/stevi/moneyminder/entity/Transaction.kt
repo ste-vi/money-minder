@@ -70,10 +70,11 @@ fun Transaction.mapToResponse() = TransactionResponse(
     toAccount = this.toAccount?.mapToResponse(),
     date = this.date,
     category = this.category?.mapToResponse(),
-    type = this.type
+    type = this.type,
+    isBankTransaction = this.monoBankId != null
 )
 
-fun Transaction.applyRule(rule: Rule) : Boolean {
+fun Transaction.applyRule(rule: Rule): Boolean {
     if (rule.condition.type == ConditionType.TEXT_CONTAINS && this.name.contains(rule.condition.textToApply)) {
         this.category = rule.assignCategory
         return true

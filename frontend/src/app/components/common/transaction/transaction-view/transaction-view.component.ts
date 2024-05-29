@@ -5,8 +5,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { DatePipe, DecimalPipe, NgForOf, NgIf } from '@angular/common';
-import { AutoResizeDirective } from '../../../../directives/auto-resize.directive';
+import {DatePipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
+import {AutoResizeDirective} from '../../../../directives/auto-resize.directive';
 import {
   FormControl,
   FormGroup,
@@ -14,12 +14,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
-import { Transaction } from '../../../../models/transaction';
-import { ViewTransactionService } from '../../../../services/communication/view-transaction-service';
+import {MatIcon} from '@angular/material/icon';
+import {Transaction, TransactionType} from '../../../../models/transaction';
+import {ViewTransactionService} from '../../../../services/communication/view-transaction-service';
 import {MatFormField, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {TransactionService} from "../../../../services/api/transaction-service";
 
 @Component({
   selector: 'app-transaction-view',
@@ -62,7 +63,8 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   // @ts-ignore
   @ViewChild('nameInput') nameInputRef: ElementRef;
 
-  constructor(private viewTransactionService: ViewTransactionService) {
+  constructor(private viewTransactionService: ViewTransactionService,
+              private transactionService: TransactionService) {
     this.transactionForm = new FormGroup({
       name: new FormControl('', Validators.required),
       amount: new FormControl(Validators.required),
@@ -77,10 +79,16 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
       this.transaction = transaction;
 
       this.transactionForm.controls['name'].setValue(transaction.name);
-      this.transactionForm.controls['amount'].setValue(transaction.amount);
       this.transactionForm.controls['date'].setValue(transaction.date);
       this.transactionForm.controls['account'].setValue(transaction.fromAccount);
       this.transactionForm.controls['notes'].setValue(transaction.notes);
+      this.transactionForm.controls['amount'].setValue(transaction.amount);
+
+      if (transaction.isBankTransaction) {
+        this.transactionForm.controls['amount'].disable();
+      } else {
+        this.transactionForm.controls['amount'].enable();
+      }
 
       this.showModal();
     });
@@ -102,12 +110,13 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   closeModal() {
     this.isOpened = false;
     this.editName = false;
+    this.transactionForm.reset()
   }
 
   formatAmount() {
     let value = this.transactionForm.controls['amount'].value;
     if (!value || value === 0) {
-      this.transactionForm.setErrors({ invalid: true });
+      this.transactionForm.setErrors({invalid: true});
       return;
     }
 
@@ -127,10 +136,34 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     this.editName = false;
   }
 
-  delete() {}
+  save() {
+    let amount: number = this.transaction.type === TransactionType.EXPENSE
+      ? this.transactionForm.controls["amount"].value * 1
+      : this.transactionForm.controls["amount"].value;
 
-  // todo: add types select modal
+    let updateRequest = {
+      "name": this.transactionForm.controls["name"].value,
+      "amount": amount,
+      "date": new Date(this.transactionForm.controls["date"].value),
+      "notes": this.transactionForm.controls["notes"].value,
+      "categoryId": "4c8e867b-2ffe-477b-8edd-402e8cf8a167"
+    }
+    this.transactionService.update(this.transaction.id, updateRequest).subscribe(data => {
+      this.transaction.name = this.transactionForm.controls["name"].value;
+      this.transaction.amount = amount;
+      this.transaction.date = this.transactionForm.controls["date"].value;
+      this.transaction.notes = this.transactionForm.controls["notes"].value;
+      this.closeModal()
+    })
+  }
+
+  delete() {
+    this.transactionService.delete(this.transaction.id).subscribe(data => {
+      this.closeModal();
+      window.location.reload();
+    })
+  }
+
+  // todo: add category select modal
   // todo: implement form validation logic
-  // todo: implement save to service
-  // todo: implement delete
 }

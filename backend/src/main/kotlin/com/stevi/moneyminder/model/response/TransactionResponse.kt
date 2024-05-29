@@ -16,5 +16,6 @@ data class TransactionResponse(
     val toAccount: AccountResponse?,
     val date: LocalDateTime,
     val category: CategoryResponse?,
-    val type: TransactionType
+    val type: TransactionType,
+    val isBankTransaction: Boolean = false
 ) : Serializable
