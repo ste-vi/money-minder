@@ -8,6 +8,7 @@ import {TransactionService} from "../../../../services/api/transaction-service";
 import {FormsModule} from "@angular/forms";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {LoaderComponent} from "../../loader/loader.component";
+import {SearchTransactionFilters} from "./model/search-transaction-filters";
 
 @Component({
   selector: 'app-search-transactions',
@@ -32,15 +33,15 @@ export class SearchTransactionsComponent {
   protected itemsPerPage: number = 20;
   protected hasMoreTransactions: boolean = true;
   protected searchQuery: string = '';
+  protected accountId: string | undefined = undefined;
   protected isLoading: boolean = true;
 
   constructor(private searchTransactionsService: SearchTransactionsService,
               private transactionService: TransactionService) {
-    this.searchTransactionsService.modalOpened$.subscribe(() => {
-      this.showModal();
-    });
 
-    this.loadTransactions(false);
+    this.searchTransactionsService.modalOpened$.subscribe((filters) => {
+      this.showModal(filters);
+    });
   }
 
   private loadTransactions(isSearch: boolean = false) {
@@ -49,7 +50,7 @@ export class SearchTransactionsComponent {
       this.transactions = [];
     }
 
-    this.transactionService.searchTransactions(this.currentPage, this.itemsPerPage, this.searchQuery)
+    this.transactionService.searchTransactions(this.currentPage, this.itemsPerPage, this.searchQuery, this.accountId)
       .subscribe((pageResponse) => {
         this.transactions = isSearch ? pageResponse.content : this.transactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;
@@ -69,9 +70,11 @@ export class SearchTransactionsComponent {
     }
   }
 
-  private showModal() {
-    this.isOpened = true;
+  private showModal(filters: SearchTransactionFilters) {
+    this.accountId = filters.accountId
     this.searchQuery = '';
+    this.isOpened = true;
+    this.loadTransactions(true);
   }
 
   closeModal() {

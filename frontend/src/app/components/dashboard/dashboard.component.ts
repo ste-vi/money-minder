@@ -30,6 +30,6 @@ export class DashboardComponent {
   }
 
   openSearchTransactionsModal() {
-    this.searchTransactionService.openModal();
+    this.searchTransactionService.openModal({});
   }
 }

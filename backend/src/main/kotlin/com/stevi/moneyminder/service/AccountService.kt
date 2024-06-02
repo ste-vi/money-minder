@@ -78,6 +78,7 @@ class AccountService(
         val account = Account(
             id = null,
             name = accountRequest.name,
+            description = null,
             balance = accountRequest.balance ?: BigDecimal.ZERO,
             monoBankId = null,
             currency = Currency.fromCode(accountRequest.currencyCode),

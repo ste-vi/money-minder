@@ -26,6 +26,9 @@ open class Account(
     @Column(name = "name", nullable = false)
     open var name: String,
 
+    @Column(name = "description", nullable = true)
+    open var description: String?,
+
     @Column(name = "balance", nullable = false)
     open var balance: BigDecimal = BigDecimal.ZERO,
 
@@ -49,6 +52,7 @@ fun Account.mapToResponse(): AccountResponse {
     return AccountResponse(
         id = id,
         name = name,
+        description = description,
         balance = balance,
         currency = currency.mapToResponse(),
         type = type.mapToResponse(),

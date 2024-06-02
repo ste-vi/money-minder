@@ -132,16 +132,17 @@ class MonoBankService(
             throw RuntimeException("Account already linked");
         }
 
-        val accountName = "Mono " + request.type
+        val accountName = "Monobank " + request.type.capitalize()
         accountService.saveAccount(
             Account(
-                null,
-                accountName,
-                request.balance,
-                Currency.fromCode(request.currencyCode),
-                AccountType.BANK_ACCOUNTS,
-                request.id,
-                space
+                id = null,
+                name = accountName,
+                description = "Monobank | " + request.maskedPan,
+                balance = request.balance,
+                currency = Currency.fromCode(request.currencyCode),
+                type = AccountType.BANK_ACCOUNTS,
+                monoBankId = request.id,
+                space = space
             )
         )
     }

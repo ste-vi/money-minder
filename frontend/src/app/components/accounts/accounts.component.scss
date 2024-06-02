@@ -52,6 +52,7 @@
         border-bottom: 1px solid var(--secondary-border);
         width: 100%;
         font-size: 12px;
+        cursor: pointer;
 
         &:last-child {
           border-bottom: none;
@@ -81,8 +82,6 @@
         margin-left: auto;
       }
     }
-
-
   }
 
 

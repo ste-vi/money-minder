@@ -45,7 +45,7 @@ class AccountController(private val accountService: AccountService) {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    fun createAccount(@PathVariable id: UUID, @RequestBody accountRequest: AccountRequest) {
+    fun updateAccount(@PathVariable id: UUID, @RequestBody accountRequest: AccountRequest) {
         return accountService.updateAccount(id, accountRequest)
     }
 }

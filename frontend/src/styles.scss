@@ -98,6 +98,18 @@ input[type=number] {
   z-index: 10;
 }
 
+.right-modal {
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: var(--background);
+  border-top: 1px solid var(--secondary-border);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  animation: rise-from-right 0.2s ease-in-out;
+  z-index: 10;
+}
+
 .page-mask {
   background: rgba(17, 17, 17, 0.6);
   backdrop-filter: blur(3px);
@@ -117,6 +129,16 @@ input[type=number] {
 
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes rise-from-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
   }
 }
 

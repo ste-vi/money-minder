@@ -4,6 +4,8 @@ import {MatIcon} from '@angular/material/icon';
 import {Type} from '../../models/type';
 import {NgForOf} from '@angular/common';
 import {AccountService} from '../../services/api/account-service';
+import {ViewAccountService} from "../../services/communication/view-account-service";
+import {Account} from "../../models/account";
 
 @Component({
   selector: 'app-accounts',
@@ -15,7 +17,7 @@ import {AccountService} from '../../services/api/account-service';
 export class AccountsComponent {
   protected types: Type[] = [];
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService, private viewAccountService: ViewAccountService) {
     this.loadAccounts();
     this.accountService.newAccount$.subscribe(() => {
       this.loadAccounts();
@@ -47,5 +49,9 @@ export class AccountsComponent {
       total += account.balance;
     }
     return total.toFixed(2);
+  }
+
+  openAccountView(account: Account) {
+    this.viewAccountService.openModal(account);
   }
 }

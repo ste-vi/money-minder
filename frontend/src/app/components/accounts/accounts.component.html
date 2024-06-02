@@ -22,7 +22,7 @@
       </div>
       <div class="account-type-body">
         <div *ngFor="let account of type.accounts">
-          <div class="account">
+          <div class="account" (click)="openAccountView(account)">
             <div class="account-item account-item-header">
               <mat-icon svgIcon="wallet" class="icon small-icon"></mat-icon>
             </div>
