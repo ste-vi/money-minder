@@ -18,6 +18,7 @@ class TransactionSearchSpecification(
     private val notes: String?,
     private val fromAccountId: UUID? = null,
     private val categoryId: UUID? = null,
+    private val needReview: Boolean? = false,
     private val dateFrom: LocalDateTime? = null,
     private val dateTo: LocalDateTime? = null,
     private val spaceId: UUID
@@ -47,6 +48,10 @@ class TransactionSearchSpecification(
 
         categoryId?.let { categoryId ->
             predicates.add(cb.equal(root.get<Category>("category").get<UUID>("id"), categoryId))
+        }
+
+        needReview?.let {
+            predicates.add(cb.isNull(root.get<Category>("category")))
         }
 
         dateFrom?.let { dateFrom ->

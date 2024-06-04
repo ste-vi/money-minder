@@ -16,12 +16,15 @@
         <input placeholder="Search by name or notes" [(ngModel)]="searchQuery" (keyup)="search()">
       </div>
       <div class="search-filters">
-        <div class="filter" [ngClass]="{'active': account}"
-             (click)="openAccountFilter()">{{ account?.name || 'All accounts' }}
+        <div class="active clickable" (click)="resetFilters()">Reset</div>
+        <div class="filter" [ngClass]="{'active': accountFilter, 'active-border': accountFilter}"
+             (click)="openAccountFilter()">{{ accountFilter?.name || 'All accounts' }}
         </div>
         <div class="filter">All dates</div>
+        <div class="filter" [ngClass]="{'active': needReviewFilter, 'active-border': needReviewFilter}"
+             (click)="applyNeedReviewFilter()">Need review
+        </div>
         <div class="filter">All categories</div>
-        <div class="filter">Sort by date</div>
       </div>
     </div>
     <div class="transactions-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="20"
@@ -34,7 +37,7 @@
 
 <app-transaction-account-filter
   *ngIf="isAccountFilterOpened"
-  [selectedAccount]="account"
+  [selectedAccount]="accountFilter"
   (closed)="closeAccountFilter()"
   (accountSelected)="onAccountSelected($event)"
 ></app-transaction-account-filter>

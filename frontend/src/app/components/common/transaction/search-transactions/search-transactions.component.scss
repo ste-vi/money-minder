@@ -50,24 +50,38 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      overflow-x: auto;
       font-size: 0.8rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      gap: 0.5rem;
+      gap: 0.6rem;
       width: 100%;
-      overflow-x: auto;
       white-space: nowrap;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      padding-right: 1rem;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      @media (min-width: 478px) {
+        justify-content: center;
+        padding-right: 0;
+      }
 
       .filter {
+        flex-shrink: 0;
         background-color: white;
         cursor: pointer;
         padding: 0.3rem 0.8rem;
         text-align: center;
         border-radius: 8px;
         border: 1px solid var(--secondary-border);
+
+        &:hover {
+          color: var(--accent);
+          border: 1px solid var(--accent);
+        }
       }
     }
   }

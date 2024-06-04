@@ -35,6 +35,7 @@ class TransactionService(
             searchRequest.notes,
             searchRequest.fromAccountId,
             searchRequest.categoryId,
+            searchRequest.needReview,
             searchRequest.dateFrom,
             searchRequest.dateTo,
             spaceId

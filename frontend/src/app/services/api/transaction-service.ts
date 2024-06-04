@@ -19,7 +19,11 @@ export class TransactionService {
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + '/search?size=' + size);
   }
 
-  searchTransactions(page: number, size: number, searchQuery: string, accountId?: string): Observable<PageResponse<Transaction>> {
+  searchTransactions(page: number,
+                     size: number,
+                     searchQuery: string,
+                     accountId?: string,
+                     needReview?: boolean): Observable<PageResponse<Transaction>> {
     let path = '/search?size=' + size + '&page=' + page;
 
     if (searchQuery) {
@@ -27,6 +31,9 @@ export class TransactionService {
     }
     if (accountId) {
       path = path + '&accountId=' + accountId;
+    }
+    if (needReview) {
+      path = path + '&needReview=' + needReview;
     }
 
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + path);

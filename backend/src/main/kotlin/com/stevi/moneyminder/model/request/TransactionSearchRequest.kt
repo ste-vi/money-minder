@@ -9,6 +9,7 @@ data class TransactionSearchRequest(
     val notes: String?,
     val fromAccountId: UUID? = null,
     val categoryId: UUID? = null,
+    val needReview: Boolean? = false,
     val dateFrom: LocalDateTime? = LocalDateTime.now().withDayOfMonth(1),
     val dateTo: LocalDateTime? = LocalDateTime.now().withDayOfMonth(1).plusMonths(1).minusDays(1),
     val page: Int? = 0,

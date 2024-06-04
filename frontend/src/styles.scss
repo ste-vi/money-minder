@@ -67,6 +67,10 @@ option {
   color: var(--accent);
 }
 
+.active-border {
+  border: 2px solid var(--accent) !important;
+}
+
 .clickable {
   cursor: pointer;
 }

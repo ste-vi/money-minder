@@ -47,8 +47,10 @@ export class SearchTransactionsComponent {
   protected searchQuery: string = '';
 
   // filters
-  protected account: Account | undefined = undefined;
+  protected accountFilter: Account | undefined = undefined;
   protected isAccountFilterOpened: boolean = false;
+
+  protected needReviewFilter: boolean = false;
 
   constructor(private searchTransactionsService: SearchTransactionsService,
               private transactionService: TransactionService) {
@@ -58,13 +60,30 @@ export class SearchTransactionsComponent {
     });
   }
 
+  private showModal(filters: SearchTransactionFilters) {
+    this.accountFilter = filters.account
+    this.searchQuery = '';
+    this.isOpened = true;
+    this.loadTransactions(true);
+  }
+
+  closeModal() {
+    this.isOpened = false
+  }
+
   private loadTransactions(isSearch: boolean = false) {
     this.isLoading = true;
     if (isSearch) {
       this.transactions = [];
     }
 
-    this.transactionService.searchTransactions(this.currentPage, this.itemsPerPage, this.searchQuery, this.account?.id)
+    this.transactionService
+      .searchTransactions(
+        this.currentPage,
+        this.itemsPerPage,
+        this.searchQuery,
+        this.accountFilter?.id,
+        this.needReviewFilter)
       .subscribe((pageResponse) => {
         this.transactions = isSearch ? pageResponse.content : this.transactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;
@@ -93,19 +112,22 @@ export class SearchTransactionsComponent {
   }
 
   onAccountSelected(account: Account) {
-    this.account = account;
-    this.loadTransactions(true)
+    this.accountFilter = account;
+    this.currentPage = 0
     this.isAccountFilterOpened = false;
+    this.loadTransactions(true)
   }
 
-  private showModal(filters: SearchTransactionFilters) {
-    this.account = filters.account
-    this.searchQuery = '';
-    this.isOpened = true;
+  applyNeedReviewFilter() {
+    this.needReviewFilter = !this.needReviewFilter;
+    this.currentPage = 0
     this.loadTransactions(true);
   }
 
-  closeModal() {
-    this.isOpened = false
+  resetFilters() {
+    this.accountFilter = undefined;
+    this.needReviewFilter = false
+    this.searchQuery = '';
+    this.loadTransactions(true);
   }
 }
