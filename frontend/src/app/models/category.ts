@@ -2,7 +2,7 @@ export interface Category {
   id?: number;
   name: string;
   icon: string;
-  order: number;
+  position: number;
   type: CategoryType;
   subCategories?: Category[];
 }

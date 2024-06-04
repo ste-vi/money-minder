@@ -165,5 +165,11 @@ export class AppComponent {
         '../assets/icons/svg/magnifer-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'question',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/question-square-svgrepo-com.svg',
+      ),
+    );
   }
 }

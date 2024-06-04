@@ -1,5 +1,6 @@
 import {Account} from './account';
 import {Currency} from "./currency";
+import {Category} from "./category";
 
 export interface Transaction {
   id: string;
@@ -12,6 +13,7 @@ export interface Transaction {
   notes?: string;
   type: TransactionType,
   isBankTransaction: boolean;
+  category?: Category
 }
 
 export enum TransactionType {
