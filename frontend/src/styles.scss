@@ -67,6 +67,10 @@ option {
   color: var(--accent);
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .secondary-text {
   color: var(--secondary-text);
   font-size: 11px;
@@ -74,6 +78,26 @@ option {
 
 .no-border {
   border-bottom: none !important;
+}
+
+.save-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #534ced;
+  height: 40px;
+  width: 100%;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: #5d55fb;
+  }
+
+  &:active {
+    background: #5952e3;
+  }
 }
 
 input::-webkit-outer-spin-button,

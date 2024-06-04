@@ -1,3 +1,5 @@
+import {Account} from "../../../../../models/account";
+
 export interface SearchTransactionFilters {
-  accountId?: string;
+  account?: Account;
 }

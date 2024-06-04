@@ -16,8 +16,10 @@
         <input placeholder="Search by name or notes" [(ngModel)]="searchQuery" (keyup)="search()">
       </div>
       <div class="search-filters">
-        <div class="filter">All accounts</div>
-        <div class="filter active">All dates</div>
+        <div class="filter" [ngClass]="{'active': account}"
+             (click)="openAccountFilter()">{{ account?.name || 'All accounts' }}
+        </div>
+        <div class="filter">All dates</div>
         <div class="filter">All categories</div>
         <div class="filter">Sort by date</div>
       </div>
@@ -29,3 +31,10 @@
     </div>
   </div>
 </div>
+
+<app-transaction-account-filter
+  *ngIf="isAccountFilterOpened"
+  [selectedAccount]="account"
+  (closed)="closeAccountFilter()"
+  (accountSelected)="onAccountSelected($event)"
+></app-transaction-account-filter>

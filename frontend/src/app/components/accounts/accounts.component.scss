@@ -4,14 +4,14 @@
   padding: 0.5rem 0.8rem;
   justify-content: start;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 
   .net-worth-container {
     background-color: var(--secondary);
     width: 100%;
     min-height: 120px;
     border-radius: 12px;
-    padding: 0.5rem 0.8rem;
+    padding: 0.5rem 0.9rem;
   }
 
   .account-container {
@@ -23,7 +23,6 @@
     .account-type {
       background-color: var(--secondary);
       width: 100%;
-      min-height: 80px;
       border-radius: 12px;
 
       .account-type-header {
@@ -31,7 +30,7 @@
         justify-content: end;
         align-items: start;
         border-bottom: 1px solid var(--secondary-border);
-        padding: 0.5rem 0.8rem;
+        padding: 0.5rem 0.9rem 0.3rem 0.9rem;
         width: 100%;
       }
 
@@ -43,14 +42,18 @@
         margin-left: auto;
       }
 
+      .account-type-body {
+        padding: 0.1rem 1.4rem 0.2rem 1.4rem;
+      }
+
       .account {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 0.4rem 1.4rem;
         border-bottom: 1px solid var(--secondary-border);
         width: 100%;
+        padding: 0.4rem 0;
         font-size: 12px;
         cursor: pointer;
 

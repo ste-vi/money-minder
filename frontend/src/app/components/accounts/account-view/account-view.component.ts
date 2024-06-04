@@ -68,7 +68,7 @@ export class AccountViewComponent {
   }
 
   openSearch() {
-    this.searchTransactionsService.openModal({accountId: this.account?.id});
+    this.searchTransactionsService.openModal({account: this.account});
   }
 
   loadMore() {
