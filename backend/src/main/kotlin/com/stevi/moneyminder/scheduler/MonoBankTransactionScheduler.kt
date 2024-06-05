@@ -55,18 +55,21 @@ class MonoBankTransactionScheduler(
                 val transactionType =
                     if (monoTransaction.amount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
 
+                val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC)
+
                 val transaction = Transaction(
                     id = null,
                     name = monoTransaction.description,
                     notes = monoTransaction.comment,
                     amount = monoTransaction.amount.toBigDecimal().divide(BigDecimal.valueOf(100)),
                     currency = Currency.fromCode(monoTransaction.currencyCode),
-                    date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC),
+                    date = date,
                     monoBankId = monoTransaction.id,
                     fromAccount = account,
                     toAccount = null,
                     category = null,
-                    type = transactionType
+                    type = transactionType,
+                    createdDate = date
                 )
 
                 rules.stream().anyMatch { rule -> transaction.applyRule(rule) }

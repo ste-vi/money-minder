@@ -20,7 +20,9 @@
         <div class="filter" [ngClass]="{'active': accountFilter, 'active-border': accountFilter}"
              (click)="openAccountFilter()">{{ accountFilter?.name || 'All accounts' }}
         </div>
-        <div class="filter">All dates</div>
+        <div class="filter" [ngClass]="{'active': dateFilter, 'active-border': dateFilter}"
+             (click)="openDateFilter()">{{ dateFilter?.name || 'All dates' }}
+        </div>
         <div class="filter" [ngClass]="{'active': needReviewFilter, 'active-border': needReviewFilter}"
              (click)="applyNeedReviewFilter()">Need review
         </div>
@@ -41,3 +43,10 @@
   (closed)="closeAccountFilter()"
   (accountSelected)="onAccountSelected($event)"
 ></app-transaction-account-filter>
+
+<app-transaction-date-filter
+  *ngIf="isDateFilterOpened"
+  [dateFilterOption]="dateFilter ? dateFilter : datesFilterOptions[0]"
+  (closed)="closeDateFilter()"
+  (dateFilterOptionSelected)="onDateSelected($event)"
+></app-transaction-date-filter>

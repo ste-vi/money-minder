@@ -14,6 +14,7 @@ import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.TransactionRepository
 import com.stevi.moneyminder.repository.specification.TransactionRuleSpecification
 import com.stevi.moneyminder.repository.specification.TransactionSearchSpecification
+import java.time.LocalDateTime
 import java.util.*
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -44,7 +45,7 @@ class TransactionService(
         val pageable = PageRequest.of(
             searchRequest.page ?: 0,
             searchRequest.size ?: 5,
-            Sort.by("date").descending()
+            Sort.by("createdDate").descending()
         )
 
         val transactionPage = transactionRepository.findAll(specification, pageable)
@@ -89,7 +90,8 @@ class TransactionService(
             fromAccount = fromAccount,
             toAccount = toAccount,
             category = category,
-            type = request.type
+            type = request.type,
+            createdDate = LocalDateTime.now()
         )
 
         rules.stream().anyMatch { rule -> transaction.applyRule(rule) }

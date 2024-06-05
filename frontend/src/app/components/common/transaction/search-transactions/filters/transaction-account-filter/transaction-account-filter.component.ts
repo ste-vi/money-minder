@@ -19,8 +19,8 @@ export class TransactionAccountFilterComponent {
 
   @Input() selectedAccount: Account | undefined = undefined;
   @Output() accountSelected = new EventEmitter<Account>();
-
   @Output() closed = new EventEmitter<void>();
+
   protected accounts: Account[] = [];
 
   constructor(private accountService: AccountService) {

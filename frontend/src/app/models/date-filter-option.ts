@@ -1,0 +1,32 @@
+export type DateFilterOption = {
+  name: string;
+  dateFrom: Date;
+  dateTo: Date;
+};
+
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
+
+export const datesFilterOptions: DateFilterOption[] = [
+  {
+    name: "Custom",
+    dateFrom: new Date(),
+    dateTo: new Date()
+  },
+  {
+    name: "Current month",
+    dateFrom: new Date(currentYear, currentMonth, 1),
+    dateTo: new Date(currentYear, currentMonth + 1, 0)
+  },
+  {
+    name: "Current quarter",
+    dateFrom: new Date(currentYear, Math.floor(currentMonth / 3) * 3, 1),
+    dateTo: new Date(currentYear, Math.floor(currentMonth / 3) * 3 + 3, 0)
+  },
+  {
+    name: "Current year",
+    dateFrom: new Date(currentYear, 0, 1),
+    dateTo: new Date(currentYear, 11, 31)
+  }
+];

@@ -44,6 +44,9 @@ open class Transaction(
     @Column(name = "date", nullable = false)
     open var date: LocalDateTime,
 
+    @Column(name = "created_date", nullable = false)
+    open var createdDate: LocalDateTime,
+
     @Column(name = "mono_bank_id", nullable = true, updatable = false)
     open var monoBankId: String? = null,
 

@@ -118,7 +118,8 @@ class AccountService(
             toAccount = null,
             date = LocalDateTime.now(),
             category = null,
-            type = if (newAmount > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
+            type = if (newAmount > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE,
+            createdDate = LocalDateTime.now()
         )
         transactionRepository.save(transaction)
     }
