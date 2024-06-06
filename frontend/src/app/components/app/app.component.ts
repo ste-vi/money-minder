@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { NavComponent } from '../common/nav/nav.component';
-import { HeaderComponent } from '../common/header/header.component';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SelectAccountTypeComponent } from '../accounts/select-account-type/select-account-type.component';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {NavComponent} from '../common/nav/nav.component';
+import {HeaderComponent} from '../common/header/header.component';
+import {MatIconRegistry} from '@angular/material/icon';
+import {DomSanitizer} from '@angular/platform-browser';
+import {SelectAccountTypeComponent} from '../accounts/select-account-type/select-account-type.component';
 import {CreateAccountComponent} from "../accounts/create-account/create-account.component";
 import {TransactionViewComponent} from "../common/transaction/transaction-view/transaction-view.component";
 import {CategorySettingsComponent} from "../settings/category-settings/category-settings.component";
@@ -67,6 +67,12 @@ export class AppComponent {
       'edit',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/pen-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'bottle',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/bottle-svgrepo-com.svg',
       ),
     );
     this.matIconRegistry.addSvgIcon(
@@ -169,6 +175,162 @@ export class AppComponent {
       'question',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/question-square-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'home',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/home-1-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'bills',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/bill-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'phone',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/phone-rounded-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'gym',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/dumbbell-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'hamburger-menu',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/hamburger-menu-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'percent',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/percent-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'heart',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/heart-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'cart',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/cart-large-2-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'cutlery',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/cutlery-eating-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'mouse',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/mouse-minimalistic-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'delivery',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/delivery-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'gift',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/gift-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'chair',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/chair-2-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'heart-pulse',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/heart-pulse-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'bus',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/bus-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'flame',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/flame-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'bolt',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/bolt-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'clock',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/clock-circle-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'heart',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/heart-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'laptop',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/laptop-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'sim-card',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/sim-card-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'global',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/global-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'gamepad',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/gamepad-minimalistic-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'graph-down',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/graph-down-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'graph-up',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/graph-up-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'safe',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/safe-square-svgrepo-com.svg',
       ),
     );
   }

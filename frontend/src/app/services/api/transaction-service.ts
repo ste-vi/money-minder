@@ -23,7 +23,9 @@ export class TransactionService {
                      size: number,
                      searchQuery: string,
                      accountId?: string,
-                     needReview?: boolean): Observable<PageResponse<Transaction>> {
+                     needReview?: boolean,
+                     dateFrom?: Date,
+                     dateTo?: Date): Observable<PageResponse<Transaction>> {
     let path = '/search?size=' + size + '&page=' + page;
 
     if (searchQuery) {
@@ -34,6 +36,12 @@ export class TransactionService {
     }
     if (needReview) {
       path = path + '&needReview=' + needReview;
+    }
+    if (dateFrom) {
+      path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
+    }
+    if (dateTo) {
+      path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
     }
 
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + path);

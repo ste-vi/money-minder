@@ -59,7 +59,7 @@ class AccountService(
 
     @Transactional(readOnly = true)
     fun getAllAccounts(spaceId: UUID): List<AccountResponse> {
-        return accountRepository.findAllBySpaceId(spaceId)
+        return accountRepository.findAllBySpaceIdOrderByCreatedDate(spaceId)
             .stream()
             .map { account ->
                 account.mapToResponse()
@@ -83,7 +83,8 @@ class AccountService(
             monoBankId = null,
             currency = Currency.fromCode(accountRequest.currencyCode),
             type = AccountType.fromId(accountRequest.typeId),
-            space = spaceRepository.findById(currentUserSpaceId).orElseThrow()
+            space = spaceRepository.findById(currentUserSpaceId).orElseThrow(),
+            createdDate = LocalDateTime.now()
         )
 
         return accountRepository.save(account).mapToResponse();

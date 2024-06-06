@@ -10,8 +10,8 @@ const currentYear = currentDate.getFullYear();
 
 export const datesFilterOptions: DateFilterOption[] = [
   {
-    name: "Custom",
-    dateFrom: new Date(),
+    name: "Custom date",
+    dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
     dateTo: new Date()
   },
   {

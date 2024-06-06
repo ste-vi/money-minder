@@ -8,6 +8,6 @@ export interface Category {
 }
 
 export enum CategoryType {
-  EXPENSE,
-  INCOME,
+  EXPENSE = "EXPENSE",
+  INCOME = "INCOME",
 }

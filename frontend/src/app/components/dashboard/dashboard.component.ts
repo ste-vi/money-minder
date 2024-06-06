@@ -6,11 +6,14 @@ import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {TransactionComponent} from "../common/transaction/transaction.component";
 import {SearchTransactionsService} from "../../services/communication/search-transactions-service";
 import {LoaderComponent} from "../common/loader/loader.component";
+import {
+  CreateTransactionButtonComponent
+} from "../common/transaction/create-transaction-button/create-transaction-button.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatIcon, NgForOf, DatePipe, DecimalPipe, TransactionComponent, LoaderComponent, NgIf],
+  imports: [MatIcon, NgForOf, DatePipe, DecimalPipe, TransactionComponent, LoaderComponent, NgIf, CreateTransactionButtonComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -32,4 +35,5 @@ export class DashboardComponent {
   openSearchTransactionsModal() {
     this.searchTransactionService.openModal({});
   }
+
 }

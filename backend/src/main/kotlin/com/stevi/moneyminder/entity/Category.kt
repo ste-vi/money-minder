@@ -37,7 +37,10 @@ open class Category(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
-    open var space: Space
+    open var space: Space,
+
+    @Column(name = "parent_id", nullable = false)
+    open var parentId: UUID? = null,
 )
 
 fun Category.mapToResponse() = CategoryResponse(

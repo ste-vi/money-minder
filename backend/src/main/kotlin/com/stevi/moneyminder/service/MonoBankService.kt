@@ -10,6 +10,7 @@ import com.stevi.moneyminder.model.response.MonoBankTransactionResponse
 import com.stevi.moneyminder.repository.MonoBankInfoRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -142,7 +143,8 @@ class MonoBankService(
                 currency = Currency.fromCode(request.currencyCode),
                 type = AccountType.BANK_ACCOUNTS,
                 monoBankId = request.id,
-                space = space
+                space = space,
+                createdDate = LocalDateTime.now()
             )
         )
     }

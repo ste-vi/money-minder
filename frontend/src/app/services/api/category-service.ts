@@ -1,44 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Category, CategoryType } from '../../models/category';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Category} from '../../models/category';
+import {environment} from "../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  protected categories: Category[] = [];
+
+  private readonly rootUrl = environment.apiUrl + '/categories';
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   getCategories(): Observable<Category[]> {
-    this.categories = [
-      {
-        id: 1,
-        name: 'Transport',
-        icon: 'box',
-        position: 1,
-        type: CategoryType.EXPENSE,
-      },
-      {
-        id: 2,
-        name: 'Bills',
-        icon: 'box',
-        position: 2,
-        type: CategoryType.EXPENSE,
-      },
-      {
-        id: 3,
-        name: 'Home',
-        icon: 'box',
-        position: 3,
-        type: CategoryType.EXPENSE,
-      },
-      {
-        id: 4,
-        name: 'Salary',
-        icon: 'box',
-        position: 1,
-        type: CategoryType.INCOME,
-      },
-    ];
-    return of(this.categories);
+    return this.httpClient.get<Category[]>(this.rootUrl)
   }
 }

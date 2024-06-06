@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -39,6 +40,9 @@ open class Account(
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type", nullable = false)
     open var type: AccountType,
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    open var createdDate: LocalDateTime,
 
     @Column(name = "mono_bank_id", nullable = true, updatable = false)
     open var monoBankId: String? = null,

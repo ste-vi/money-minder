@@ -9,5 +9,6 @@ data class CategoryResponse(
     val name: String? = null,
     val icon: String? = null,
     val position: Int? = null,
-    val type: CategoryType? = null
+    val type: CategoryType? = null,
+    var subCategories: List<CategoryResponse>? = emptyList(),
 ) : Serializable

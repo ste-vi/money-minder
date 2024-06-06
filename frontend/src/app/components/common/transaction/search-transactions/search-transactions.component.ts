@@ -68,6 +68,8 @@ export class SearchTransactionsComponent {
 
   private showModal(filters: SearchTransactionFilters) {
     this.accountFilter = filters.account
+    this.needReviewFilter = false;
+    this.dateFilter = null;
     this.searchQuery = '';
     this.isOpened = true;
     this.currentPage = 0
@@ -91,7 +93,9 @@ export class SearchTransactionsComponent {
         this.itemsPerPage,
         this.searchQuery,
         this.accountFilter?.id,
-        this.needReviewFilter)
+        this.needReviewFilter,
+        this.dateFilter?.dateFrom,
+        this.dateFilter?.dateTo)
       .subscribe((pageResponse) => {
         this.transactions = isSearch ? pageResponse.content : this.transactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;

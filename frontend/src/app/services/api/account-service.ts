@@ -11,7 +11,7 @@ import {AccountType} from "../../models/account-type";
 })
 export class AccountService {
 
-  readonly rootUrl = environment.apiUrl + '/accounts';
+  private readonly rootUrl = environment.apiUrl + '/accounts';
 
   private newAccountSubject = new Subject<void>();
 

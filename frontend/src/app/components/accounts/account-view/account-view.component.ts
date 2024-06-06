@@ -50,7 +50,13 @@ export class AccountViewComponent {
 
   private loadTransactions() {
     this.isLoading = true;
-    this.transactionService.searchTransactions(this.currentPage, this.itemsPerPage, this.searchQuery, this.account?.id, false)
+    this.transactionService.searchTransactions(this.currentPage,
+      this.itemsPerPage,
+      this.searchQuery,
+      this.account?.id,
+      false,
+      undefined,
+      undefined)
       .subscribe((pageResponse) => {
         this.accountTransactions = this.accountTransactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;
