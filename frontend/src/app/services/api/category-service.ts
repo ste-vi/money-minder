@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Category} from '../../models/category';
+import {Category, CategoryType} from '../../models/category';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 
@@ -14,7 +14,11 @@ export class CategoryService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(this.rootUrl)
+  getCategories(type?: CategoryType): Observable<Category[]> {
+    let path = this.rootUrl;
+    if (type) {
+      path = path + '?type=' + type
+    }
+    return this.httpClient.get<Category[]>(path)
   }
 }

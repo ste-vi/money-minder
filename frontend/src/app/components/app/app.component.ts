@@ -10,6 +10,7 @@ import {TransactionViewComponent} from "../common/transaction/transaction-view/t
 import {CategorySettingsComponent} from "../settings/category-settings/category-settings.component";
 import {SearchTransactionsComponent} from "../common/transaction/search-transactions/search-transactions.component";
 import {AccountViewComponent} from "../accounts/account-view/account-view.component";
+import {CategoriesComponent} from "../common/categories/categories.component";
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,8 @@ import {AccountViewComponent} from "../accounts/account-view/account-view.compon
     TransactionViewComponent,
     CategorySettingsComponent,
     SearchTransactionsComponent,
-    AccountViewComponent
+    AccountViewComponent,
+    CategoriesComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

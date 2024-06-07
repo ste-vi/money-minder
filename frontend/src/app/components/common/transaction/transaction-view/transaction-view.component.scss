@@ -1,5 +1,5 @@
 .transaction-view-container {
-  height: 390px;
+  height: 400px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -44,23 +44,47 @@
       }
     }
 
-    .transaction-date {
+    .transaction-secondary-header {
       width: 100%;
-      text-align: end;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.5rem;
 
-      input[type="date"] {
-        background-color: var(--background);
-        border: none;
-        outline: none;
-        color: var(--secondary-text);
-        font-size: 12px;
-        border-radius: 5px;
+      .transaction-type {
+        border-radius: 6px;
+        padding: 0.04rem 0.4rem 0.1rem 0.4rem;
       }
 
-      input[type="date"]::-webkit-calendar-picker-indicator {
-        margin-left: -9px;
-        color: var(--accent) !important;
-        cursor: pointer;
+      .income {
+        border: 2px solid #03cf03;
+        color: #03cf03;
+      }
+
+      .expense {
+        border: 2px solid #ffb61f;
+        color: #ffb61f;
+      }
+
+      .transaction-date {
+        width: 100%;
+        text-align: end;
+
+        input[type="date"] {
+          background-color: var(--background);
+          border: none;
+          outline: none;
+          color: var(--secondary-text);
+          font-size: 12px;
+          border-radius: 5px;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+          margin-left: -9px;
+          color: var(--accent) !important;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -81,6 +105,7 @@
       justify-content: space-between;
       border-bottom: 1px solid var(--secondary-border);
       padding: 0.5rem;
+      cursor: pointer;
 
       .transaction-category-header {
         display: flex;

@@ -2,6 +2,7 @@ package com.stevi.moneyminder.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.stevi.moneyminder.entity.Category
+import com.stevi.moneyminder.entity.CategoryType
 import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.CategoryRequest
@@ -11,7 +12,6 @@ import com.stevi.moneyminder.model.response.CategoryResponse
 import com.stevi.moneyminder.repository.SpaceRepository
 import java.io.InputStream
 import java.util.UUID
-import java.util.stream.Collectors
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,8 +24,10 @@ class CategoryService(
     private val objectMapper = ObjectMapper()
 
     @Transactional(readOnly = true)
-    fun getAllCategoriesForSpace(spaceId: UUID): List<CategoryResponse> {
-        val categories = categoryRepository.findAllBySpaceIdOrderByPosition(spaceId)
+    fun getAllCategoriesForSpace(spaceId: UUID, type: CategoryType?): List<CategoryResponse> {
+        val categories =
+            if (type == null) categoryRepository.findAllBySpaceIdOrderByPosition(spaceId)
+            else categoryRepository.findAllBySpaceIdAndTypeOrderByPosition(spaceId, type);
 
         val parentIdToChildCategoryResponses = HashMap<UUID, MutableList<CategoryResponse>>()
 
@@ -34,7 +36,7 @@ class CategoryService(
         categories.stream()
             .forEach { category ->
                 val response = category.mapToResponse()
-                if (category.parentId!= null) {
+                if (category.parentId != null) {
                     val parentToChild = parentIdToChildCategoryResponses[category.parentId]
                     if (parentToChild == null) {
                         parentIdToChildCategoryResponses[category.parentId!!] = mutableListOf(response)
@@ -49,7 +51,7 @@ class CategoryService(
         if (parentIdToChildCategoryResponses.isNotEmpty()) {
             responses.forEach { response ->
                 val parentToChild = parentIdToChildCategoryResponses[response.id]
-                if (parentToChild!= null) {
+                if (parentToChild != null) {
                     response.subCategories = parentToChild
                 }
             }

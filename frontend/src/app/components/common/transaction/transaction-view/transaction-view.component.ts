@@ -1,19 +1,7 @@
-import {
-  AfterViewChecked,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import {DatePipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild,} from '@angular/core';
+import {DatePipe, DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {AutoResizeDirective} from '../../../../directives/auto-resize.directive';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {Transaction, TransactionType} from '../../../../models/transaction';
 import {ViewTransactionService} from '../../../../services/communication/view-transaction-service';
@@ -21,6 +9,9 @@ import {MatFormField, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {TransactionService} from "../../../../services/api/transaction-service";
+import {CategoriesComponent} from "../../categories/categories.component";
+import {CategoryType} from "../../../../models/category";
+import {SelectCategoryService} from "../../../../services/communication/select-category-service";
 
 @Component({
   selector: 'app-transaction-view',
@@ -40,6 +31,8 @@ import {TransactionService} from "../../../../services/api/transaction-service";
     MatDatepickerToggle,
     MatDatepicker,
     MatSuffix,
+    CategoriesComponent,
+    NgClass,
   ],
   templateUrl: './transaction-view.component.html',
   styleUrl: './transaction-view.component.scss',
@@ -49,6 +42,8 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   protected editName: boolean = false;
 
   protected transaction!: Transaction;
+
+  protected readonly TransactionType = TransactionType;
 
   protected transactionForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -64,7 +59,8 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   @ViewChild('nameInput') nameInputRef: ElementRef;
 
   constructor(private viewTransactionService: ViewTransactionService,
-              private transactionService: TransactionService) {
+              private transactionService: TransactionService,
+              private selectCategoryService: SelectCategoryService) {
     this.transactionForm = new FormGroup({
       name: new FormControl('', Validators.required),
       amount: new FormControl(Validators.required),
@@ -164,6 +160,10 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     })
   }
 
-  // todo: add category select modal
+  selectCategory() {
+    let categoryType = this.transaction.type === TransactionType.EXPENSE ? CategoryType.EXPENSE : CategoryType.INCOME;
+    this.selectCategoryService.openModal(categoryType);
+  }
+
   // todo: implement form validation logic
 }

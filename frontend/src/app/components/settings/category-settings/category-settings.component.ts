@@ -14,7 +14,7 @@ import {MatTab, MatTabGroup} from "@angular/material/tabs";
   styleUrl: './category-settings.component.scss',
 })
 export class CategorySettingsComponent {
-  protected isOpened: boolean = true;
+  protected isOpened: boolean = false;
 
   protected expenseCategories: Category[] = [];
   protected incomeCategories: Category[] = [];
@@ -23,7 +23,7 @@ export class CategorySettingsComponent {
   protected isIncomeTabActive: boolean = false;
 
   constructor(private categorySettingsService: CategorySettingsService, private categoryService: CategoryService) {
-    this.categorySettingsService.modalOpened$.subscribe((isOpened) => {
+    this.categorySettingsService.modalOpened$.subscribe(() => {
       this.showModal();
     });
     this.categoryService.getCategories().subscribe((categories) => {
@@ -49,16 +49,6 @@ export class CategorySettingsComponent {
 
   viewSubCategory(subCategory: Category) {
 
-  }
-
-  tabs = [
-    {label: 'Expense', active: true},
-    {label: 'Income', active: false}
-  ];
-
-  selectTab(tab: any) {
-    this.tabs.forEach(t => t.active = false);
-    tab.active = true;
   }
 
   selectExpenseTab() {
