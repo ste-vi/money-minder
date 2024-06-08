@@ -32,8 +32,9 @@
         <app-loader *ngIf="isLoading"></app-loader>
         <div class="no-transactions" *ngIf="!accountTransactions || accountTransactions.length === 0">
           No transactions yet
+        </div>
       </div>
     </div>
   </div>
-
+  <app-create-transaction-button></app-create-transaction-button>
 </div>

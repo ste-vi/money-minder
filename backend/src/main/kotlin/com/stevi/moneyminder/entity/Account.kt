@@ -41,6 +41,9 @@ open class Account(
     @Column(name = "type", nullable = false)
     open var type: AccountType,
 
+    @Column(name = "is_default", nullable = true)
+    open var default: Boolean = false,
+
     @Column(name = "created_date", nullable = false, updatable = false)
     open var createdDate: LocalDateTime,
 

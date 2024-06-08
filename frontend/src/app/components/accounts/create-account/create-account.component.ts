@@ -61,6 +61,7 @@ export class CreateAccountComponent {
 
   closeModal() {
     this.isOpened = false;
+    this.resetForm()
   }
 
   formatBalance(): void {
@@ -81,6 +82,10 @@ export class CreateAccountComponent {
   }
 
   createAccount() {
+    if (!this.accountForm.valid) {
+      return;
+    }
+
     this.accountService.createAccount({
       name: this.accountForm.controls['title'].value,
       currencyCode: this.accountForm.controls['currency'].value.code,

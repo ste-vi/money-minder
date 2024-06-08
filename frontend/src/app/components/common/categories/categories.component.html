@@ -1,14 +1,15 @@
+<div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
 
 <div *ngIf="isOpened">
   <div class="categories-container bottom-modal">
     <div class="categories-container-header">
-      <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+      <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
       <div><b>Choose category</b></div>
       <div>
       </div>
     </div>
     <div class="categories-container-body">
-      <div class="category" *ngFor="let category of categories">
+      <div class="category" *ngFor="let category of categories" (click)="selectCategory(category)">
         <div class="category-icon">
           <mat-icon svgIcon="{{category.icon}}"></mat-icon>
         </div>

@@ -88,6 +88,10 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
 
       this.showModal();
     });
+
+    this.selectCategoryService.categorySelected$.subscribe((category) => {
+      this.transaction.category = category;
+    });
   }
 
   ngAfterViewChecked() {
@@ -128,25 +132,21 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     this.amountInput.nativeElement.dispatchEvent(event);
   }
 
-  inputTransactionNameBlue() {
+  inputTransactionNameBlur() {
     this.editName = false;
   }
 
   save() {
-    let amount: number = this.transaction.type === TransactionType.EXPENSE
-      ? this.transactionForm.controls["amount"].value * 1
-      : this.transactionForm.controls["amount"].value;
-
     let updateRequest = {
       "name": this.transactionForm.controls["name"].value,
-      "amount": amount,
+      "amount":  this.transactionForm.controls["amount"].value,
       "date": new Date(this.transactionForm.controls["date"].value),
       "notes": this.transactionForm.controls["notes"].value,
-      "categoryId": "4c8e867b-2ffe-477b-8edd-402e8cf8a167"
+      "categoryId": this.transaction.category?.id
     }
     this.transactionService.update(this.transaction.id, updateRequest).subscribe(data => {
       this.transaction.name = this.transactionForm.controls["name"].value;
-      this.transaction.amount = amount;
+      this.transaction.amount = this.transactionForm.controls["amount"].value;
       this.transaction.date = this.transactionForm.controls["date"].value;
       this.transaction.notes = this.transactionForm.controls["notes"].value;
       this.closeModal()

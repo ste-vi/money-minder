@@ -11,6 +11,7 @@ import {CategorySettingsComponent} from "../settings/category-settings/category-
 import {SearchTransactionsComponent} from "../common/transaction/search-transactions/search-transactions.component";
 import {AccountViewComponent} from "../accounts/account-view/account-view.component";
 import {CategoriesComponent} from "../common/categories/categories.component";
+import {CreateTransactionComponent} from "../common/transaction/create-transaction/create-transaction.component";
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ import {CategoriesComponent} from "../common/categories/categories.component";
     CategorySettingsComponent,
     SearchTransactionsComponent,
     AccountViewComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CreateTransactionComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -85,6 +87,12 @@ export class AppComponent {
     );
     this.matIconRegistry.addSvgIcon(
       'add',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/add-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'add-circle',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/add-circle-svgrepo-com.svg',
       ),

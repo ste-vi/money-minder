@@ -2,8 +2,8 @@
 
 <div class="account-filter-container bottom-modal">
   <div class="account-filter-header">
-    <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
-    <div><b>Filter by account</b></div>
+    <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+    <div><b>Select Account</b></div>
     <div class="active clickable" (click)="reset()">
       <p *ngIf="selectedAccount">Reset</p>
       <p *ngIf="!selectedAccount"></p>

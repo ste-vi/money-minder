@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Account} from "../../../../../../models/account";
 import {AccountService} from "../../../../../../services/api/account-service";
 import {NgForOf, NgIf} from "@angular/common";
@@ -15,17 +15,22 @@ import {MatIcon} from "@angular/material/icon";
   templateUrl: './transaction-account-filter.component.html',
   styleUrl: './transaction-account-filter.component.scss'
 })
-export class TransactionAccountFilterComponent {
+export class TransactionAccountFilterComponent implements OnInit {
 
   @Input() selectedAccount: Account | undefined = undefined;
+  @Input() skipBankAccounts: boolean = false;
   @Output() accountSelected = new EventEmitter<Account>();
   @Output() closed = new EventEmitter<void>();
 
   protected accounts: Account[] = [];
 
   constructor(private accountService: AccountService) {
-    this.accountService.getAccounts().subscribe(a => this.accounts = a)
   }
+
+  ngOnInit(): void {
+    this.accountService.getAccounts(this.skipBankAccounts).subscribe(a => this.accounts = a)
+  }
+
 
   selectAccount(account: Account) {
     this.selectedAccount = account;
@@ -41,5 +46,6 @@ export class TransactionAccountFilterComponent {
 
   apply() {
     this.accountSelected.emit(this.selectedAccount);
+    this.closeModal();
   }
 }

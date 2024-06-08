@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Transaction} from '../../models/transaction';
+import {Transaction, TransactionType} from '../../models/transaction';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {PageResponse} from "../../models/page-response";
+import {Currency} from "../../models/currency";
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,20 @@ export class TransactionService {
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + path);
   }
 
-  update(id: string, updateRequest: { date: any; amount: any; notes: any; name: any; categoryId: string }) {
+  create(createRequest: {
+    fromAccountId: string,
+    currency: Currency,
+    date: Date;
+    amount: number;
+    notes: string;
+    name: string;
+    categoryId?: string,
+    type: TransactionType
+  }): Observable<Transaction> {
+    return this.httpClient.post<Transaction>(this.rootUrl, createRequest);
+  }
+
+  update(id: string, updateRequest: { date: any; amount: any; notes: any; name: any; categoryId?: string }) {
     return this.httpClient.put(this.rootUrl + '/' + id, updateRequest);
   }
 

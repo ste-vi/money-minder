@@ -1,21 +1,21 @@
 <div *ngIf="isOpened">
   <div class="category-settings-container right-modal">
     <div class="categories-header">
-      <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+      <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
       <div><b>Categories</b></div>
       <div class="active" (click)="addCategory()">Add</div>
     </div>
     <div class="tab-buttons">
       <button class="tab-button" (click)="selectExpenseTab()"
-              [class.active]="isExpenseTabActive">Expense categories
+              [class.active-tab]="isExpenseTabActive">Expense categories
       </button>
       <button class="tab-button" (click)="selectIncomeTab()"
-              [class.active]="isIncomeTabActive">Income categories
+              [class.active-tab]="isIncomeTabActive">Income categories
       </button>
     </div>
     <div class="categories-body">
       <div class="tab-content">
-        <div class="tab-pane" [class.active]="isExpenseTabActive">
+        <div class="tab-pane" [class.active-tab]="isExpenseTabActive">
           <div class="category-container" (click)="viewCategory(category)" *ngFor="let category of expenseCategories">
             <div class="category">
               <div class="category-body">
@@ -41,7 +41,7 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane" [class.active]="isIncomeTabActive">
+        <div class="tab-pane" [class.active-tab]="isIncomeTabActive">
           <div class="category-container" (click)="viewCategory(category)" *ngFor="let category of incomeCategories">
             <div class="category">
               <div class="category-body">

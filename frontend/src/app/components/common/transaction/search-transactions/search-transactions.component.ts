@@ -15,6 +15,7 @@ import {
 } from "./filters/transaction-account-filter/transaction-account-filter.component";
 import {TransactionDateFilterComponent} from "./filters/transaction-date-filter/transaction-date-filter.component";
 import {DateFilterOption, datesFilterOptions} from "../../../../models/date-filter-option";
+import {CreateTransactionButtonComponent} from "../create-transaction-button/create-transaction-button.component";
 
 @Component({
   selector: 'app-search-transactions',
@@ -30,6 +31,7 @@ import {DateFilterOption, datesFilterOptions} from "../../../../models/date-filt
     NgClass,
     TransactionAccountFilterComponent,
     TransactionDateFilterComponent,
+    CreateTransactionButtonComponent,
   ],
   templateUrl: './search-transactions.component.html',
   styleUrl: './search-transactions.component.scss'

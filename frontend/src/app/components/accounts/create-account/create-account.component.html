@@ -4,9 +4,9 @@
   <div class="create-account-container bottom-modal">
     <form [formGroup]="accountForm">
       <div class="create-account-header">
-        <mat-icon svgIcon="close" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+        <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
         <div><b>New account</b></div>
-        <div [ngClass]="{'active': accountForm.valid}" (click)="createAccount()">Save</div>
+        <div [ngClass]="{'active': accountForm.valid}" class="clickable" (click)="createAccount()">Save</div>
       </div>
       <div class="create-account-body">
         <div class="account-icon">

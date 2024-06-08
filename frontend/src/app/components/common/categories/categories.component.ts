@@ -39,4 +39,9 @@ export class CategoriesComponent {
   closeModal() {
     this.isOpened = false;
   }
+
+  selectCategory(category: Category) {
+    this.selectCategoryService.selectCategory(category)
+    this.closeModal();
+  }
 }

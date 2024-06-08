@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject, tap} from 'rxjs';
-import {Type} from '../../models/type';
 import {Account} from '../../models/account';
 import {HttpClient} from '@angular/common/http';
 import {environment} from "../../../environments/environment";
@@ -18,8 +17,12 @@ export class AccountService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getAccounts(): Observable<Account[]> {
-    return this.httpClient.get<Account[]>(this.rootUrl)
+  getAccounts(skipBankAccounts: boolean = false): Observable<Account[]> {
+    return this.httpClient.get<Account[]>(this.rootUrl + "?skipBankAccounts=" + skipBankAccounts)
+  }
+
+  getDefaultAccount(): Observable<Account> {
+    return this.httpClient.get<Account>(this.rootUrl + "/default")
   }
 
   getAccountTypes(): Observable<AccountType[]> {

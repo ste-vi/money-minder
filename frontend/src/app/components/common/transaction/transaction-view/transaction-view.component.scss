@@ -58,13 +58,13 @@
       }
 
       .income {
-        border: 2px solid #03cf03;
-        color: #03cf03;
+        border: 2px solid var(--income);
+        color: var(--income);
       }
 
       .expense {
-        border: 2px solid #ffb61f;
-        color: #ffb61f;
+        border: 2px solid var(--expense);
+        color: var(--expense);
       }
 
       .transaction-date {

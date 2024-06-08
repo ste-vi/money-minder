@@ -57,11 +57,15 @@ class MonoBankTransactionScheduler(
 
                 val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC)
 
+                val amount = monoTransaction.amount.toBigDecimal()
+                    .divide(BigDecimal.valueOf(100))
+                    .abs()
+
                 val transaction = Transaction(
                     id = null,
                     name = monoTransaction.description,
                     notes = monoTransaction.comment,
-                    amount = monoTransaction.amount.toBigDecimal().divide(BigDecimal.valueOf(100)),
+                    amount = amount,
                     currency = Currency.fromCode(monoTransaction.currencyCode),
                     date = date,
                     monoBankId = monoTransaction.id,

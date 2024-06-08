@@ -11,7 +11,7 @@
       </div>
 
       <div class="transaction-header">
-        <div class="transaction-amount">
+        <div class="transaction-amount" [ngClass]="{'income-color': transaction.type == TransactionType.INCOME}">
           <b>
             {{ this.transactionForm.controls['amount'].value | number:'1.2-2' }}{{ transactionForm.value.account.currency.sign }}
           </b>
@@ -21,7 +21,7 @@
         </div>
         <ng-template #nameInputTemplate>
           <input #nameInput class="transaction-name-input" placeholder="Transaction name" formControlName="name"
-                 (blur)="inputTransactionNameBlue()">
+                 (blur)="inputTransactionNameBlur()">
         </ng-template>
         <div class="transaction-secondary-header">
           <div class="transaction-type"
@@ -44,18 +44,17 @@
           </div>
           <div class="transaction-account-body">
             <div class="secondary-text">From account</div>
-            <div>Mono black</div>
+            <div>{{ transaction.fromAccount.name }}</div>
           </div>
         </div>
         <div class="transaction-category">
           <div class="transaction-category-header" (click)="selectCategory()">
             <div class="icon-container">
-              <mat-icon *ngIf="transaction.category" svgIcon="{{transaction.category?.icon}}" class="icon"></mat-icon>
-              <mat-icon *ngIf="!transaction.category" svgIcon="question" class="icon"></mat-icon>
+              <mat-icon svgIcon="{{ transaction.category?.icon?? 'question' }}" class="icon"></mat-icon>
             </div>
             <div class="transaction-account-body">
               <div class="secondary-text">Category</div>
-              <div *ngIf="transaction.category"><b>{{ transaction.category?.name }}</b></div>
+              <div *ngIf="transaction.category"><b>{{ transaction.category.name }}</b></div>
               <div *ngIf="!transaction.category">
                 <b>Uncategorized {{ transaction.type.toLowerCase() }}</b></div>
             </div>

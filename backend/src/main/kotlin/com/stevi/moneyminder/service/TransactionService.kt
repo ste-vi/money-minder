@@ -2,6 +2,7 @@ package com.stevi.moneyminder.service
 
 import com.stevi.moneyminder.entity.Rule
 import com.stevi.moneyminder.entity.Transaction
+import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.applyRule
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.CreateTransactionRequest
@@ -98,8 +99,13 @@ class TransactionService(
 
         val savedTransaction = transactionRepository.save(transaction)
 
-        accountService.increaseAccountBalanceByAmount(fromAccount, request.amount)
-        toAccount?.let { accountService.increaseAccountBalanceByAmount(it, request.amount) }
+        if (request.type == TransactionType.INCOME) {
+            accountService.increaseAccountBalanceByAmount(fromAccount, request.amount)
+            toAccount?.let { accountService.increaseAccountBalanceByAmount(it, request.amount) }
+        } else {
+            accountService.decreaseAccountBalanceByAmount(fromAccount, request.amount)
+            toAccount?.let { accountService.decreaseAccountBalanceByAmount(it, request.amount) }
+        }
 
         return savedTransaction.mapToResponse()
     }
@@ -117,8 +123,11 @@ class TransactionService(
 
         request.amount?.let {
             if (transaction.monoBankId == null) {
-                transaction.amount = it
-                accountService.increaseAccountBalanceByAmount(transaction.fromAccount, it)
+                if (transaction.type == TransactionType.INCOME) {
+                    accountService.increaseAccountBalanceByAmount(transaction.fromAccount, it)
+                } else {
+                    accountService.decreaseAccountBalanceByAmount(transaction.fromAccount, it)
+                }
             }
         }
 

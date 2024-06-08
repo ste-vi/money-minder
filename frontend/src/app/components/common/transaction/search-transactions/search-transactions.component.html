@@ -34,6 +34,8 @@
       <app-transaction *ngFor="let transaction of transactions" [transaction]="transaction"></app-transaction>
       <app-loader *ngIf="isLoading"></app-loader>
     </div>
+    <app-create-transaction-button></app-create-transaction-button>
+
   </div>
 </div>
 

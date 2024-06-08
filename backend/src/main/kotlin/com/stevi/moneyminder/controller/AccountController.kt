@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -33,8 +34,14 @@ class AccountController(private val accountService: AccountService) {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    fun getAccounts(): List<AccountResponse> {
-        return accountService.getAllAccounts(SecurityUtil.getCurrentUserSpaceId());
+    fun getAccounts(@RequestParam(required = false) skipBankAccounts: Boolean): List<AccountResponse> {
+        return accountService.getAllAccounts(SecurityUtil.getCurrentUserSpaceId(), skipBankAccounts);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/default")
+    fun getDefaultAccount(): AccountResponse {
+        return accountService.getDefaultAccount(SecurityUtil.getCurrentUserSpaceId());
     }
 
     @ResponseStatus(HttpStatus.CREATED)

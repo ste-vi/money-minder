@@ -9,19 +9,23 @@ import {LoaderComponent} from "../../common/loader/loader.component";
 import {TransactionComponent} from "../../common/transaction/transaction.component";
 import {Transaction} from "../../../models/transaction";
 import {TransactionService} from "../../../services/api/transaction-service";
+import {
+    CreateTransactionButtonComponent
+} from "../../common/transaction/create-transaction-button/create-transaction-button.component";
 
 @Component({
   selector: 'app-account-view',
   standalone: true,
-  imports: [
-    MatIcon,
-    NgIf,
-    NgClass,
-    InfiniteScrollModule,
-    LoaderComponent,
-    NgForOf,
-    TransactionComponent
-  ],
+    imports: [
+        MatIcon,
+        NgIf,
+        NgClass,
+        InfiniteScrollModule,
+        LoaderComponent,
+        NgForOf,
+        TransactionComponent,
+        CreateTransactionButtonComponent
+    ],
   templateUrl: './account-view.component.html',
   styleUrl: './account-view.component.scss'
 })

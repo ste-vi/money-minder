@@ -14,6 +14,8 @@
   --secondary-text: #7a7a7a;
   --accent: #2781f6;
   --text: #050315;
+  --income: #50ba5c;
+  --expense: #ffb61f;
 }
 
 body {
@@ -24,6 +26,7 @@ body {
   min-width: 100px;
 }
 
+// inputs
 input {
   font-family: "Nunito Sans", sans-serif;
 }
@@ -32,6 +35,28 @@ select {
   font-family: "Nunito Sans", sans-serif;
 }
 
+select {
+  border-radius: 4px;
+  border: 1px solid var(--secondary-border);
+  padding: 0.1rem 0.2rem;
+}
+
+option {
+  margin: 0.1rem 0.2rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+// icons
 .small-icon {
   transform: scale(0.8);
   cursor: pointer;
@@ -49,20 +74,16 @@ select {
   color: #ff150d;
 }
 
-select {
-  border-radius: 4px;
-  border: 1px solid var(--secondary-border);
-  padding: 0.1rem 0.2rem;
+.income-color {
+  color: var(--income);
 }
 
-option {
-  margin: 0.1rem 0.2rem;
-}
-
+// paddings
 .p-l-4 {
   padding-left: 4px;
 }
 
+// elements styles
 .active {
   color: var(--accent);
 }
@@ -84,6 +105,42 @@ option {
   border-bottom: none !important;
 }
 
+// tabs
+.tab-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-radius: 6px;
+  border: 2px solid var(--secondary-border);
+
+  .tab-button {
+    border-radius: 6px;
+    flex: 1;
+    padding: 0.45rem 1rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--background);
+  }
+
+  .tab-button.active-tab {
+    color: white;
+    background-color: var(--accent);
+  }
+}
+
+.tab-content {
+
+  .tab-pane {
+    display: none;
+  }
+
+  .tab-pane.active-tab {
+    display: block;
+  }
+}
+
+// buttons
 .save-button {
   display: flex;
   align-items: center;
@@ -104,17 +161,7 @@ option {
   }
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
+// modals
 .bottom-modal {
   position: fixed;
   bottom: 0;
@@ -150,6 +197,7 @@ input[type=number] {
   z-index: 9;
 }
 
+//animations
 @keyframes rise-from-bottom {
   from {
     transform: translateY(100%);

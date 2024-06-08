@@ -1,7 +1,7 @@
 <div class="transaction" [ngClass]="{'no-border': isLast}" (click)="openTransactionView(transaction)">
   <div class="transaction-group">
     <div class="transaction-header" *ngIf="transaction.category">
-      <mat-icon svgIcon="wallet" class="small-icon"></mat-icon>
+      <mat-icon svgIcon="{{transaction.category.icon}}" class="small-icon"></mat-icon>
     </div>
     <div class="transaction-header" *ngIf="!transaction.category">
       <mat-icon svgIcon="question" class="small-icon required-review-icon"></mat-icon>

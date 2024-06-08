@@ -27,4 +27,8 @@ interface AccountRepository : JpaRepository<Account, UUID> {
     fun findAllByMonoBankIdIsNotNull(): List<AccountMonoBankTokenProjection>
 
     fun findAllBySpaceIdOrderByCreatedDate(spaceId: UUID): List<Account>
+
+    fun findAllBySpaceIdAndMonoBankIdIsNullOrderByCreatedDate(spaceId: UUID): List<Account>
+
+    fun findByDefaultIsTrueAndSpaceId(spaceId: UUID): Optional<Account>
 }

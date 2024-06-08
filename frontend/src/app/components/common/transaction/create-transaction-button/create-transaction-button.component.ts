@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
-import {ViewTransactionService} from "../../../../services/communication/view-transaction-service";
+import {CreateTransactionService} from "../../../../services/communication/create-transaction-service";
 
 @Component({
   selector: 'app-create-transaction-button',
@@ -13,9 +13,10 @@ import {ViewTransactionService} from "../../../../services/communication/view-tr
 })
 export class CreateTransactionButtonComponent {
 
-  constructor(private viewTransactionService: ViewTransactionService) {
+  constructor(private createTransactionService: CreateTransactionService) {
   }
 
   openCreateTransactionModal() {
+    this.createTransactionService.openModal();
   }
 }

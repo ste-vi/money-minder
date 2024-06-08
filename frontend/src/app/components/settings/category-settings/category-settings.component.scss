@@ -93,38 +93,3 @@
     }
   }
 }
-
-.tab-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  border-radius: 8px;
-  border: 2px solid var(--secondary-border);
-
-  .tab-button {
-    border-radius: 8px;
-    flex: 1;
-    padding: 0.5rem;
-    border: none;
-    cursor: pointer;
-    background-color: var(--background);;
-  }
-
-  .tab-button.active {
-    color: white;
-    background-color: var(--accent);
-  }
-}
-
-.tab-content {
-
-  .tab-pane {
-    display: none;
-  }
-
-  .tab-pane.active {
-    display: block;
-  }
-}
-

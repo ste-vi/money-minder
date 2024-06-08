@@ -58,8 +58,11 @@ class AccountService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllAccounts(spaceId: UUID): List<AccountResponse> {
-        return accountRepository.findAllBySpaceIdOrderByCreatedDate(spaceId)
+    fun getAllAccounts(spaceId: UUID, skipBankAccounts: Boolean): List<AccountResponse> {
+        val accounts =
+            if (skipBankAccounts) accountRepository.findAllBySpaceIdAndMonoBankIdIsNullOrderByCreatedDate(spaceId)
+            else accountRepository.findAllBySpaceIdOrderByCreatedDate(spaceId)
+        return accounts
             .stream()
             .map { account ->
                 account.mapToResponse()
@@ -70,6 +73,12 @@ class AccountService(
     @Transactional
     fun increaseAccountBalanceByAmount(account: Account, amount: BigDecimal) {
         account.balance = account.balance.add(amount);
+        accountRepository.save(account)
+    }
+
+    @Transactional
+    fun decreaseAccountBalanceByAmount(account: Account, amount: BigDecimal) {
+        account.balance = account.balance.minus(amount);
         accountRepository.save(account)
     }
 
@@ -123,5 +132,10 @@ class AccountService(
             createdDate = LocalDateTime.now()
         )
         transactionRepository.save(transaction)
+    }
+
+    @Transactional(readOnly = true)
+    fun getDefaultAccount(spaceId: UUID): AccountResponse {
+        return accountRepository.findByDefaultIsTrueAndSpaceId(spaceId).map { it.mapToResponse() }.orElseThrow()
     }
 }
