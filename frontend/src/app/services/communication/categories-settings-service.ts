@@ -5,7 +5,7 @@ import { AccountType } from '../../models/account-type';
 @Injectable({
   providedIn: 'root',
 })
-export class CategorySettingsService {
+export class CategoriesSettingsService {
   private openModalSource = new Subject<boolean>();
 
   modalOpened$ = this.openModalSource.asObservable();

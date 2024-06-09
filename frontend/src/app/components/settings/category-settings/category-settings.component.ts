@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {CategorySettingsService} from '../../../services/communication/category-settings-service';
+import {Component, OnInit} from '@angular/core';
+import {CategoriesSettingsService} from '../../../services/communication/categories-settings-service';
 import {NgForOf, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {CategoryService} from "../../../services/api/category-service";
@@ -13,7 +13,7 @@ import {MatTab, MatTabGroup} from "@angular/material/tabs";
   templateUrl: './category-settings.component.html',
   styleUrl: './category-settings.component.scss',
 })
-export class CategorySettingsComponent {
+export class CategorySettingsComponent implements OnInit {
   protected isOpened: boolean = false;
 
   protected expenseCategories: Category[] = [];
@@ -22,8 +22,12 @@ export class CategorySettingsComponent {
   protected isExpenseTabActive: boolean = true;
   protected isIncomeTabActive: boolean = false;
 
-  constructor(private categorySettingsService: CategorySettingsService, private categoryService: CategoryService) {
-    this.categorySettingsService.modalOpened$.subscribe(() => {
+  constructor(private categoriesSettingsService: CategoriesSettingsService, private categoryService: CategoryService) {
+
+  }
+
+  ngOnInit(): void {
+    this.categoriesSettingsService.modalOpened$.subscribe(() => {
       this.showModal();
     });
     this.categoryService.getCategories().subscribe((categories) => {

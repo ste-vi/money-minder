@@ -39,6 +39,6 @@ fun Rule.mapToResponse(): RuleResponse {
     return RuleResponse(
         id = this.id ?: UUID.randomUUID(),
         condition = this.condition.mapToResponse(),
-        assignCategoryId = this.assignCategory.id,
+        assignCategory = this.assignCategory.mapToResponse(),
     )
 }

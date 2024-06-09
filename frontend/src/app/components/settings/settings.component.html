@@ -12,7 +12,7 @@
         <mat-icon svgIcon="alt-arrow-right" class="small-icon"></mat-icon>
       </div>
 
-      <div class="accounting-settings-item-container">
+      <div class="accounting-settings-item-container" (click)="openRulesSettings()">
         <div class="accounting-settings-item-header">
           <mat-icon svgIcon="clipboard-check" class="small-icon active"></mat-icon>
           Automatic rules
@@ -43,4 +43,7 @@
   (closed)="closeAccountFilter()"
   (accountSelected)="onAccountSelected($event)"
 ></app-transaction-account-filter>
+
+<app-category-settings></app-category-settings>
+<app-rules-settings></app-rules-settings>
 

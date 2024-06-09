@@ -35,6 +35,6 @@ fun Condition.mapToResponse(): RuleResponse.ConditionResponse {
     return RuleResponse.ConditionResponse(
         id = this.id,
         textToApply = this.textToApply,
-        type = this.type
+        type = RuleResponse.ConditionResponse.ConditionTypeResponse(type.name, type.description)
     )
 }

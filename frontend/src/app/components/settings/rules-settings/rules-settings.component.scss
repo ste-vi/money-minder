@@ -1,0 +1,53 @@
+.rules-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .rule {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: start;
+      width: 100%;
+      border-radius: 6px;
+      background-color: var(--secondary);
+      padding: 0.8rem 1rem;
+
+
+      .rule-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        padding: 7px;
+        background-color: var(--accent);
+        color: white;
+      }
+
+      .rule-body {
+        font-size: 0.78rem;
+        color: #777777;
+      }
+    }
+  }
+}
