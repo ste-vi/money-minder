@@ -11,7 +11,9 @@
     <div class="categories-container-body">
       <div class="category" *ngFor="let category of categories" (click)="selectCategory(category)">
         <div class="category-icon">
-          <mat-icon svgIcon="{{category.icon}}"></mat-icon>
+          <mat-icon svgIcon="{{ category.icon }}"></mat-icon>
+          <span *ngIf="category.subCategories && category.subCategories.length > 0"
+                class="sub-categories-size">{{ category.subCategories?.length }}</span>
         </div>
         <div class="category-name">
           {{ category.name }}
@@ -28,3 +30,33 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="isSubCategoriesOpened">
+  <div class="categories-container right-modal">
+    <div class="categories-container-header">
+      <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeSubCategoriesModal()"></mat-icon>
+      <div><b> {{ this.parentCategory?.name }} </b></div>
+      <div>
+      </div>
+    </div>
+    <div class="categories-container-body">
+      <div class="category" *ngFor="let subCategory of this.parentCategory?.subCategories" (click)="selectSubCategory(subCategory)">
+        <div class="category-icon">
+          <mat-icon svgIcon="{{subCategory.icon}}"></mat-icon>
+        </div>
+        <div class="category-name">
+          {{ subCategory.name }}
+        </div>
+      </div>
+      <div class="category">
+        <div class="category-icon ">
+          <mat-icon svgIcon="add"></mat-icon>
+        </div>
+        <div class="category-name active">
+          Add
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

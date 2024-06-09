@@ -143,6 +143,12 @@ class TransactionService(
         }
 
         transactionRepository.delete(transaction)
+
+        if (transaction.type == TransactionType.INCOME) {
+            accountService.decreaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+        } else {
+            accountService.increaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+        }
     }
 
     private fun getTransactionById(id: UUID): Transaction {

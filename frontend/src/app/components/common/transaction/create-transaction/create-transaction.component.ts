@@ -77,7 +77,6 @@ export class CreateTransactionComponent {
 
   closeModal() {
     this.isOpened = false;
-    this.category = undefined;
   }
 
   selectCategory() {

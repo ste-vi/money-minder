@@ -49,11 +49,29 @@
       height: 60px;
       background-color: var(--accent);
       color: white;
+      position: relative;
 
       &:hover {
         background: #2079f1;
         transform: scale(1.1);
       }
+
+      .sub-categories-size {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 40px;
+        right: 0;
+        width: 15px;
+        height: 15px;
+        background-color: var(--primary);
+        color: white;
+        font-size: 10px;
+        padding: 4px 4px;
+        border-radius: 50%;
+      }
+
     }
 
     .category-name {

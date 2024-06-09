@@ -19,8 +19,10 @@ import {SelectCategoryService} from "../../../services/communication/select-cate
 export class CategoriesComponent {
 
   protected isOpened: boolean = false;
+  protected isSubCategoriesOpened: boolean = false;
 
   protected categories: Category[] = [];
+  protected parentCategory: Category | undefined = undefined;
 
   constructor(private categoryService: CategoryService,
               private selectCategoryService: SelectCategoryService) {
@@ -38,10 +40,25 @@ export class CategoriesComponent {
 
   closeModal() {
     this.isOpened = false;
+    this.closeSubCategoriesModal()
+  }
+
+  closeSubCategoriesModal() {
+    this.isSubCategoriesOpened = false;
   }
 
   selectCategory(category: Category) {
-    this.selectCategoryService.selectCategory(category)
+    if (category.subCategories && category.subCategories.length > 0) {
+      this.parentCategory = category;
+      this.isSubCategoriesOpened = true;
+    } else {
+      this.selectCategoryService.selectCategory(category)
+      this.closeModal();
+    }
+  }
+
+  selectSubCategory(subCategory: Category) {
+    this.selectCategoryService.selectCategory(subCategory)
     this.closeModal();
   }
 }
