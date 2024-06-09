@@ -13,6 +13,7 @@
   --secondary-border: #edf2fd;
   --secondary-text: #7a7a7a;
   --accent: #2781f6;
+  --accent-2: #514bf3;
   --text: #050315;
   --income: #50ba5c;
   --expense: #ffb61f;
@@ -36,13 +37,13 @@ select {
 }
 
 select {
-  border-radius: 4px;
+  border-radius: 5px;
   border: 1px solid var(--secondary-border);
-  padding: 0.1rem 0.2rem;
+  padding: 0.12rem 0.2rem;
 }
 
 option {
-  margin: 0.1rem 0.2rem;
+  margin: 0.2rem 0.2rem;
 }
 
 input::-webkit-outer-spin-button,
@@ -105,8 +106,17 @@ input[type=number] {
   font-size: 11px;
 }
 
+.secondary-header-text {
+  color: var(--secondary-text);
+  font-size: 12px;
+}
+
 .no-border {
   border-bottom: none !important;
+}
+
+.centered-text {
+  text-align: center;
 }
 
 // tabs
@@ -163,6 +173,12 @@ input[type=number] {
   &:active {
     background: #5952e3;
   }
+}
+
+.disabled-button {
+  cursor: not-allowed !important;
+  $disabled-color: darken(#534ced, 70%);
+  background-color: $disabled-color !important;
 }
 
 // modals

@@ -24,7 +24,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #b1c8fc;
+      background-color: var(--accent);
       color: #FBFBFE;
     }
 
@@ -63,5 +63,5 @@
 }
 
 .required-review-icon {
-  color: #ffe5a3;
+  color: #f6e52c;
 }

@@ -5,5 +5,5 @@ import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RuleRepository : JpaRepository<Rule, UUID> {
-    fun findAllBySpaceId(spaceId: UUID): List<Rule>
+    fun findAllBySpaceIdOrderByConditionTextToApplyAsc(spaceId: UUID): List<Rule>
 }

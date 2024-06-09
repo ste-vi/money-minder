@@ -22,7 +22,7 @@ class RuleService(
 
     @Transactional(readOnly = true)
     fun getAllRulesForSpace(spaceId: UUID): List<RuleResponse> {
-        return ruleRepository.findAllBySpaceId(spaceId).map { it.mapToResponse() }
+        return ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(spaceId).map { it.mapToResponse() }
     }
 
     @Transactional

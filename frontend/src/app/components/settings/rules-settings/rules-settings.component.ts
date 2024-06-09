@@ -4,6 +4,8 @@ import {MatIcon} from "@angular/material/icon";
 import {RulesSettingsService} from "../../../services/communication/rules-settings-service";
 import {RuleService} from "../../../services/api/rule-service";
 import {ConditionTypeEnum, Rule} from "../../../models/rule";
+import {CreateRuleService} from "../../../services/communication/create-rule-service";
+import {CreateRuleComponent} from "./create-rule/create-rule.component";
 
 @Component({
   selector: 'app-rules-settings',
@@ -11,7 +13,8 @@ import {ConditionTypeEnum, Rule} from "../../../models/rule";
   imports: [
     NgIf,
     MatIcon,
-    NgForOf
+    NgForOf,
+    CreateRuleComponent
   ],
   templateUrl: './rules-settings.component.html',
   styleUrl: './rules-settings.component.scss'
@@ -22,7 +25,8 @@ export class RulesSettingsComponent implements OnInit {
   protected rules: Rule[] = [];
 
   constructor(private ruleSettingsService: RulesSettingsService,
-              private ruleService: RuleService) {
+              private ruleService: RuleService,
+              private createRuleService: CreateRuleService) {
 
   }
 
@@ -30,7 +34,13 @@ export class RulesSettingsComponent implements OnInit {
     this.ruleSettingsService.modalOpened$.subscribe(() => {
       this.showModal();
     });
+    this.loadRules();
+    this.ruleService.refreshRules$.subscribe(() => {
+      this.loadRules();
+    })
+  }
 
+  private loadRules() {
     this.ruleService.getRules().subscribe((rules) => {
       this.rules = rules;
     });
@@ -45,7 +55,7 @@ export class RulesSettingsComponent implements OnInit {
   }
 
   addRule() {
-
+    this.createRuleService.openModal();
   }
 
   protected readonly ConditionTypeEnum = ConditionTypeEnum;

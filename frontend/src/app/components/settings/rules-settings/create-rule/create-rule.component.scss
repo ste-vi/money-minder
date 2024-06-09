@@ -1,0 +1,72 @@
+.create-rule-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  z-index: 11;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+
+    .condition {
+      background-color: var(--secondary);
+      width: 100%;
+      border-radius: 8px;
+      padding: 0.5rem 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+
+      select {
+        width: 100%;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.18rem 0.4rem;
+        border-radius: 5px;
+        border: 1px solid var(--secondary-border);
+        outline: none;
+        font-weight: 550;
+
+        &:focus {
+          border: 1px solid var(--accent);
+        }
+      }
+    }
+
+    .action {
+      background-color: var(--secondary);
+      width: 100%;
+      border-radius: 8px;
+      padding: 0.5rem 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+
+      .update-existing-flag {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        gap: 0.5rem
+      }
+    }
+  }
+
+  &-footer {
+    margin-top: auto;
+  }
+}
+

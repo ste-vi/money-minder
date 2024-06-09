@@ -47,7 +47,7 @@ class MonoBankTransactionScheduler(
         val recentTransactionsMonoIds =
             transactionRepository.findMonoBankIdsByDateGreaterThan(LocalDateTime.now().minusMonths(1));
 
-        val rules = ruleRepository.findAllBySpaceId(account.space.id!!)
+        val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(account.space.id!!)
 
         val newTransactions = monoTransactions.stream()
             .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }

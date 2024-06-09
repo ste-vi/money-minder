@@ -70,7 +70,7 @@ class TransactionService(
     fun createTransaction(currentUserSpaceId: UUID, request: CreateTransactionRequest): TransactionResponse {
         val fromAccount = accountService.getAccountById(request.fromAccountId)
         val toAccount = request.toAccountId?.let { accountService.getAccountById(it) }
-        val rules = ruleRepository.findAllBySpaceId(currentUserSpaceId)
+        val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(currentUserSpaceId)
 
         fromAccount.monoBankId?.let {
             throw IllegalArgumentException("Account is linked to Monobank, manual transaction is not allowed")
