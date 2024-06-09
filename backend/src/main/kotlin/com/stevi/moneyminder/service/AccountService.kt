@@ -138,4 +138,18 @@ class AccountService(
     fun getDefaultAccount(spaceId: UUID): AccountResponse {
         return accountRepository.findByDefaultIsTrueAndSpaceId(spaceId).map { it.mapToResponse() }.orElseThrow()
     }
+
+    @Transactional
+    fun updateDefaultAccount(spaceId: UUID, accountId: UUID) {
+        val currentDefaultAccount = accountRepository.findByDefaultIsTrueAndSpaceId(spaceId).orElseThrow()
+        if (currentDefaultAccount.id?.equals(accountId) == true) {
+            return
+        }
+        currentDefaultAccount.default = false
+        accountRepository.save(currentDefaultAccount)
+
+        val newDefaultAccount = accountRepository.findById(accountId).orElseThrow()
+        newDefaultAccount.default = true
+        accountRepository.save(newDefaultAccount)
+    }
 }

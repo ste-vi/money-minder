@@ -136,7 +136,7 @@
 <app-transaction-account-filter
   *ngIf="isAccountFilterOpened"
   [selectedAccount]="transactionForm.controls['account'].value"
-  [skipBankAccounts]=true
+  [skipBankAccounts]="true"
   (closed)="closeAccountFilter()"
   (accountSelected)="onAccountSelected($event)"
 ></app-transaction-account-filter>

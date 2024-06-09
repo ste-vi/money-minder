@@ -25,6 +25,10 @@ export class AccountService {
     return this.httpClient.get<Account>(this.rootUrl + "/default")
   }
 
+  updateDefaultAccount(account: Account): Observable<void> {
+    return this.httpClient.put<void>(this.rootUrl + "/default" + "?accountId=" + account.id, {})
+  }
+
   getAccountTypes(): Observable<AccountType[]> {
     return this.httpClient.get<AccountType[]>(this.rootUrl + "/types")
   }

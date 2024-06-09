@@ -44,6 +44,12 @@ class AccountController(private val accountService: AccountService) {
         return accountService.getDefaultAccount(SecurityUtil.getCurrentUserSpaceId());
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/default")
+    fun updateDefaultAccount(@RequestParam accountId: UUID) {
+        return accountService.updateDefaultAccount(SecurityUtil.getCurrentUserSpaceId(), accountId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     fun createAccount(@RequestBody accountRequest: AccountRequest): AccountResponse {

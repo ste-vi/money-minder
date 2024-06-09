@@ -13,7 +13,7 @@
         <div class="category-icon">
           <mat-icon svgIcon="{{ category.icon }}"></mat-icon>
           <span *ngIf="category.subCategories && category.subCategories.length > 0"
-                class="sub-categories-size">{{ category.subCategories?.length }}</span>
+                class="sub-categories-size">{{ category.subCategories.length }}</span>
         </div>
         <div class="category-name">
           {{ category.name }}
