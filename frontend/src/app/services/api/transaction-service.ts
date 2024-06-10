@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject, tap} from 'rxjs';
 import {Transaction, TransactionType} from '../../models/transaction';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
@@ -12,6 +12,8 @@ import {Currency} from "../../models/currency";
 export class TransactionService {
 
   readonly rootUrl = environment.apiUrl + '/transactions';
+
+  private refreshTransactionsSubject = new Subject<number>();
 
   constructor(private httpClient: HttpClient) {
   }
@@ -58,14 +60,25 @@ export class TransactionService {
     categoryId?: string,
     type: TransactionType
   }): Observable<Transaction> {
-    return this.httpClient.post<Transaction>(this.rootUrl, createRequest);
+    return this.httpClient.post<Transaction>(this.rootUrl, createRequest)
+      .pipe(tap(() => {
+          this.refreshTransactionsSubject.next(createRequest.amount);
+        })
+      );
   }
 
   update(id: string, updateRequest: { date: any; amount: any; notes: any; name: any; categoryId?: string }) {
     return this.httpClient.put(this.rootUrl + '/' + id, updateRequest);
   }
 
-  delete(id: string) {
-    return this.httpClient.delete(this.rootUrl + '/' + id);
+  delete(transaction: Transaction) {
+    return this.httpClient.delete(this.rootUrl + '/' + transaction.id).pipe(tap(() => {
+        this.refreshTransactionsSubject.next(transaction.amount);
+      })
+    );
+  }
+
+  get refreshTransactions$(): Observable<number> {
+    return this.refreshTransactionsSubject.asObservable();
   }
 }

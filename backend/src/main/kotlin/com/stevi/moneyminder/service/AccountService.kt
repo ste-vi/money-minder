@@ -8,7 +8,9 @@ import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
+import com.stevi.moneyminder.model.response.MonoBankExchangeRateResponse
 import com.stevi.moneyminder.model.response.NetWorthResponse
+import com.stevi.moneyminder.model.response.TypeGroupedAccounts
 import com.stevi.moneyminder.repository.AccountRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.TransactionRepository
@@ -158,25 +160,67 @@ class AccountService(
     @Transactional(readOnly = true)
     fun getNetWorthResponse(spaceId: UUID): NetWorthResponse {
         val space = spaceRepository.findById(spaceId).orElseThrow()
-
         val exchangeRates = exchangeService.fetchExchangeRates()
+        val primaryCurrency = space.primaryCurrency
 
-        val totalBalance = accountRepository.findAllBySpaceId(spaceId).stream().map {
-            if (it.currency != space.primaryCurrency) {
-                val exchangeRate = exchangeRates.find { rate ->
-                    rate.currencyCodeA == it.currency.code && rate.currencyCodeB == space.primaryCurrency.code
-                } ?: throw RuntimeException("Exchange rate not found")
-
-                it.balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
+        val totalBalance = accountRepository.findAllBySpaceId(spaceId).stream().map { account ->
+            val currency = account.currency
+            val balance = if (currency != primaryCurrency) {
+                exchangeCurrency(exchangeRates, currency, primaryCurrency, account.balance)
             } else {
-                it.balance
+                account.balance
             }
-
+            balance
         }.reduce(BigDecimal.ZERO, BigDecimal::add)
 
         return NetWorthResponse(
             totalAccountsBalance = totalBalance,
-            primaryCurrency = space.primaryCurrency.mapToResponse()
+            primaryCurrency = primaryCurrency.mapToResponse()
         )
+    }
+
+    @Transactional(readOnly = true)
+    fun getTypeGroupedAccounts(spaceId: UUID): List<TypeGroupedAccounts> {
+        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val accounts = accountRepository.findAllBySpaceId(spaceId)
+        val groupedAccounts = accounts.stream().collect(Collectors.groupingBy { it.type })
+        val exchangeRates = exchangeService.fetchExchangeRates()
+
+        return groupedAccounts.entries.stream().map { entry ->
+            val totalBalance = entry.value.stream()
+                .map { account ->
+                    val currency = account.currency
+                    val balance = if (currency != space.primaryCurrency) {
+                        exchangeCurrency(exchangeRates, currency, space.primaryCurrency, account.balance)
+                    } else {
+                        account.balance
+                    }
+                    balance
+                }
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+
+            TypeGroupedAccounts(
+                accountTypeId = entry.key.id,
+                name = entry.key.fullName,
+                primaryCurrency = space.primaryCurrency.mapToResponse(),
+                accounts = entry.value.stream().map { it.mapToResponse() }.collect(Collectors.toList()),
+                totalBalance = totalBalance
+            )
+        }
+            .sorted { p1, p2 -> p1.accountTypeId.compareTo(p2.accountTypeId) }
+            .toList()
+    }
+
+    private fun exchangeCurrency(
+        exchangeRates: List<MonoBankExchangeRateResponse>,
+        currency: Currency,
+        primaryCurrency: Currency,
+        balance: BigDecimal
+    ): BigDecimal {
+        val exchangeRate = exchangeRates.find { rate ->
+            rate.currencyCodeA == currency.code && rate.currencyCodeB == primaryCurrency.code
+        } ?: throw RuntimeException("Exchange rate not found")
+
+        return balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
     }
 }

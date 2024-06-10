@@ -154,9 +154,8 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   }
 
   delete() {
-    this.transactionService.delete(this.transaction.id).subscribe(data => {
+    this.transactionService.delete(this.transaction).subscribe(data => {
       this.closeModal();
-      window.location.reload();
     })
   }
 

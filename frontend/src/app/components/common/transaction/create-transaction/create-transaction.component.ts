@@ -160,8 +160,6 @@ export class CreateTransactionComponent {
     }
     this.transactionService.create(createRequest).subscribe(transaction => {
       this.closeModal()
-      window.location.reload();
-      // todo: think how to update list of transactions without reloading the page
     })
   }
 }

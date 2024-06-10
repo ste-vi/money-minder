@@ -65,6 +65,8 @@ export class SearchTransactionsComponent {
 
     this.searchTransactionsService.modalOpened$.subscribe((filters) => {
       this.showModal(filters);
+
+      this.transactionService.refreshTransactions$.subscribe(() => this.loadTransactions(true))
     });
   }
 

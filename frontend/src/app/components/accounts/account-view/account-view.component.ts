@@ -10,22 +10,22 @@ import {TransactionComponent} from "../../common/transaction/transaction.compone
 import {Transaction} from "../../../models/transaction";
 import {TransactionService} from "../../../services/api/transaction-service";
 import {
-    CreateTransactionButtonComponent
+  CreateTransactionButtonComponent
 } from "../../common/transaction/create-transaction-button/create-transaction-button.component";
 
 @Component({
   selector: 'app-account-view',
   standalone: true,
-    imports: [
-        MatIcon,
-        NgIf,
-        NgClass,
-        InfiniteScrollModule,
-        LoaderComponent,
-        NgForOf,
-        TransactionComponent,
-        CreateTransactionButtonComponent
-    ],
+  imports: [
+    MatIcon,
+    NgIf,
+    NgClass,
+    InfiniteScrollModule,
+    LoaderComponent,
+    NgForOf,
+    TransactionComponent,
+    CreateTransactionButtonComponent
+  ],
   templateUrl: './account-view.component.html',
   styleUrl: './account-view.component.scss'
 })
@@ -47,8 +47,12 @@ export class AccountViewComponent {
     this.viewAccountService.modalOpened$.subscribe((account) => {
       this.account = account;
       this.openModal();
-
       this.loadTransactions();
+
+      this.transactionService.refreshTransactions$.subscribe(() => {
+        this.accountTransactions = [];
+        this.loadTransactions();
+      });
     });
   }
 

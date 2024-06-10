@@ -24,6 +24,11 @@ export class DashboardComponent {
   constructor(private transactionService: TransactionService,
               private searchTransactionService: SearchTransactionsService) {
     this.isLoading = true;
+    this.loadTransactions();
+    this.transactionService.refreshTransactions$.subscribe(() => this.loadTransactions())
+  }
+
+  private loadTransactions() {
     this.transactionService
       .getLastTransactions(5)
       .subscribe((pageResponse) => {

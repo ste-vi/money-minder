@@ -24,7 +24,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
-	implementation("org.ehcache.ehcache:3.10.8")
+	implementation("org.ehcache:ehcache:3.10.8:jakarta")
 	implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

@@ -6,6 +6,7 @@ import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
 import com.stevi.moneyminder.model.response.AccountTypeResponse
 import com.stevi.moneyminder.model.response.NetWorthResponse
+import com.stevi.moneyminder.model.response.TypeGroupedAccounts
 import com.stevi.moneyminder.service.AccountService
 import com.stevi.moneyminder.util.SecurityUtil
 import java.math.BigDecimal
@@ -38,6 +39,12 @@ class AccountController(private val accountService: AccountService) {
     @GetMapping
     fun getAccounts(@RequestParam(required = false) skipBankAccounts: Boolean): List<AccountResponse> {
         return accountService.getAllAccounts(SecurityUtil.getCurrentUserSpaceId(), skipBankAccounts);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/type-grouped")
+    fun getTypeGroupedAccounts(): List<TypeGroupedAccounts> {
+        return accountService.getTypeGroupedAccounts(SecurityUtil.getCurrentUserSpaceId());
     }
 
     @ResponseStatus(HttpStatus.OK)

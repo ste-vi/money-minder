@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from "../../../environments/environment";
 import {AccountType} from "../../models/account-type";
 import {NetWorth} from "../../models/net-worth";
+import {TypeGroupedAccounts} from "../../models/typeGroupedAccounts";
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,10 @@ export class AccountService {
   private newAccountSubject = new Subject<void>();
 
   constructor(private httpClient: HttpClient) {
+  }
+
+  getTypeGroupedAccounts(): Observable<TypeGroupedAccounts[]> {
+    return this.httpClient.get<TypeGroupedAccounts[]>(this.rootUrl + "/type-grouped")
   }
 
   getAccounts(skipBankAccounts: boolean = false): Observable<Account[]> {

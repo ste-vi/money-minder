@@ -3,7 +3,7 @@
     <p>Net worth</p>
   </div>
   <div class="net-worth-sum">
-    <b>{{ netWorth?.totalAccountsBalance }} {{ netWorth?.primaryCurrency?.sign }}</b>
+    <b>{{ (netWorth?.totalAccountsBalance || 0).toLocaleString() }} {{ netWorth?.primaryCurrency?.sign }}</b>
   </div>
   <div class="net-worth-graphic">
     <p>---</p>

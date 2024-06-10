@@ -6,7 +6,7 @@
       <div class="account-type-header">
         <div class="account-type-header-item"><b>{{ type.name }}</b></div>
         <div
-          class="account-type-header-item">{{ calculateTypeTotal(type) }} {{ type.defaultCurrency.sign }}
+          class="account-type-header-item">{{ (type.totalBalance || 0).toLocaleString() }} {{ type.primaryCurrency.sign }}
         </div>
       </div>
       <div class="account-type-body">
@@ -15,7 +15,7 @@
             <mat-icon svgIcon="{{account?.type?.iconName}}" class=""></mat-icon>
           </div>
           <div class="account-item p-l-4">{{ account.name }}</div>
-          <div class="account-item">{{ account.balance.toFixed(2) }} {{ account.currency.sign }}</div>
+          <div class="account-item">{{ (account.balance || 0).toLocaleString() }} {{ account.currency.sign }}</div>
         </div>
       </div>
     </div>

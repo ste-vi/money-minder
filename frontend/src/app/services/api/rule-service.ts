@@ -3,7 +3,6 @@ import {Observable, Subject, tap} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {ConditionTypeEnum, Rule} from "../../models/rule";
-import {Category} from "../../models/category";
 
 @Injectable({
   providedIn: 'root',
