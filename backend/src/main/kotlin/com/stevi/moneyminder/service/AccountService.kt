@@ -8,6 +8,7 @@ import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
+import com.stevi.moneyminder.model.response.NetWorthResponse
 import com.stevi.moneyminder.repository.AccountRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.TransactionRepository
@@ -23,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional
 class AccountService(
     private val accountRepository: AccountRepository,
     private val spaceRepository: SpaceRepository,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val exchangeService: ExchangeService
 ) {
 
     @Transactional(readOnly = true)
@@ -151,5 +153,30 @@ class AccountService(
         val newDefaultAccount = accountRepository.findById(accountId).orElseThrow()
         newDefaultAccount.default = true
         accountRepository.save(newDefaultAccount)
+    }
+
+    @Transactional(readOnly = true)
+    fun getNetWorthResponse(spaceId: UUID): NetWorthResponse {
+        val space = spaceRepository.findById(spaceId).orElseThrow()
+
+        val exchangeRates = exchangeService.fetchExchangeRates()
+
+        val totalBalance = accountRepository.findAllBySpaceId(spaceId).stream().map {
+            if (it.currency != space.primaryCurrency) {
+                val exchangeRate = exchangeRates.find { rate ->
+                    rate.currencyCodeA == it.currency.code && rate.currencyCodeB == space.primaryCurrency.code
+                } ?: throw RuntimeException("Exchange rate not found")
+
+                it.balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
+            } else {
+                it.balance
+            }
+
+        }.reduce(BigDecimal.ZERO, BigDecimal::add)
+
+        return NetWorthResponse(
+            totalAccountsBalance = totalBalance,
+            primaryCurrency = space.primaryCurrency.mapToResponse()
+        )
     }
 }

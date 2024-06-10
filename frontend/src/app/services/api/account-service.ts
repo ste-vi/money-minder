@@ -4,6 +4,7 @@ import {Account} from '../../models/account';
 import {HttpClient} from '@angular/common/http';
 import {environment} from "../../../environments/environment";
 import {AccountType} from "../../models/account-type";
+import {NetWorth} from "../../models/net-worth";
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class AccountService {
 
   getDefaultAccount(): Observable<Account> {
     return this.httpClient.get<Account>(this.rootUrl + "/default")
+  }
+
+  getNetWorth(): Observable<NetWorth> {
+    return this.httpClient.get<NetWorth>(this.rootUrl + "/net-worth")
   }
 
   updateDefaultAccount(account: Account): Observable<void> {

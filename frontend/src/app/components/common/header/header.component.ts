@@ -1,8 +1,10 @@
-import { Component, ElementRef } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
-import { SelectAccountTypeServiceService } from '../../../services/communication/select-account-type-service.service';
+import {Component, ElementRef} from '@angular/core';
+import {MatIcon} from '@angular/material/icon';
+import {NgIf} from '@angular/common';
+import {NavigationEnd, Router} from '@angular/router';
+import {SelectAccountTypeServiceService} from '../../../services/communication/select-account-type-service.service';
+import {SpaceService} from "../../../services/api/space-service";
+import {Space} from "../../../models/space";
 
 @Component({
   selector: 'app-header',
@@ -12,7 +14,8 @@ import { SelectAccountTypeServiceService } from '../../../services/communication
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  protected space: string = 'Personal';
+  protected space: Space | undefined = undefined;
+
   protected showEdit: boolean = false;
   protected showAdd: boolean = false;
   protected showReload: boolean = false;
@@ -21,8 +24,10 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private selectAccountTypeServiceService: SelectAccountTypeServiceService,
+    private spaceService: SpaceService,
   ) {
     this.initButtons();
+    this.spaceService.getCurrentSpace().subscribe(space => this.space = space)
   }
 
   private initButtons() {

@@ -6,11 +6,12 @@ import {NgForOf} from '@angular/common';
 import {AccountService} from '../../services/api/account-service';
 import {ViewAccountService} from "../../services/communication/view-account-service";
 import {Account} from "../../models/account";
+import {NetWorthWidgetComponent} from "../common/widgets/net-worth-widget/net-worth-widget.component";
 
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [NavComponent, MatIcon, NgForOf],
+  imports: [NavComponent, MatIcon, NgForOf, NetWorthWidgetComponent],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss',
 })

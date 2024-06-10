@@ -5,8 +5,10 @@ import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
 import com.stevi.moneyminder.model.response.AccountTypeResponse
+import com.stevi.moneyminder.model.response.NetWorthResponse
 import com.stevi.moneyminder.service.AccountService
 import com.stevi.moneyminder.util.SecurityUtil
+import java.math.BigDecimal
 import java.util.*
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -60,5 +62,11 @@ class AccountController(private val accountService: AccountService) {
     @PutMapping("/{id}")
     fun updateAccount(@PathVariable id: UUID, @RequestBody accountRequest: AccountRequest) {
         return accountService.updateAccount(id, accountRequest)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/net-worth")
+    fun getNetWorth(): NetWorthResponse {
+        return accountService.getNetWorthResponse(SecurityUtil.getCurrentUserSpaceId())
     }
 }

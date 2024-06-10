@@ -3,15 +3,18 @@
   <div class="space">
 
     <div class="space-body">
-      <mat-icon svgIcon="spaces" class="small-icon"></mat-icon>
-      <div><b>{{ space }}</b></div>
+      <div class="space-icon">
+        {{ space?.name?.slice(0, 1) }}
+      </div>
+      <div>{{ space?.name }}</div>
     </div>
 
   </div>
 
   <div class="actions">
     <mat-icon svgIcon="reload" class="icon small-icon" *ngIf="showReload"></mat-icon>
-    <mat-icon svgIcon="add-circle" class="icon small-icon active" *ngIf="showAdd" (click)="openAddTypeModal()"></mat-icon>
+    <mat-icon svgIcon="add-circle" class="icon small-icon active" *ngIf="showAdd"
+              (click)="openAddTypeModal()"></mat-icon>
     <mat-icon svgIcon="edit" class="icon small-icon" *ngIf="showEdit"></mat-icon>
     <mat-icon svgIcon="dots" class="icon small-icon" *ngIf="showDots"></mat-icon>
   </div>

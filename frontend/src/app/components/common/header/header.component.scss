@@ -12,14 +12,23 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+      gap: 6px;
+
+      .space-icon {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--secondary);
+        border-radius: 6px;
+        color: var(--accent);
+      }
 
       &:active {
         color: var(--accent);
-        animation: bubble 0.4s ease-in-out;
       }
     }
-
-
   }
 
   .actions {
