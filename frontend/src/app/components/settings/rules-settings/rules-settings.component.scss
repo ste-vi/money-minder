@@ -3,22 +3,33 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 1rem;
 
   &-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0.8rem;
   }
 
   &-body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 8px;
+    gap: 0.5rem;
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 0.5rem 0.8rem;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: var(--background);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--accent);
+      border-radius: 8px;
+    }
+
 
     .rule {
       display: flex;

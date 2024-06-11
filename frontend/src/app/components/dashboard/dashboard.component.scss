@@ -1,8 +1,10 @@
 .dashboard-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   padding: 0.5rem 0.8rem;
   width: 100%;
+  gap: 0.5rem;
 
   .last-transactions-container {
     display: flex;
@@ -18,7 +20,6 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 0.6rem;
     }
 
     .last-transactions-body {
@@ -30,6 +31,9 @@
     .transaction-component {
       border-bottom: none;
     }
-
   }
+}
+
+app-top-expenses-widget {
+  width: 100%;
 }

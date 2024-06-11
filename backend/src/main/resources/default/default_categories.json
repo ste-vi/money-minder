@@ -128,9 +128,15 @@
     "type": "EXPENSE"
   },
   {
+    "name": "Exchange",
+    "icon": "safe",
+    "position": 16,
+    "type": "EXPENSE"
+  },
+  {
     "name": "Other expense",
     "icon": "graph-down",
-    "position": 16,
+    "position": 17,
     "type": "EXPENSE"
   },
   {

@@ -9,11 +9,12 @@ import {LoaderComponent} from "../common/loader/loader.component";
 import {
   CreateTransactionButtonComponent
 } from "../common/transaction/create-transaction-button/create-transaction-button.component";
+import {TopExpensesWidgetComponent} from "../common/widgets/top-expenses-widget/top-expenses-widget.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatIcon, NgForOf, DatePipe, DecimalPipe, TransactionComponent, LoaderComponent, NgIf, CreateTransactionButtonComponent],
+  imports: [MatIcon, NgForOf, DatePipe, DecimalPipe, TransactionComponent, LoaderComponent, NgIf, CreateTransactionButtonComponent, TopExpensesWidgetComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

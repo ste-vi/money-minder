@@ -11,6 +11,7 @@ import com.stevi.moneyminder.repository.MonoBankInfoRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -105,7 +106,8 @@ class MonoBankService(
     }
 
     fun fetchResentTransactions(accountId: String, token: String): List<MonoBankTransactionResponse> {
-        val uri = "$monoBankUrl/personal/statement/$accountId/1715320009";
+        val fromEpochTime = LocalDateTime.now().minusDays(31).plusHours(1).toEpochSecond(ZoneOffset.UTC)
+        val uri = "$monoBankUrl/personal/statement/$accountId/$fromEpochTime";
 
         val headers = HttpHeaders();
         headers.set("X-Token", "${token}")
