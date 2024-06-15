@@ -9,8 +9,10 @@ import com.stevi.moneyminder.model.request.CategoryRequest
 import com.stevi.moneyminder.model.request.CategoryRequestDefault
 import com.stevi.moneyminder.repository.CategoryRepository
 import com.stevi.moneyminder.model.response.CategoryResponse
+import com.stevi.moneyminder.model.response.TopExpenseResponse
 import com.stevi.moneyminder.repository.SpaceRepository
 import java.io.InputStream
+import java.time.LocalDateTime
 import java.util.UUID
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
@@ -105,6 +107,16 @@ class CategoryService(
                 categoryRepository.save(subcategory)
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    fun getTopExpensesByCategories(
+        spaceId: UUID,
+        type: CategoryType?,
+        dateFrom: LocalDateTime,
+        dateTo: LocalDateTime
+    ): List<TopExpenseResponse> {
+        return categoryRepository.findTopExpenses(spaceId, type ?: CategoryType.EXPENSE, dateFrom, dateTo)
     }
 
 }

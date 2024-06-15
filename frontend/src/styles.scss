@@ -189,7 +189,7 @@ input[type=number] {
   border-top: 1px solid var(--secondary-border);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  animation: rise-from-bottom 0.15s ease;
+  animation: rise-from-bottom 0.15s ease-in-out;
   z-index: 10;
 }
 
@@ -201,14 +201,14 @@ input[type=number] {
   border-top: 1px solid var(--secondary-border);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  animation: rise-from-right 0.15s ease;
+  animation: rise-from-right 0.15s ease-in-out;
   z-index: 10;
 }
 
 .page-mask {
   background: rgba(17, 17, 17, 0.6);
   backdrop-filter: blur(3px);
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease-in-out;
   position: fixed;
   top: 0;
   right: 0;

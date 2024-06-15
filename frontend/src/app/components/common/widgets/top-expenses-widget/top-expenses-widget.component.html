@@ -1,7 +1,18 @@
 <div class="top-expenses-container">
   <div class="top-expenses-header">
-    <b>Top expenses of {{ currentDate | date: 'MMMM' }}</b>
+    <b>Top expenses by categories</b>
   </div>
   <div class="top-expenses-body">
+    <div class="donut-chart-container">
+      <apx-chart
+        [series]="series"
+        [labels]="labels"
+        [colors]="colors"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [legend]="chartOptions.legend"
+      ></apx-chart>
+    </div>
   </div>
 </div>

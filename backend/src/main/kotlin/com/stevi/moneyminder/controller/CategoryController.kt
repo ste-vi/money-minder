@@ -3,8 +3,11 @@ package com.stevi.moneyminder.controller
 import com.stevi.moneyminder.entity.CategoryType
 import com.stevi.moneyminder.model.request.CategoryRequest
 import com.stevi.moneyminder.model.response.CategoryResponse
+import com.stevi.moneyminder.model.response.TopExpenseResponse
 import com.stevi.moneyminder.service.CategoryService
 import com.stevi.moneyminder.util.SecurityUtil
+import java.time.LocalDateTime
+import java.util.*
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,13 +23,31 @@ class CategoryController(private val categoryService: CategoryService) {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    fun getAllCategories(@RequestParam(required = false) type: CategoryType? = null): List<CategoryResponse> {
+    fun getAllCategories(@RequestParam(required = false) type: CategoryType?): List<CategoryResponse> {
         return categoryService.getAllCategoriesForSpace(SecurityUtil.getCurrentUserSpaceId(), type)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     fun createCategory(@RequestBody categoryRequest: CategoryRequest): CategoryResponse {
-     return categoryService.createCategory(SecurityUtil.getCurrentUserSpaceId(), categoryRequest)
+        return categoryService.createCategory(SecurityUtil.getCurrentUserSpaceId(), categoryRequest)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/top-expenses")
+    fun getTopExpenses(
+        @RequestParam(required = false) type: CategoryType?,
+        @RequestParam(required = false) accountId: UUID?,
+        @RequestParam(required = false) categoryIds: List<UUID>?,
+        @RequestParam(required = false) needReview: Boolean?,
+        @RequestParam dateFrom: LocalDateTime,
+        @RequestParam dateTo: LocalDateTime
+    ): List<TopExpenseResponse> {
+        return categoryService.getTopExpensesByCategories(
+            SecurityUtil.getCurrentUserSpaceId(),
+            type,
+            dateFrom,
+            dateTo
+        )
     }
 }
