@@ -81,7 +81,7 @@ class MonoBankTransactionScheduler(
                 return@map transaction
             }.toList()
 
-        if (monoTransactions.isNotEmpty()) {
+        if (newTransactions.isNotEmpty()) {
             accountService.updateAccountBalance(account, monoTransactions.first().balance)
         }
 

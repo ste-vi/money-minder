@@ -20,6 +20,6 @@ fun Currency.mapToResponse(): CurrencyResponse {
         code = this.code,
         fullName = this.fullName,
         shortName = this.name,
-        sign =  this.sign
+        sign = this.sign
     )
 }

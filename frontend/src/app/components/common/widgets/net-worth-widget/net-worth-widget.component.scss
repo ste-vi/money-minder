@@ -3,9 +3,23 @@
   width: 100%;
   min-height: 120px;
   border-radius: 12px;
-  padding: 0.5rem 0.8rem;
+  padding-top: 0.5rem;
+
+  .net-worth-header {
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
 
   .net-worth-sum {
+    padding-top: 0.1rem;
     font-size: 1.05rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
+
+  .net-worth-graphic {
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }

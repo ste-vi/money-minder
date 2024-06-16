@@ -27,7 +27,8 @@ class AccountService(
     private val accountRepository: AccountRepository,
     private val spaceRepository: SpaceRepository,
     private val transactionRepository: TransactionRepository,
-    private val exchangeService: ExchangeService
+    private val exchangeService: ExchangeService,
+    private val accountBalanceHistoryService: AccountBalanceHistoryService
 ) {
 
     @Transactional(readOnly = true)
@@ -55,12 +56,6 @@ class AccountService(
         return accountRepository.findAllByMonoBankIdIsNotNull();
     }
 
-    @Transactional
-    fun updateAccountBalance(account: Account, balance: Int) {
-        account.balance = balance.toBigDecimal().divide(BigDecimal.valueOf(100))
-        accountRepository.save(account)
-    }
-
     @Transactional(readOnly = true)
     fun getAllAccounts(spaceId: UUID, skipBankAccounts: Boolean): List<AccountResponse> {
         val accounts =
@@ -75,15 +70,24 @@ class AccountService(
     }
 
     @Transactional
+    fun updateAccountBalance(account: Account, balance: Int) {
+        account.balance = balance.toBigDecimal().divide(BigDecimal.valueOf(100))
+        accountRepository.save(account)
+        accountBalanceHistoryService.saveHistory(account)
+    }
+
+    @Transactional
     fun increaseAccountBalanceByAmount(account: Account, amount: BigDecimal) {
         account.balance = account.balance.add(amount);
         accountRepository.save(account)
+        accountBalanceHistoryService.saveHistory(account)
     }
 
     @Transactional
     fun decreaseAccountBalanceByAmount(account: Account, amount: BigDecimal) {
         account.balance = account.balance.minus(amount);
         accountRepository.save(account)
+        accountBalanceHistoryService.saveHistory(account)
     }
 
     @Transactional
@@ -117,6 +121,7 @@ class AccountService(
 
         if (oldBalance != accountRequest.balance) {
             createBalanceCorrectionTransaction(account, oldBalance)
+            accountBalanceHistoryService.saveHistory(account)
         }
     }
 
@@ -175,7 +180,8 @@ class AccountService(
 
         return NetWorthResponse(
             totalAccountsBalance = totalBalance,
-            primaryCurrency = primaryCurrency.mapToResponse()
+            primaryCurrency = primaryCurrency.mapToResponse(),
+            histories = accountBalanceHistoryService.getHistoryForLastYear(spaceId)
         )
     }
 

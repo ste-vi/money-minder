@@ -1,11 +1,20 @@
 <div class="net-worth-container">
   <div class="net-worth-header">
-    <p>Net worth</p>
+    <p>Net worth of {{ currentDate | date: 'MMMM' }}</p>
   </div>
   <div class="net-worth-sum">
     <b>{{ (netWorth?.totalAccountsBalance || 0).toLocaleString() }} {{ netWorth?.primaryCurrency?.sign }}</b>
   </div>
   <div class="net-worth-graphic">
-    <p>---</p>
+    <apx-chart
+      [series]="series"
+      [labels]="labels"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [stroke]="chartOptions.stroke"
+      [dataLabels]="chartOptions.dataLabels"
+      [yaxis]="chartOptions.yaxis"
+      [legend]="chartOptions.legend"
+    ></apx-chart>
   </div>
 </div>

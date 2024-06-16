@@ -1,21 +1,85 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Account} from "../../../../models/account";
-import {NetWorth} from "../../../../models/net-worth";
-import {AccountService} from "../../../../services/api/account-service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NetWorth } from '../../../../models/net-worth';
+import { AccountService } from '../../../../services/api/account-service';
+import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
+import { DatePipe } from '@angular/common';
+
+export type ChartOptions = {
+  chart: any;
+  xaxis: any;
+  stroke: any;
+  dataLabels: any;
+  yaxis: any;
+  legend: any;
+  plotOptions: any;
+};
 
 @Component({
   selector: 'app-net-worth-widget',
   standalone: true,
-  imports: [],
+  imports: [NgApexchartsModule, DatePipe],
   templateUrl: './net-worth-widget.component.html',
-  styleUrl: './net-worth-widget.component.scss'
+  styleUrl: './net-worth-widget.component.scss',
 })
 export class NetWorthWidgetComponent {
-
+  protected readonly currentDate: Date = new Date();
   protected netWorth: NetWorth | undefined = undefined;
 
+  // @ts-ignore
+  public chartOptions: Partial<ChartOptions>;
+  protected series: any = [];
+  protected labels: string[] = [];
+
   constructor(private accountsService: AccountService) {
-    this.accountsService.getNetWorth().subscribe(netWorth => this.netWorth = netWorth)
+    this.accountsService.getNetWorth().subscribe((netWorth) => {
+      this.netWorth = netWorth;
+      this.series = [
+        {
+          name: 'Net worth',
+          data: netWorth.histories.map((history) => history.balance),
+        },
+      ];
+      this.labels = netWorth.histories.map((history) => history.date);
+      this.initChartOptions();
+    });
   }
 
+  private initChartOptions() {
+    this.chartOptions = {
+      chart: {
+        type: 'area',
+        height: 210,
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: 'smooth',
+      },
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          format: 'MMM',
+        },
+      },
+      yaxis: {
+        opposite: true,
+      },
+      legend: {
+        horizontalAlign: 'left',
+        fontFamily: 'Nunito Sans, sans-serif',
+      },
+      plotOptions: {
+        area: {
+          fillTo: 'origin',
+        },
+      },
+    };
+  }
 }

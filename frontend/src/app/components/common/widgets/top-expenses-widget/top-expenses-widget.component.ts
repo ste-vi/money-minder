@@ -65,7 +65,7 @@ export class TopExpensesWidgetComponent implements OnInit {
       .subscribe((topExpenses) => {
         topExpenses.forEach((topExpense) => {
           this.series.push(topExpense.total);
-          this.labels.push(topExpense.categoryName);
+          this.labels.push(topExpense.categoryName + " " + topExpense.total)
           this.colors.push(
             this.defaultColors[
               Math.floor(Math.random() * this.defaultColors.length)
@@ -96,7 +96,7 @@ export class TopExpensesWidgetComponent implements OnInit {
               show: true,
               name: {
                 show: true,
-                fontSize: '10px',
+                fontSize: '1rem',
                 color: 'black',
                 fontFamily: 'Nunito Sans, sans-serif',
                 offsetY: 0,
@@ -107,7 +107,7 @@ export class TopExpensesWidgetComponent implements OnInit {
               value: {
                 show: true,
                 color: 'black',
-                fontSize: '18px',
+                fontSize: '0.9em',
                 fontFamily: 'Nunito Sans, sans-serif',
                 formatter: (val: string) => {
                   return val;
@@ -115,7 +115,7 @@ export class TopExpensesWidgetComponent implements OnInit {
               },
               total: {
                 show: true,
-                fontSize: '16px',
+                fontSize: '0.8em',
                 fontFamily: 'Nunito Sans, sans-serif',
                 showAlways: false,
                 formatter: (w: { globals: { seriesTotals: any[] } }) => {

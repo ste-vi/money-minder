@@ -6,5 +6,6 @@ import java.util.*
 
 data class NetWorthResponse(
     val totalAccountsBalance: BigDecimal,
-    val primaryCurrency: CurrencyResponse
+    val primaryCurrency: CurrencyResponse,
+    val histories: List<NetWorthHistory>
 ) : Serializable
