@@ -1,34 +1,37 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject, tap} from 'rxjs';
-import {Transaction, TransactionType} from '../../models/transaction';
-import {environment} from "../../../environments/environment";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {PageResponse} from "../../models/page-response";
-import {Currency} from "../../models/currency";
+import { Injectable } from '@angular/core';
+import { Observable, Subject, tap } from 'rxjs';
+import { Transaction, TransactionType } from '../../models/transaction';
+import { environment } from '../../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { PageResponse } from '../../models/page-response';
+import { Currency } from '../../models/currency';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-
   readonly rootUrl = environment.apiUrl + '/transactions';
 
   private refreshTransactionsSubject = new Subject<number>();
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getLastTransactions(size: number): Observable<PageResponse<Transaction>> {
-    return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + '/search?size=' + size);
+    return this.httpClient.get<PageResponse<Transaction>>(
+      this.rootUrl + '/search?size=' + size,
+    );
   }
 
-  searchTransactions(page: number,
-                     size: number,
-                     searchQuery: string,
-                     accountId?: string,
-                     needReview?: boolean,
-                     dateFrom?: Date,
-                     dateTo?: Date): Observable<PageResponse<Transaction>> {
+  searchTransactions(
+    page: number,
+    size: number,
+    searchQuery: string,
+    accountId?: string,
+    categoryId?: string,
+    needReview?: boolean,
+    dateFrom?: Date,
+    dateTo?: Date,
+  ): Observable<PageResponse<Transaction>> {
     let path = '/search?size=' + size + '&page=' + page;
 
     if (searchQuery) {
@@ -36,6 +39,9 @@ export class TransactionService {
     }
     if (accountId) {
       path = path + '&accountId=' + accountId;
+    }
+    if (categoryId) {
+      path = path + '&categoryId=' + categoryId;
     }
     if (needReview) {
       path = path + '&needReview=' + needReview;
@@ -51,30 +57,40 @@ export class TransactionService {
   }
 
   create(createRequest: {
-    fromAccountId: string,
-    currency: Currency,
+    fromAccountId: string;
+    currency: Currency;
     date: Date;
     amount: number;
     notes: string;
     name: string;
-    categoryId?: string,
-    type: TransactionType
+    categoryId?: string;
+    type: TransactionType;
   }): Observable<Transaction> {
-    return this.httpClient.post<Transaction>(this.rootUrl, createRequest)
-      .pipe(tap(() => {
-          this.refreshTransactionsSubject.next(createRequest.amount);
-        })
-      );
+    return this.httpClient.post<Transaction>(this.rootUrl, createRequest).pipe(
+      tap(() => {
+        this.refreshTransactionsSubject.next(createRequest.amount);
+      }),
+    );
   }
 
-  update(id: string, updateRequest: { date: any; amount: any; notes: any; name: any; categoryId?: string }) {
+  update(
+    id: string,
+    updateRequest: {
+      date: any;
+      amount: any;
+      notes: any;
+      name: any;
+      categoryId?: string;
+    },
+  ) {
     return this.httpClient.put(this.rootUrl + '/' + id, updateRequest);
   }
 
   delete(transaction: Transaction) {
-    return this.httpClient.delete(this.rootUrl + '/' + transaction.id).pipe(tap(() => {
+    return this.httpClient.delete(this.rootUrl + '/' + transaction.id).pipe(
+      tap(() => {
         this.refreshTransactionsSubject.next(transaction.amount);
-      })
+      }),
     );
   }
 

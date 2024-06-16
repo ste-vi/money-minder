@@ -12,6 +12,7 @@ import {SearchTransactionsComponent} from "../common/transaction/search-transact
 import {AccountViewComponent} from "../accounts/account-view/account-view.component";
 import {CategoriesComponent} from "../common/categories/categories.component";
 import {CreateTransactionComponent} from "../common/transaction/create-transaction/create-transaction.component";
+import {CategoryExpensesComponent} from "../common/categories/category-expenses/category-expenses.component";
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ import {CreateTransactionComponent} from "../common/transaction/create-transacti
     SearchTransactionsComponent,
     AccountViewComponent,
     CategoriesComponent,
-    CreateTransactionComponent
+    CreateTransactionComponent,
+    CategoryExpensesComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

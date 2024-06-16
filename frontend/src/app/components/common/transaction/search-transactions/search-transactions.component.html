@@ -26,7 +26,9 @@
         <div class="filter" [ngClass]="{'active': needReviewFilter, 'active-border': needReviewFilter}"
              (click)="applyNeedReviewFilter()">Need review
         </div>
-        <div class="filter">All categories</div>
+        <div class="filter" [ngClass]="{'active': categoryFilter, 'active-border': categoryFilter}"
+             (click)="openCategoryFilter()">{{ categoryFilter?.name || 'categories' }}
+        </div>
       </div>
     </div>
     <div class="transactions-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="20"

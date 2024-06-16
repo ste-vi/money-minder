@@ -1,21 +1,23 @@
-import {Component} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {MatIcon} from "@angular/material/icon";
-import {SearchTransactionsService} from "../../../../services/communication/search-transactions-service";
-import {TransactionComponent} from "../transaction.component";
-import {Transaction} from "../../../../models/transaction";
-import {TransactionService} from "../../../../services/api/transaction-service";
-import {FormsModule} from "@angular/forms";
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
-import {LoaderComponent} from "../../loader/loader.component";
-import {SearchTransactionFilters} from "./model/search-transaction-filters";
-import {Account} from "../../../../models/account";
+import { Component } from '@angular/core';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { SearchTransactionsService } from '../../../../services/communication/search-transactions-service';
+import { TransactionComponent } from '../transaction.component';
+import { Transaction } from '../../../../models/transaction';
+import { TransactionService } from '../../../../services/api/transaction-service';
+import { FormsModule } from '@angular/forms';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { LoaderComponent } from '../../loader/loader.component';
+import { SearchTransactionFilters } from './model/search-transaction-filters';
+import { Account } from '../../../../models/account';
+import { TransactionAccountFilterComponent } from './filters/transaction-account-filter/transaction-account-filter.component';
+import { TransactionDateFilterComponent } from './filters/transaction-date-filter/transaction-date-filter.component';
 import {
-  TransactionAccountFilterComponent
-} from "./filters/transaction-account-filter/transaction-account-filter.component";
-import {TransactionDateFilterComponent} from "./filters/transaction-date-filter/transaction-date-filter.component";
-import {DateFilterOption, datesFilterOptions} from "../../../../models/date-filter-option";
-import {CreateTransactionButtonComponent} from "../create-transaction-button/create-transaction-button.component";
+  DateFilterOption,
+  datesFilterOptions,
+} from '../../../../models/date-filter-option';
+import { CreateTransactionButtonComponent } from '../create-transaction-button/create-transaction-button.component';
+import { Category } from '../../../../models/category';
 
 @Component({
   selector: 'app-search-transactions',
@@ -34,10 +36,9 @@ import {CreateTransactionButtonComponent} from "../create-transaction-button/cre
     CreateTransactionButtonComponent,
   ],
   templateUrl: './search-transactions.component.html',
-  styleUrl: './search-transactions.component.scss'
+  styleUrl: './search-transactions.component.scss',
 })
 export class SearchTransactionsComponent {
-
   protected isOpened: boolean = false;
 
   protected transactions: Transaction[] = [];
@@ -58,31 +59,38 @@ export class SearchTransactionsComponent {
   protected dateFilter: any = datesFilterOptions[0];
   protected isDateFilterOpened: boolean = false;
 
+  protected categoryFilter: Category | undefined = undefined;
+  protected isCategoryFilterOpened: boolean = false;
+
   protected needReviewFilter: boolean = false;
 
-  constructor(private searchTransactionsService: SearchTransactionsService,
-              private transactionService: TransactionService) {
-
+  constructor(
+    private searchTransactionsService: SearchTransactionsService,
+    private transactionService: TransactionService,
+  ) {
     this.searchTransactionsService.modalOpened$.subscribe((filters) => {
       this.showModal(filters);
 
-      this.transactionService.refreshTransactions$.subscribe(() => this.loadTransactions(true))
+      this.transactionService.refreshTransactions$.subscribe(() =>
+        this.loadTransactions(true),
+      );
     });
   }
 
   private showModal(filters: SearchTransactionFilters) {
-    this.accountFilter = filters.account
+    this.accountFilter = filters.account;
+    this.categoryFilter = filters.category;
     this.needReviewFilter = false;
     this.dateFilter = null;
     this.searchQuery = '';
     this.isOpened = true;
-    this.currentPage = 0
+    this.currentPage = 0;
     this.loadTransactions(true);
   }
 
   closeModal() {
-    this.isOpened = false
-    this.currentPage = 0
+    this.isOpened = false;
+    this.currentPage = 0;
   }
 
   private loadTransactions(isSearch: boolean = false) {
@@ -97,18 +105,22 @@ export class SearchTransactionsComponent {
         this.itemsPerPage,
         this.searchQuery,
         this.accountFilter?.id,
+        this.categoryFilter?.id,
         this.needReviewFilter,
         this.dateFilter?.dateFrom,
-        this.dateFilter?.dateTo)
+        this.dateFilter?.dateTo,
+      )
       .subscribe((pageResponse) => {
-        this.transactions = isSearch ? pageResponse.content : this.transactions.concat(pageResponse.content);
+        this.transactions = isSearch
+          ? pageResponse.content
+          : this.transactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;
         this.isLoading = false;
-      })
+      });
   }
 
   search(): void {
-    this.loadTransactions(true)
+    this.loadTransactions(true);
     this.currentPage = 0;
   }
 
@@ -137,32 +149,36 @@ export class SearchTransactionsComponent {
 
   onAccountSelected(account: Account) {
     this.accountFilter = account;
-    this.currentPage = 0
+    this.currentPage = 0;
     this.isAccountFilterOpened = false;
-    this.loadTransactions(true)
+    this.loadTransactions(true);
   }
 
   onDateSelected(dateFilter: DateFilterOption) {
     this.dateFilter = dateFilter;
-    this.currentPage = 0
+    this.currentPage = 0;
     this.isDateFilterOpened = false;
-    this.loadTransactions(true)
+    this.loadTransactions(true);
   }
 
   applyNeedReviewFilter() {
     this.needReviewFilter = !this.needReviewFilter;
-    this.currentPage = 0
+    this.currentPage = 0;
     this.loadTransactions(true);
   }
 
   resetFilters() {
     this.dateFilter = undefined;
     this.accountFilter = undefined;
-    this.needReviewFilter = false
+    this.needReviewFilter = false;
     this.searchQuery = '';
-    this.currentPage = 0
+    this.currentPage = 0;
     this.loadTransactions(true);
   }
 
   protected readonly datesFilterOptions = datesFilterOptions;
+
+  openCategoryFilter() {
+    // implement
+  }
 }

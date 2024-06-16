@@ -16,7 +16,7 @@
     .account-type {
       background-color: var(--secondary);
       width: 100%;
-      border-radius: 12px;
+      border-radius: 8px;
 
       .account-type-header {
         display: flex;
@@ -68,6 +68,7 @@
       }
 
       .account-item {
+        padding-left: 8px;
         flex: 0 0 auto;
       }
 

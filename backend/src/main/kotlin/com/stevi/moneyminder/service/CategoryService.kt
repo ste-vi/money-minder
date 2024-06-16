@@ -116,7 +116,13 @@ class CategoryService(
         dateFrom: LocalDateTime,
         dateTo: LocalDateTime
     ): List<TopExpenseResponse> {
-        return categoryRepository.findTopExpenses(spaceId, type ?: CategoryType.EXPENSE, dateFrom, dateTo)
+        return categoryRepository.findTopExpenses(spaceId, type ?: CategoryType.EXPENSE, dateFrom, dateTo).map {
+            TopExpenseResponse(
+                total = it.getTotal(),
+                category = it.getCategory().mapToResponse(),
+                currencySign = it.getCurrency().sign
+            )
+        }
     }
 
 }

@@ -62,6 +62,7 @@ export class AccountViewComponent {
       this.itemsPerPage,
       this.searchQuery,
       this.account?.id,
+      undefined,
       false,
       undefined,
       undefined)

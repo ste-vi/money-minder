@@ -1,6 +1,7 @@
 package com.stevi.moneyminder.repository;
 
 import com.stevi.moneyminder.entity.AccountBalanceHistory
+import java.time.LocalDate
 import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -35,5 +36,7 @@ interface AccountBalanceHistoryRepository : JpaRepository<AccountBalanceHistory,
         nativeQuery = true
     )
     fun findLastBalanceHistoryBySpaceId(@Param("spaceId") spaceId: UUID): List<AccountBalanceHistory>
+
+    fun existsByAccountIdAndDate(accountId: UUID, date: LocalDate): Boolean
 
 }

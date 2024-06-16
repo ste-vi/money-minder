@@ -2,10 +2,43 @@
   background-color: var(--secondary);
   width: 100%;
   min-height: 120px;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 0.5rem 0.8rem;
 
-  .donut-chart-container {
-
+  .top-expenses-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
   }
+
+  .top-expenses-body {
+    padding-top: 0.2rem;
+    font-size: 13px;
+
+    .top-expense {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+
+      .tiny-icon {
+        transform: scale(0.65);
+        cursor: pointer;
+        color: var(--accent);
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+
+      .top-expense-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px
+      }
+    }
+  }
+
 }

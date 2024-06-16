@@ -18,7 +18,7 @@
       </div>
       <div class="account-balance">
         <div class="secondary-text">Current balance</div>
-        <div><b>{{ account?.balance }} {{ account?.currency?.sign }}</b></div>
+        <div><b>{{ (account?.balance || 0).toLocaleString() }} {{ account?.currency?.sign }}</b></div>
       </div>
     </div>
 

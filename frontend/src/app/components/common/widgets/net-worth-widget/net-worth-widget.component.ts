@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NetWorth } from '../../../../models/net-worth';
 import { AccountService } from '../../../../services/api/account-service';
-import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { DatePipe } from '@angular/common';
 
 export type ChartOptions = {
@@ -12,6 +12,7 @@ export type ChartOptions = {
   yaxis: any;
   legend: any;
   plotOptions: any;
+  grid: any;
 };
 
 @Component({
@@ -22,6 +23,7 @@ export type ChartOptions = {
   styleUrl: './net-worth-widget.component.scss',
 })
 export class NetWorthWidgetComponent {
+
   protected readonly currentDate: Date = new Date();
   protected netWorth: NetWorth | undefined = undefined;
 
@@ -48,13 +50,16 @@ export class NetWorthWidgetComponent {
     this.chartOptions = {
       chart: {
         type: 'area',
-        height: 210,
+        height: 160,
         zoom: {
           enabled: false,
         },
         toolbar: {
           show: false,
         },
+      },
+      grid: {
+        borderColor: '#edf2fd',
       },
       dataLabels: {
         enabled: false,
@@ -67,9 +72,21 @@ export class NetWorthWidgetComponent {
         labels: {
           format: 'MMM',
         },
+        showDuplicates: false,
+        style: {
+          fontFamily: 'Nunito Sans, sans-serif',
+        },
+        axisBorder: {
+          show: true,
+          color: '#edf2fd',
+        },
       },
       yaxis: {
         opposite: true,
+
+        style: {
+          fontFamily: 'Nunito Sans, sans-serif',
+        },
       },
       legend: {
         horizontalAlign: 'left',

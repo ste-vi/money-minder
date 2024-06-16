@@ -14,7 +14,7 @@
           <div class="account-item-header">
             <mat-icon svgIcon="{{account?.type?.iconName}}" class=""></mat-icon>
           </div>
-          <div class="account-item p-l-4">{{ account.name }}</div>
+          <div class="account-item">{{ account.name }}</div>
           <div class="account-item">{{ (account.balance || 0).toLocaleString() }} {{ account.currency.sign }}</div>
         </div>
       </div>

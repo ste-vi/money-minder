@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -25,7 +25,7 @@ open class AccountBalanceHistory(
     open var balance: BigDecimal = BigDecimal.ZERO,
 
     @Column(name = "date", nullable = false, updatable = false)
-    open var date: LocalDateTime,
+    open var date: LocalDate,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "account_id", nullable = true)

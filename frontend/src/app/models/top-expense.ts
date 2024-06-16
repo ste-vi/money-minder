@@ -1,5 +1,8 @@
+import {Category} from "./category";
+
 export interface TopExpense {
   total: number;
-  categoryId: string;
-  categoryName: string;
+  category: Category;
+  currencySign: string;
+  percentage: number;
 }

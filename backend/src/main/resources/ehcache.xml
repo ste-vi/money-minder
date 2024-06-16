@@ -5,7 +5,7 @@
 
     <cache-template name="default">
         <expiry>
-            <ttl unit="minutes">7</ttl>
+            <ttl unit="minutes">30</ttl>
         </expiry>
         <resources>
             <heap>500</heap>

@@ -1,18 +1,20 @@
-<div class="top-expenses-container">
+<div class="top-expenses-container" xmlns="http://www.w3.org/1999/html">
   <div class="top-expenses-header">
-    <b>Top expenses by categories</b>
+    <div>Top expenses of {{ currentDate | date: 'MMMM' }}</div>
+    <div>{{ (totalExpenses || 0).toLocaleString() }} {{ totalExpenseCurrencySign }}</div>
   </div>
   <div class="top-expenses-body">
-    <div class="donut-chart-container">
-      <apx-chart
-        [series]="series"
-        [labels]="labels"
-        [colors]="colors"
-        [chart]="chartOptions.chart"
-        [dataLabels]="chartOptions.dataLabels"
-        [plotOptions]="chartOptions.plotOptions"
-        [legend]="chartOptions.legend"
-      ></apx-chart>
+    <div class="top-expense" *ngFor="let topExpense of topExpenses" (click)="openCategoryExpensesPage(topExpense)">
+      <div class="top-expense-header">
+        <mat-icon svgIcon="{{ topExpense.category.icon }}" class="tiny-icon"></mat-icon>
+        <span>{{ topExpense.category.name }} </span>
+        <span> - </span>
+        <span class="secondary-text"> {{ (topExpense.percentage | number:'1.2-2') + ' %' }}</span>
+      </div>
+      <div>
+        <span> {{ (topExpense.total || 0).toLocaleString() }} {{ topExpense.currencySign }}</span>
+      </div>
     </div>
+
   </div>
 </div>

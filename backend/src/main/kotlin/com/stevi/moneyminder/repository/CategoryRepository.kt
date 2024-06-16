@@ -3,6 +3,7 @@ package com.stevi.moneyminder.repository;
 import com.stevi.moneyminder.entity.Category
 import com.stevi.moneyminder.entity.CategoryType
 import com.stevi.moneyminder.model.response.TopExpenseResponse
+import com.stevi.moneyminder.repository.projection.TopExpensesProjection
 import java.time.LocalDateTime
 import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
@@ -18,18 +19,16 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
     @Query(
         """
         select 
-            new com.stevi.moneyminder.model.response.TopExpenseResponse(
-                sum(t.amount),
-                c.id, 
-                c.name
-            ) 
+            sum(t.amount) as total,
+            c as category,
+            t.fromAccount.currency as currency
         from Transaction t 
         join t.category c 
         where t.fromAccount.space.id = :spaceId 
             and c.type = :categoryType 
             and t.date >= :dateFrom 
             and t.date <= :dateTo 
-        group by c.id, c.name 
+        group by c, t.fromAccount.currency
         order by sum(t.amount) desc
     """
     )
@@ -38,5 +37,5 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
         @Param("categoryType") categoryType: CategoryType,
         @Param("dateFrom") dateFrom: LocalDateTime,
         @Param("dateTo") dateTo: LocalDateTime
-    ): List<TopExpenseResponse>
+    ): List<TopExpensesProjection>
 }

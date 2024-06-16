@@ -5,6 +5,7 @@ import com.stevi.moneyminder.entity.AccountBalanceHistory
 import com.stevi.moneyminder.model.response.NetWorthHistory
 import com.stevi.moneyminder.repository.AccountBalanceHistoryRepository
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -16,15 +17,15 @@ val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy
 
 @Service
 class AccountBalanceHistoryService(
-    private val accountBalanceHistoryRepository: AccountBalanceHistoryRepository,
+    private val repository: AccountBalanceHistoryRepository,
     private val exchangeService: ExchangeService
 ) {
 
     @Transactional(readOnly = true)
     fun getHistoryForLastYear(spaceId: UUID): List<NetWorthHistory> {
-        val historyList = accountBalanceHistoryRepository.findLastBalanceHistoryBySpaceId(spaceId)
+        val historyList = repository.findLastBalanceHistoryBySpaceId(spaceId)
 
-        return historyList.groupBy { it.date.toLocalDate() }
+        return historyList.groupBy { it.date }
             .map { (date, history) ->
                 val totalBalance = history.sumOf { it.balance }
                 val formattedDate = date.format(DATE_FORMATTER)
@@ -34,8 +35,25 @@ class AccountBalanceHistoryService(
 
     @Transactional
     fun saveHistory(account: Account) {
-        var balance = account.balance
+        val alreadyExistsForToday = repository.existsByAccountIdAndDate(account.id!!, LocalDate.now())
+        if (alreadyExistsForToday) {
+            return;
+        }
 
+        val balance = convertBalanceToSpaceCurrency(account)
+
+        repository.save(
+            AccountBalanceHistory(
+                id = null,
+                balance = balance,
+                date = LocalDate.now(),
+                account = account
+            )
+        )
+    }
+
+    private fun convertBalanceToSpaceCurrency(account: Account): BigDecimal {
+        var balance = account.balance
         if (account.currency != account.space.primaryCurrency) {
             val exchangeRates = exchangeService.fetchExchangeRates()
             val exchangeRate = exchangeRates.find { rate ->
@@ -44,14 +62,6 @@ class AccountBalanceHistoryService(
 
             balance = balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
         }
-
-        accountBalanceHistoryRepository.save(
-            AccountBalanceHistory(
-                id = null,
-                balance = balance,
-                date = LocalDateTime.now(),
-                account = account
-            )
-        )
+        return balance
     }
 }
