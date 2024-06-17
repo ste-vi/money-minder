@@ -23,9 +23,9 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
             c as category,
             t.fromAccount.currency as currency
         from Transaction t 
-        join t.category c 
+            left join t.category c 
         where t.fromAccount.space.id = :spaceId 
-            and c.type = :categoryType 
+            and (c.type = :categoryType or c is null)
             and t.date >= :dateFrom 
             and t.date <= :dateTo 
         group by c, t.fromAccount.currency

@@ -119,7 +119,7 @@ class CategoryService(
         return categoryRepository.findTopExpenses(spaceId, type ?: CategoryType.EXPENSE, dateFrom, dateTo).map {
             TopExpenseResponse(
                 total = it.getTotal(),
-                category = it.getCategory().mapToResponse(),
+                category = it.getCategory()?.mapToResponse(),
                 currencySign = it.getCurrency().sign
             )
         }

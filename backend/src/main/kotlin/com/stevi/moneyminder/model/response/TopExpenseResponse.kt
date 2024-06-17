@@ -5,6 +5,6 @@ import java.math.BigDecimal
 
 data class TopExpenseResponse(
     val total: BigDecimal,
-    val category: CategoryResponse,
+    val category: CategoryResponse?,
     val currencySign: String
 ) : Serializable

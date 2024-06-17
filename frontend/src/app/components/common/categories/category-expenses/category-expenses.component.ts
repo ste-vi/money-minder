@@ -33,7 +33,6 @@ export class CategoryExpensesComponent {
   protected currentPage: number = 0;
   protected itemsPerPage: number = 20;
   protected hasMoreTransactions: boolean = true;
-  protected searchQuery: string = '';
   protected isLoading: boolean = true;
   protected topExpense: TopExpense | undefined;
   protected dateFrom: Date | undefined = undefined;
@@ -65,17 +64,15 @@ export class CategoryExpensesComponent {
       .searchTransactions(
         this.currentPage,
         this.itemsPerPage,
-        this.searchQuery,
+        '',
         undefined,
-        this.topExpense?.category.id,
-        false,
+        this.topExpense?.category?.id,
+        !this.topExpense?.category,
         this.dateFrom,
         this.dateTo,
       )
       .subscribe((pageResponse) => {
-        this.transactions = this.transactions.concat(
-          pageResponse.content,
-        );
+        this.transactions = this.transactions.concat(pageResponse.content);
         this.hasMoreTransactions = !pageResponse.last;
         this.isLoading = false;
       });
@@ -84,6 +81,7 @@ export class CategoryExpensesComponent {
   private openModal() {
     this.transactions = [];
     this.isOpen = true;
+    this.currentPage = 0;
   }
 
   closeModal() {

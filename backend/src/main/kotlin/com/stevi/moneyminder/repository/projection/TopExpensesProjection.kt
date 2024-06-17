@@ -8,7 +8,7 @@ interface TopExpensesProjection {
 
     fun getTotal(): BigDecimal
 
-    fun getCategory(): Category
+    fun getCategory(): Category?
 
     fun getCurrency(): Currency
 }

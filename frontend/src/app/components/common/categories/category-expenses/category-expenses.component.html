@@ -7,11 +7,11 @@
   <div class="view-category-expenses-body" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="10"
        [scrollWindow]="false" (scrolled)="loadMore()">
     <div class="category-expenses-icon">
-      <mat-icon svgIcon="{{ topExpense?.category?.icon }}" class="icon"></mat-icon>
+      <mat-icon svgIcon="{{ topExpense?.category ? topExpense?.category?.icon : 'question' }}" class="icon"></mat-icon>
     </div>
     <div class="category-expenses-info">
       <div class="category-expenses-name">
-        <div><b>{{ topExpense?.category?.name }}</b></div>
+        <div><b>{{ topExpense?.category ? topExpense?.category?.name : 'Uncategorized expense' }}</b></div>
       </div>
       <div class="category-expenses-balance">
         <div class="secondary-text">Total expenses in June</div>
