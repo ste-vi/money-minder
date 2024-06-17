@@ -91,7 +91,9 @@ class AccountService(
     }
 
     @Transactional
-    fun createAccount(currentUserSpaceId: UUID, accountRequest: AccountRequest): AccountResponse {
+    fun createAccount(spaceId: UUID, accountRequest: AccountRequest): AccountResponse {
+        val isDefault = !accountRepository.existsBySpaceIdAndDefaultIsTrue(spaceId)
+
         val account = Account(
             id = null,
             name = accountRequest.name,
@@ -100,8 +102,9 @@ class AccountService(
             monoBankId = null,
             currency = Currency.fromCode(accountRequest.currencyCode),
             type = AccountType.fromId(accountRequest.typeId),
-            space = spaceRepository.findById(currentUserSpaceId).orElseThrow(),
-            createdDate = LocalDateTime.now()
+            space = spaceRepository.findById(spaceId).orElseThrow(),
+            createdDate = LocalDateTime.now(),
+            default = isDefault
         )
 
         return accountRepository.save(account).mapToResponse();

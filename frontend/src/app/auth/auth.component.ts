@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [],
+  imports: [MatIcon],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })

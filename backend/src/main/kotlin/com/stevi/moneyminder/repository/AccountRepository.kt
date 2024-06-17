@@ -11,6 +11,8 @@ interface AccountRepository : JpaRepository<Account, UUID> {
 
     fun existsBySpaceIdAndMonoBankId(spaceId: UUID, monoBankId: String): Boolean
 
+    fun existsBySpaceIdAndDefaultIsTrue(spaceId: UUID): Boolean
+
     @Query("select a.monoBankId from Account a where a.space.id = :spaceId and a.monoBankId is not null")
     fun findAllMonoBankIdsBySpaceId(spaceId: UUID): List<String>
 
