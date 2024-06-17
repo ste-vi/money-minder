@@ -1,0 +1,32 @@
+<div *ngIf="isOpened">
+  <div class="profile-container right-modal">
+    <div class="profile-container-header">
+      <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+      <div><b>Profile info</b></div>
+      <div></div>
+    </div>
+    <div>
+      <div class="profile-container-body">
+        <div>
+          <div class="secondary-text">
+            Username
+          </div>
+          <div>
+            {{ user?.username }}
+          </div>
+        </div>
+        <div>
+          <div class="secondary-text">
+            Signed via
+          </div>
+          <div>
+            {{ user?.email }}
+          </div>
+        </div>
+        <div>
+          <div class="save-button" (click)="logout()">Logout</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

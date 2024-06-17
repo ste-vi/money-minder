@@ -74,6 +74,12 @@
 
     .transaction-body {
 
+      .icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .transaction-account {
         display: flex;
         align-items: center;
@@ -92,6 +98,31 @@
         cursor: pointer;
 
         .transaction-category-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        }
+
+        input {
+          width: 30px;
+          text-align: center;
+          border: none;
+          border-bottom: 1px solid var(--accent);
+          background-color: var(--background);
+          padding: 0.1rem 0;
+        }
+      }
+
+      .transaction-to-account {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--secondary-border);
+        padding: 0.5rem;
+        cursor: pointer;
+
+        .transaction-to-account-header {
           display: flex;
           justify-content: space-between;
           align-items: center;

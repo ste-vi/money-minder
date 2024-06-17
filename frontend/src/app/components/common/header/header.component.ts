@@ -5,6 +5,7 @@ import {NavigationEnd, Router} from '@angular/router';
 import {SelectAccountTypeServiceService} from '../../../services/communication/select-account-type-service.service';
 import {SpaceService} from "../../../services/api/space-service";
 import {Space} from "../../../models/space";
+import {ProfileService} from "../../../services/communication/profile-service";
 
 @Component({
   selector: 'app-header',
@@ -19,12 +20,13 @@ export class HeaderComponent {
   protected showEdit: boolean = false;
   protected showAdd: boolean = false;
   protected showReload: boolean = false;
-  protected showDots: boolean = false;
+  protected showUser: boolean = false;
 
   constructor(
     private router: Router,
     private selectAccountTypeServiceService: SelectAccountTypeServiceService,
     private spaceService: SpaceService,
+    private profileService: ProfileService
   ) {
     this.initButtons();
     this.spaceService.getCurrentSpace().subscribe(space => this.space = space)
@@ -39,17 +41,17 @@ export class HeaderComponent {
           this.showEdit = false;
           this.showAdd = true;
           this.showReload = true;
-          this.showDots = true;
+          this.showUser = false;
         } else if (path == 'dashboard') {
           this.showEdit = true;
           this.showAdd = false;
           this.showReload = true;
-          this.showDots = false;
+          this.showUser = false;
         } else if (path == 'settings') {
           this.showEdit = false;
           this.showAdd = false;
           this.showReload = false;
-          this.showDots = true;
+          this.showUser = true;
         }
       }
     });
@@ -57,5 +59,9 @@ export class HeaderComponent {
 
   openAddTypeModal() {
     this.selectAccountTypeServiceService.openModal(true);
+  }
+
+  openProfile() {
+    this.profileService.openModal(true);
   }
 }

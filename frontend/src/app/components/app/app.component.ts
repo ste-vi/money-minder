@@ -13,6 +13,7 @@ import {AccountViewComponent} from "../accounts/account-view/account-view.compon
 import {CategoriesComponent} from "../common/categories/categories.component";
 import {CreateTransactionComponent} from "../common/transaction/create-transaction/create-transaction.component";
 import {CategoryExpensesComponent} from "../common/categories/category-expenses/category-expenses.component";
+import {AuthComponent} from "../../auth/auth.component";
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ import {CategoryExpensesComponent} from "../common/categories/category-expenses/
     CategoriesComponent,
     CreateTransactionComponent,
     CategoryExpensesComponent,
+    AuthComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -343,6 +345,12 @@ export class AppComponent {
       'safe',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/safe-square-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'user',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/user-rounded-svgrepo-com.svg',
       ),
     );
   }

@@ -24,11 +24,24 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.ehcache:ehcache:3.10.8:jakarta")
 	implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("com.google.api-client:google-api-client:2.6.0")
+	implementation("com.google.api-client:google-oauth-client:2.6.0")
+	implementation("com.google.api-client:google-api-client-jackson2:2.6.0")
+
+	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
+
+
+	runtimeOnly("org.postgresql:postgresql")
+
+	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

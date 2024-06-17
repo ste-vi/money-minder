@@ -39,8 +39,8 @@ open class Category(
     @JoinColumn(nullable = false)
     open var space: Space,
 
-    @Column(name = "parent_id", nullable = false)
-    open var parentId: UUID? = null,
+    @Column(name = "parent_id", nullable = true)
+    open var parentId: UUID?,
 )
 
 fun Category.mapToResponse() = CategoryResponse(

@@ -76,6 +76,8 @@ class MonoBankTransactionScheduler(
                     createdDate = date
                 )
 
+                // todo: transfer
+
                 rules.stream().anyMatch { rule -> transaction.applyRule(rule) }
 
                 return@map transaction

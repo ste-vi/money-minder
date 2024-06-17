@@ -42,6 +42,7 @@ class TransactionService(
             searchRequest.dateTo,
             spaceId
         )
+        // todo: search transfer?
 
         val pageable = PageRequest.of(
             searchRequest.page ?: 0,
@@ -101,10 +102,11 @@ class TransactionService(
 
         if (request.type == TransactionType.INCOME) {
             accountService.increaseAccountBalanceByAmount(fromAccount, request.amount)
-            toAccount?.let { accountService.increaseAccountBalanceByAmount(it, request.amount) }
-        } else {
+        } else if (request.type == TransactionType.EXPENSE) {
             accountService.decreaseAccountBalanceByAmount(fromAccount, request.amount)
-            toAccount?.let { accountService.decreaseAccountBalanceByAmount(it, request.amount) }
+        } else if (request.type == TransactionType.TRANSFER && toAccount != null) {
+            accountService.decreaseAccountBalanceByAmount(fromAccount, request.amount)
+            accountService.increaseAccountBalanceByAmount(toAccount, request.amount)
         }
 
         return savedTransaction.mapToResponse()
@@ -121,6 +123,7 @@ class TransactionService(
             categoryRepository.findById(it).orElseThrow { IllegalArgumentException("Category not found") }
         }
 
+        // todo: transfer
         request.amount?.let {
             if (transaction.monoBankId == null) {
                 if (transaction.type == TransactionType.INCOME) {
@@ -144,6 +147,8 @@ class TransactionService(
 
         transactionRepository.delete(transaction)
 
+
+        // todo: transfer
         if (transaction.type == TransactionType.INCOME) {
             accountService.decreaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
         } else {
@@ -158,6 +163,8 @@ class TransactionService(
 
     @Transactional
     fun applyRuleToExistingTransactions(spaceId: UUID, rule: Rule) {
+        // todo: transfer
+
         val ruleSpecification = TransactionRuleSpecification(rule, spaceId)
         val transactions = transactionRepository.findAll(ruleSpecification)
 

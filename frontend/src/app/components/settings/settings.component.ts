@@ -10,26 +10,41 @@ import {
 import {CategorySettingsComponent} from "./category-settings/category-settings.component";
 import {RulesSettingsComponent} from "./rules-settings/rules-settings.component";
 import {RulesSettingsService} from "../../services/communication/rules-settings-service";
+import {HeaderComponent} from "../common/header/header.component";
+import {NavComponent} from "../common/nav/nav.component";
+import {ProfileComponent} from "./profile/profile.component";
+import {ProfileService} from "../../services/communication/profile-service";
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [MatIcon, NgIf, TransactionAccountFilterComponent, CategorySettingsComponent, RulesSettingsComponent],
+  imports: [
+    MatIcon,
+    NgIf,
+    TransactionAccountFilterComponent,
+    CategorySettingsComponent,
+    RulesSettingsComponent,
+    HeaderComponent,
+    NavComponent,
+    ProfileComponent,
+  ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent implements OnInit {
-
   protected defaultAccount: Account | undefined = undefined;
   protected isAccountFilterOpened: boolean = false;
 
-  constructor(private categoriesSettingsService: CategoriesSettingsService,
-              private rulesSettingsService: RulesSettingsService,
-              private accountService: AccountService) {
-  }
+  constructor(
+    private categoriesSettingsService: CategoriesSettingsService,
+    private rulesSettingsService: RulesSettingsService,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
-    this.accountService.getDefaultAccount().subscribe(account => this.defaultAccount = account);
+    this.accountService
+      .getDefaultAccount()
+      .subscribe((account) => (this.defaultAccount = account));
   }
 
   openCategorySettings() {
@@ -50,7 +65,6 @@ export class SettingsComponent implements OnInit {
 
   onAccountSelected(account: Account) {
     this.defaultAccount = account;
-    this.accountService.updateDefaultAccount(account).subscribe()
+    this.accountService.updateDefaultAccount(account).subscribe();
   }
-
 }

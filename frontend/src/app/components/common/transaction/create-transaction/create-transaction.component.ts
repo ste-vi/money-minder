@@ -1,18 +1,22 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {DatePipe, DecimalPipe, NgClass, NgIf} from "@angular/common";
-import {TransactionType} from "../../../../models/transaction";
-import {AutoResizeDirective} from "../../../../directives/auto-resize.directive";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatIcon} from "@angular/material/icon";
-import {CreateTransactionService} from "../../../../services/communication/create-transaction-service";
-import {AccountService} from "../../../../services/api/account-service";
-import {Category, CategoryType} from "../../../../models/category";
-import {SelectCategoryService} from "../../../../services/communication/select-category-service";
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { DatePipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
+import { TransactionType } from '../../../../models/transaction';
+import { AutoResizeDirective } from '../../../../directives/auto-resize.directive';
 import {
-  TransactionAccountFilterComponent
-} from "../search-transactions/filters/transaction-account-filter/transaction-account-filter.component";
-import {Account} from "../../../../models/account";
-import {TransactionService} from "../../../../services/api/transaction-service";
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { CreateTransactionService } from '../../../../services/communication/create-transaction-service';
+import { AccountService } from '../../../../services/api/account-service';
+import { Category, CategoryType } from '../../../../models/category';
+import { SelectCategoryService } from '../../../../services/communication/select-category-service';
+import { TransactionAccountFilterComponent } from '../search-transactions/filters/transaction-account-filter/transaction-account-filter.component';
+import { Account } from '../../../../models/account';
+import { TransactionService } from '../../../../services/api/transaction-service';
 
 @Component({
   selector: 'app-create-transaction',
@@ -26,13 +30,12 @@ import {TransactionService} from "../../../../services/api/transaction-service";
     MatIcon,
     ReactiveFormsModule,
     NgClass,
-    TransactionAccountFilterComponent
+    TransactionAccountFilterComponent,
   ],
   templateUrl: './create-transaction.component.html',
-  styleUrl: './create-transaction.component.scss'
+  styleUrl: './create-transaction.component.scss',
 })
 export class CreateTransactionComponent {
-
   protected isOpened: boolean = false;
 
   isExpenseTabActive: boolean = true;
@@ -40,6 +43,7 @@ export class CreateTransactionComponent {
   isTransferTabActive: boolean = false;
 
   isAccountFilterOpened: boolean = false;
+  isToAccountFilterOpened: boolean = false;
 
   // @ts-ignore
   @ViewChild('amountInput') protected amountInput: ElementRef;
@@ -51,14 +55,17 @@ export class CreateTransactionComponent {
     name: new FormControl('', Validators.required),
     amount: new FormControl('0.00', Validators.min(0.01)),
     account: new FormControl(Validators.required),
+    toAccount: new FormControl(),
     date: new FormControl(new Date(), Validators.required),
     notes: new FormControl(''),
   });
 
-  constructor(private createTransactionService: CreateTransactionService,
-              private accountService: AccountService,
-              private selectCategoryService: SelectCategoryService,
-              private transactionService: TransactionService) {
+  constructor(
+    private createTransactionService: CreateTransactionService,
+    private accountService: AccountService,
+    private selectCategoryService: SelectCategoryService,
+    private transactionService: TransactionService,
+  ) {
     this.createTransactionService.modalOpened$.subscribe(() => {
       this.openModal();
     });
@@ -69,9 +76,10 @@ export class CreateTransactionComponent {
   }
 
   private openModal() {
-    this.accountService.getDefaultAccount().subscribe(account => {
+    this.accountService.getDefaultAccount().subscribe((account) => {
       this.transactionForm.controls['account'].setValue(account);
-    })
+      this.transactionForm.controls['toAccount'].setValue(account);
+    });
     this.isOpened = true;
   }
 
@@ -80,14 +88,17 @@ export class CreateTransactionComponent {
   }
 
   selectCategory() {
-    let categoryType = this.transactionType === TransactionType.EXPENSE ? CategoryType.EXPENSE : CategoryType.INCOME;
+    let categoryType =
+      this.transactionType === TransactionType.EXPENSE
+        ? CategoryType.EXPENSE
+        : CategoryType.INCOME;
     this.selectCategoryService.openModal(categoryType);
   }
 
   formatAmount() {
     let value = this.transactionForm.controls['amount'].value;
     if (!value || value === 0) {
-      this.transactionForm.setErrors({invalid: true});
+      this.transactionForm.setErrors({ invalid: true });
       return;
     }
 
@@ -128,7 +139,7 @@ export class CreateTransactionComponent {
     this.isIncomeTabActive = false;
     this.isExpenseTabActive = false;
 
-    this.transactionType = TransactionType.INCOME;
+    this.transactionType = TransactionType.TRANSFER;
   }
 
   openAccountFilter() {
@@ -143,23 +154,49 @@ export class CreateTransactionComponent {
     this.transactionForm.controls['account'].setValue(account);
   }
 
+  openToAccountFilter() {
+    this.isToAccountFilterOpened = true;
+  }
+
+  closeToAccountFilter() {
+    this.isToAccountFilterOpened = false;
+  }
+
+  onToAccountSelected(account: Account) {
+    this.transactionForm.controls['toAccount'].setValue(account);
+  }
+
   save() {
     if (!this.transactionForm.valid) {
       return;
     }
 
-    let createRequest = {
-      "fromAccountId": this.transactionForm.controls["account"].value.id,
-      "currency": this.transactionForm.controls["account"].value.currency.shortName,
-      "date": new Date(this.transactionForm.controls["date"].value),
-      "amount": this.transactionForm.controls["amount"].value,
-      "notes": this.transactionForm.controls["notes"].value,
-      "name": this.transactionForm.controls["name"].value,
-      "categoryId": this.category?.id,
-      "type": this.transactionType
+    let toAccountId = this.transactionForm.controls['toAccount'].value.id;
+    let fromAccountId = this.transactionForm.controls['account'].value.id;
+    if (this.isTransferTabActive) {
+      if (
+        toAccountId === null ||
+        toAccountId === undefined ||
+        fromAccountId === toAccountId
+      ) {
+        return;
+      }
     }
-    this.transactionService.create(createRequest).subscribe(transaction => {
-      this.closeModal()
-    })
+
+    let createRequest = {
+      fromAccountId: fromAccountId,
+      toAccountId: toAccountId,
+      currency:
+        this.transactionForm.controls['account'].value.currency.shortName,
+      date: new Date(this.transactionForm.controls['date'].value),
+      amount: this.transactionForm.controls['amount'].value,
+      notes: this.transactionForm.controls['notes'].value,
+      name: this.transactionForm.controls['name'].value,
+      categoryId: this.category?.id,
+      type: this.transactionType,
+    };
+    this.transactionService.create(createRequest).subscribe((transaction) => {
+      this.closeModal();
+    });
   }
 }

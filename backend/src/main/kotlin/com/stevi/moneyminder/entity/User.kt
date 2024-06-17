@@ -1,5 +1,6 @@
 package com.stevi.moneyminder.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -14,5 +15,12 @@ open class User(
     @GeneratedValue(strategy = GenerationType.UUID)
     open var id: UUID? = null,
 
-    open var username: String
+    @Column(name = "username", nullable = false)
+    open var username: String,
+
+    @Column(name = "email", nullable = false, unique = true)
+    open var email: String,
+
+    @Column(name = "last_logged_in_space_id")
+    open var lastLoggedInSpaceId: UUID?,
 )

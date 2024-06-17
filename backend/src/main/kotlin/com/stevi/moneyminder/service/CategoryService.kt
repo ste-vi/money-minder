@@ -71,7 +71,8 @@ class CategoryService(
             icon = categoryRequest.icon,
             position = categoryRequest.position,
             type = categoryRequest.type,
-            space = space
+            space = space,
+            parentId = null
         )
         return categoryRepository.save(category).mapToResponse()
     }
@@ -89,7 +90,8 @@ class CategoryService(
                 icon = categoryRequest.icon,
                 position = categoryRequest.position,
                 type = categoryRequest.type,
-                space = space
+                space = space,
+                parentId = null
             )
 
             val savedCategory = categoryRepository.save(category)
