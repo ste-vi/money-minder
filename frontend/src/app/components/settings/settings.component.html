@@ -1,9 +1,33 @@
 <app-header></app-header>
 
 <div class="settings-container">
+
   <div class="accounting-settings">
 
-    <div><b>Accounting entity settings</b></div>
+    <div><b>Personal settings</b></div>
+
+    <div class="accounting-settings-container">
+      <div class="accounting-settings-item-container" (click)="openSpaces()">
+        <div class="accounting-settings-item-header">
+          <mat-icon svgIcon="spaces" class="small-icon active"></mat-icon>
+          Spaces
+        </div>
+        <mat-icon svgIcon="alt-arrow-right" class="small-icon"></mat-icon>
+      </div>
+
+      <div class="accounting-settings-item-container">
+        <div class="accounting-settings-item-header">
+          <mat-icon svgIcon="bank" class="small-icon active"></mat-icon>
+          Connected banks
+        </div>
+        <mat-icon svgIcon="alt-arrow-right" class="small-icon"></mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="accounting-settings">
+
+    <div><b>Space settings</b></div>
 
     <div class="accounting-settings-container">
       <div class="accounting-settings-item-container" (click)="openCategorySettings()">
@@ -36,6 +60,7 @@
       </div>
     </div>
   </div>
+
 </div>
 
 <app-transaction-account-filter

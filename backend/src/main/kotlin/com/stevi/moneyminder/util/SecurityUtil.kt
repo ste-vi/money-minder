@@ -1,9 +1,11 @@
 package com.stevi.moneyminder.util
 
 import com.stevi.moneyminder.security.CustomUserDetails
+import jakarta.servlet.http.HttpServletRequest
 import java.util.*
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 
 class SecurityUtil {
 
@@ -23,6 +25,17 @@ class SecurityUtil {
                 SecurityContextHolder.getContext().authentication as UsernamePasswordAuthenticationToken
             val userDetails = usernamePasswordAuthenticationToken.principal as CustomUserDetails
             return userDetails
+        }
+
+        fun updateContext(userId: UUID, spaceId: UUID, request: HttpServletRequest) {
+            val userDetails = CustomUserDetails(
+                userId = userId,
+                spaceId = spaceId
+            )
+
+            val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
+            authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+            SecurityContextHolder.getContext().authentication = authToken
         }
     }
 }

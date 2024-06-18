@@ -353,5 +353,11 @@ export class AppComponent {
         '../assets/icons/svg/user-rounded-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'bank',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/bank-svgrepo-com.svg',
+      ),
+    );
   }
 }

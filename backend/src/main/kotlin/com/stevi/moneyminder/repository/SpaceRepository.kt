@@ -5,4 +5,8 @@ import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface SpaceRepository : JpaRepository<Space, UUID> {
+
+    fun findAllByUserId(userId: UUID): List<Space>
+
+    fun findByIdAndUserId(id: UUID, userId: UUID): Space?
 }

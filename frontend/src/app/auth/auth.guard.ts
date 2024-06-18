@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -21,11 +15,10 @@ export class AuthGuard {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-
     if (this.authService.isAuthenticated()) {
       return true;
     } else {
-      this.router.navigate(['auth']).then((r) => '');
+      this.router.navigate(['/auth']).then((r) => '');
       return false;
     }
   }

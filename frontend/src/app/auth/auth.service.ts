@@ -22,7 +22,7 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('accessToken');
-    if (token) {
+    if (token !== 'null' && token !== undefined) {
       this.loggedIn.next(!this.jwtHelper.isTokenExpired(token));
       return !this.jwtHelper.isTokenExpired(token);
     } else {
@@ -50,5 +50,6 @@ export class AuthService {
 
   removeAuthorization(): void {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('space');
   }
 }

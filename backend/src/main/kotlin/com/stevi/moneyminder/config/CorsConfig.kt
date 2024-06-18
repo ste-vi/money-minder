@@ -17,7 +17,7 @@ class CorsConfig : WebMvcConfigurer {
             .allowedOrigins(allowedOrigins)
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedHeaders("*")
-            .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+            .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Token")
             .allowCredentials(true)
             .maxAge(3600)
     }

@@ -1,5 +1,6 @@
 package com.stevi.moneyminder.security
 
+import com.stevi.moneyminder.util.SecurityUtil
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -25,19 +26,10 @@ class JwtAuthenticationFilter(
         }
 
         if (SecurityContextHolder.getContext().authentication == null && !tokenService.isExpired(token)) {
-            updateContext(token, request)
+            val userId = tokenService.extractUserId(token)
+            val spaceId = tokenService.extractSpaceId(token)
+            SecurityUtil.updateContext(userId, spaceId, request)
         }
         filterChain.doFilter(request, response)
-    }
-
-    private fun updateContext(token: String, request: HttpServletRequest) {
-        val userDetails = CustomUserDetails(
-            userId = tokenService.extractUserId(token),
-            spaceId = tokenService.extractSpaceId(token)
-        )
-
-        val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
-        authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-        SecurityContextHolder.getContext().authentication = authToken
     }
 }

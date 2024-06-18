@@ -36,7 +36,6 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
-
 	runtimeOnly("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.security:spring-security-test")

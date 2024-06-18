@@ -1,16 +1,18 @@
-import {Component, ElementRef} from '@angular/core';
-import {MatIcon} from '@angular/material/icon';
-import {NgIf} from '@angular/common';
-import {NavigationEnd, Router} from '@angular/router';
-import {SelectAccountTypeServiceService} from '../../../services/communication/select-account-type-service.service';
-import {SpaceService} from "../../../services/api/space-service";
-import {Space} from "../../../models/space";
-import {ProfileService} from "../../../services/communication/profile-service";
+import { Component, ElementRef } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
+import { SelectAccountTypeServiceService } from '../../../services/communication/select-account-type-service.service';
+import { SpaceService } from '../../../services/api/space-service';
+import { Space } from '../../../models/space';
+import { ProfileService } from '../../../services/communication/profile-service';
+import {SpacesComponent} from "../spaces/spaces.component";
+import {ViewSpacesService} from "../../../services/communication/view-spaces-service";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIcon, NgIf],
+  imports: [MatIcon, NgIf, SpacesComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -26,10 +28,20 @@ export class HeaderComponent {
     private router: Router,
     private selectAccountTypeServiceService: SelectAccountTypeServiceService,
     private spaceService: SpaceService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private viewSpacesService: ViewSpacesService
   ) {
     this.initButtons();
-    this.spaceService.getCurrentSpace().subscribe(space => this.space = space)
+
+    let localSpace = localStorage.getItem('space');
+    if (localSpace === null) {
+      this.spaceService.getCurrentSpace().subscribe((space) => {
+        this.space = space;
+        localStorage.setItem('space', JSON.stringify(space));
+      });
+    } else {
+      this.space = JSON.parse(localSpace);
+    }
   }
 
   private initButtons() {
@@ -63,5 +75,9 @@ export class HeaderComponent {
 
   openProfile() {
     this.profileService.openModal(true);
+  }
+
+  openSpaces() {
+    this.viewSpacesService.openModal()
   }
 }
