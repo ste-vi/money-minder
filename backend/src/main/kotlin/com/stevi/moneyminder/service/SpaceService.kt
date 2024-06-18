@@ -11,6 +11,7 @@ import com.stevi.moneyminder.security.TokenService
 import com.stevi.moneyminder.util.SecurityUtil
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import java.time.LocalDateTime
 import java.util.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 class SpaceService(
     private val spaceRepository: SpaceRepository,
     private val userRepository: UserRepository,
-    private val tokenService: TokenService
+    private val tokenService: TokenService,
+    private val categoryService: CategoryService
 ) {
 
     @Transactional(readOnly = true)
@@ -29,7 +31,7 @@ class SpaceService(
 
     @Transactional(readOnly = true)
     fun getSpaceResponses(userId: UUID): List<SpaceResponse> {
-        return spaceRepository.findAllByUserId(userId).map { it.mapToResponse() }
+        return spaceRepository.findAllByUserIdOrderByCreatedDate(userId).map { it.mapToResponse() }
     }
 
     @Transactional
@@ -40,10 +42,16 @@ class SpaceService(
             id = null,
             name = spaceRequest.name,
             primaryCurrency = Currency.fromCode(spaceRequest.primaryCurrencyCode),
-            user = user
+            user = user,
+            createdDate = LocalDateTime.now(),
+            updatedDate = LocalDateTime.now()
         )
 
-        return spaceRepository.save(space).mapToResponse()
+        val savedSpace = spaceRepository.save(space)
+
+        categoryService.initDefaultCategories(space)
+
+        return savedSpace.mapToResponse()
     }
 
     @Transactional
@@ -52,7 +60,12 @@ class SpaceService(
         space.name = newName
     }
 
-    fun switchSpace(userId: UUID, spaceId: UUID, request: HttpServletRequest, response: HttpServletResponse): SpaceResponse {
+    fun switchSpace(
+        userId: UUID,
+        spaceId: UUID,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ): SpaceResponse {
         val space = spaceRepository.findByIdAndUserId(spaceId, userId) ?: throw Exception("Space not found")
 
         val user = userRepository.findById(userId).orElseThrow()

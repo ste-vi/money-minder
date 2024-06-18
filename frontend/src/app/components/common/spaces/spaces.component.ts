@@ -4,14 +4,13 @@ import { ViewSpacesService } from '../../../services/communication/view-spaces-s
 import { Space } from '../../../models/space';
 import { SpaceService } from '../../../services/api/space-service';
 import { MatIcon } from '@angular/material/icon';
-import { HttpResponse } from '@angular/common/http';
-import { AuthService } from '../../../auth/auth.service';
-import { Router } from '@angular/router';
+import { CreateSpaceComponent } from './create-space/create-space.component';
+import { CreateSpaceService } from '../../../services/communication/create-space-service';
 
 @Component({
   selector: 'app-spaces',
   standalone: true,
-  imports: [NgIf, MatIcon, NgForOf, NgClass],
+  imports: [NgIf, MatIcon, NgForOf, NgClass, CreateSpaceComponent],
   templateUrl: './spaces.component.html',
   styleUrl: './spaces.component.scss',
 })
@@ -23,19 +22,19 @@ export class SpacesComponent {
   constructor(
     private viewSpacesService: ViewSpacesService,
     private spaceService: SpaceService,
-    private authService: AuthService,
-    private router: Router,
+    private createSpaceService: CreateSpaceService,
   ) {
     this.viewSpacesService.modalOpened$.subscribe(() => {
       this.isOpened = true;
-      // todo: fix: it is called multiple times..
-      this.spaceService
-        .getSpaces()
-        .subscribe((spaces) => (this.spaces = spaces));
+      this.getSpaces();
     });
 
     // @ts-ignore
     this.currentSpace = JSON.parse(localStorage.getItem('space'));
+  }
+
+  private getSpaces() {
+    this.spaceService.getSpaces().subscribe((spaces) => (this.spaces = spaces));
   }
 
   closeModal() {
@@ -46,15 +45,14 @@ export class SpacesComponent {
     if (this.currentSpace?.id === spaceId) {
       return;
     }
+    this.spaceService.switchSpace(spaceId);
+  }
 
-    this.spaceService
-      .switchSpace(spaceId)
-      .subscribe((response: any) => {
-        const headers = response.headers;
-        console.log(headers);
-        this.authService.setAccessToken(headers.get('Token')!);
-        localStorage.setItem('space', JSON.stringify(response.body));
-        window.location.reload();
-      });
+  createSpace() {
+    this.createSpaceService.openModal(undefined);
+  }
+
+  editSpace(space: Space) {
+    this.createSpaceService.openModal(space);
   }
 }

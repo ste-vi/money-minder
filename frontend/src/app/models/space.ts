@@ -3,5 +3,5 @@ import {Currency} from "./currency";
 export interface Space {
   id: string;
   name: string;
-  currentCurrency: Currency;
+  primaryCurrency: Currency;
 }

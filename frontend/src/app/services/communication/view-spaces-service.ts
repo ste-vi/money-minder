@@ -5,11 +5,11 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ViewSpacesService {
-  private openModalSource = new Subject<void>();
+  private openModalSource = new Subject<boolean>();
 
   modalOpened$ = this.openModalSource.asObservable();
 
   openModal() {
-    this.openModalSource.next();
+    this.openModalSource.next(true);
   }
 }

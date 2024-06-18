@@ -6,8 +6,8 @@ import { SelectAccountTypeServiceService } from '../../../services/communication
 import { SpaceService } from '../../../services/api/space-service';
 import { Space } from '../../../models/space';
 import { ProfileService } from '../../../services/communication/profile-service';
-import {SpacesComponent} from "../spaces/spaces.component";
-import {ViewSpacesService} from "../../../services/communication/view-spaces-service";
+import { SpacesComponent } from '../spaces/spaces.component';
+import { ViewSpacesService } from '../../../services/communication/view-spaces-service';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +29,7 @@ export class HeaderComponent {
     private selectAccountTypeServiceService: SelectAccountTypeServiceService,
     private spaceService: SpaceService,
     private profileService: ProfileService,
-    private viewSpacesService: ViewSpacesService
+    private viewSpacesService: ViewSpacesService,
   ) {
     this.initButtons();
 
@@ -42,6 +42,10 @@ export class HeaderComponent {
     } else {
       this.space = JSON.parse(localSpace);
     }
+
+    this.spaceService.spaceUpdated$.subscribe(() => {
+      this.space = JSON.parse(localStorage.getItem('space')!);
+    });
   }
 
   private initButtons() {
@@ -78,6 +82,6 @@ export class HeaderComponent {
   }
 
   openSpaces() {
-    this.viewSpacesService.openModal()
+    this.viewSpacesService.openModal();
   }
 }

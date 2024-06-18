@@ -4,11 +4,18 @@ import com.stevi.moneyminder.entity.Account
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.MonoBankInfo
 import com.stevi.moneyminder.entity.AccountType
+import com.stevi.moneyminder.entity.Transaction
+import com.stevi.moneyminder.entity.TransactionType
+import com.stevi.moneyminder.entity.applyRule
 import com.stevi.moneyminder.model.request.LinkMonoBankAccountRequest
 import com.stevi.moneyminder.model.response.MonoBankAccountResponse
 import com.stevi.moneyminder.model.response.MonoBankTransactionResponse
 import com.stevi.moneyminder.repository.MonoBankInfoRepository
+import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.SpaceRepository
+import com.stevi.moneyminder.repository.TransactionRepository
+import com.stevi.moneyminder.repository.projection.AccountMonoBankTokenProjection
+import com.stevi.moneyminder.scheduler.MonoBankTransactionScheduler
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -29,6 +36,8 @@ class MonoBankService(
     private val spaceRepository: SpaceRepository,
     private val accountService: AccountService,
     private val restTemplate: RestTemplate,
+    private val transactionRepository: TransactionRepository,
+    private val ruleRepository: RuleRepository,
     @Value("\${monobank.api.url}") private val monoBankUrl: String
 ) {
 
@@ -149,5 +158,62 @@ class MonoBankService(
                 createdDate = LocalDateTime.now()
             )
         )
+
+        // todo: fetch transactions immediately after linking
+        //fetchRecentTransactionsFromMono()
+    }
+
+    @Transactional
+    fun fetchRecentTransactionsFromMono(projection: AccountMonoBankTokenProjection) {
+        val account = projection.getAccount()
+        val monoBankAccountId = account.monoBankId ?: throw RuntimeException();
+
+        val monoTransactions =
+            fetchResentTransactions(monoBankAccountId, projection.getMonoBankToken())
+
+        val recentTransactionsMonoIds =
+            transactionRepository.findMonoBankIdsByDateGreaterThan(LocalDateTime.now().minusMonths(1));
+
+        val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(account.space.id!!)
+
+        val newTransactions = monoTransactions.stream()
+            .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
+            .map { monoTransaction ->
+                val transactionType =
+                    if (monoTransaction.amount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
+
+                val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC)
+
+                val amount = monoTransaction.amount.toBigDecimal()
+                    .divide(BigDecimal.valueOf(100))
+                    .abs()
+
+                val transaction = Transaction(
+                    id = null,
+                    name = monoTransaction.description,
+                    notes = monoTransaction.comment,
+                    amount = amount,
+                    currency = Currency.fromCode(monoTransaction.currencyCode),
+                    date = date,
+                    monoBankId = monoTransaction.id,
+                    fromAccount = account,
+                    toAccount = null,
+                    category = null,
+                    type = transactionType,
+                    createdDate = date
+                )
+
+                // todo: transfer
+
+                rules.stream().anyMatch { rule -> transaction.applyRule(rule) }
+
+                return@map transaction
+            }.toList()
+
+        if (newTransactions.isNotEmpty()) {
+            accountService.updateAccountBalance(account, monoTransactions.first().balance)
+        }
+
+        transactionRepository.saveAll(newTransactions)
     }
 }

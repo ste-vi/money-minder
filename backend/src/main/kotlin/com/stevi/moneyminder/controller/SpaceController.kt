@@ -10,9 +10,11 @@ import jakarta.servlet.http.HttpServletResponse
 import java.util.*
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -46,12 +48,12 @@ class SpaceController(private val spaceService: SpaceService) {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    fun createSpace(spaceRequest: SpaceRequest): SpaceResponse {
+    fun createSpace(@RequestBody spaceRequest: SpaceRequest): SpaceResponse {
         return spaceService.createSpace(SecurityUtil.getCurrentUserId(), spaceRequest);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{spaceId}")
+    @PatchMapping("/{spaceId}")
     fun updateSpaceName(@PathVariable spaceId: UUID, newName: String) {
         spaceService.updateSpaceName(spaceId, newName);
     }

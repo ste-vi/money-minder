@@ -1,10 +1,12 @@
 package com.stevi.moneyminder.service
 
+import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.User
 import com.stevi.moneyminder.model.response.UserResponse
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.UserRepository
+import java.time.LocalDateTime
 import java.util.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -42,7 +44,7 @@ class UserService(
     }
 
     private fun initSpaceForUser(user: User): Space {
-        val space = spaceRepository.save(Space(null, "Default", user))
+        val space = spaceRepository.save(Space(null, "Personal", user, Currency.UAH, LocalDateTime.now(), LocalDateTime.now()))
         categoryService.initDefaultCategories(space)
         return space
     }
