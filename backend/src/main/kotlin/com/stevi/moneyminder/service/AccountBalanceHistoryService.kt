@@ -6,8 +6,7 @@ import com.stevi.moneyminder.model.response.NetWorthHistory
 import com.stevi.moneyminder.repository.AccountBalanceHistoryRepository
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.util.*
 import org.springframework.stereotype.Service
@@ -24,32 +23,52 @@ class AccountBalanceHistoryService(
     @Transactional(readOnly = true)
     fun getHistoryForLastYear(spaceId: UUID): List<NetWorthHistory> {
         val historyList = repository.findLastBalanceHistoryBySpaceId(spaceId)
+        val map = mutableMapOf<Month, MutableList<AccountBalanceHistory>>()
 
-        return historyList.groupBy { it.date }
-            .map { (date, history) ->
-                val totalBalance = history.sumOf { it.balance }
-                val formattedDate = date.format(DATE_FORMATTER)
-                NetWorthHistory(totalBalance, formattedDate)
+        historyList.stream().forEach { history ->
+            run {
+                val month = map.keys.firstOrNull { it == history.date.month }
+                if (month == null) {
+                    map[history.date.month] = mutableListOf(history)
+                } else {
+                    map[month]?.add(history)
+                }
             }
+        }
+
+        val netWorthHistories = mutableListOf<NetWorthHistory>()
+
+        map.entries.forEach { entry ->
+            run {
+                val totalBalance = entry.value.stream().map { h -> h.balance }.reduce(BigDecimal.ZERO, BigDecimal::add)
+                val formattedDate = entry.value.map { h -> h.date }.first().format(DATE_FORMATTER)
+                netWorthHistories.add(NetWorthHistory(totalBalance, formattedDate))
+            }
+        }
+
+        return netWorthHistories
     }
 
     @Transactional
     fun saveHistory(account: Account) {
-        val alreadyExistsForToday = repository.existsByAccountIdAndDate(account.id!!, LocalDate.now())
-        if (alreadyExistsForToday) {
-            return;
-        }
-
         val balance = convertBalanceToSpaceCurrency(account)
+        val today = LocalDate.now()
 
-        repository.save(
-            AccountBalanceHistory(
-                id = null,
-                balance = balance,
-                date = LocalDate.now(),
-                account = account
+        val existingHistory = repository.findByAccountIdAndDate(account.id!!, today)
+
+        if (existingHistory != null) {
+            existingHistory.balance = balance
+            repository.save(existingHistory)
+        } else {
+            repository.save(
+                AccountBalanceHistory(
+                    id = null,
+                    balance = balance,
+                    date = today,
+                    account = account
+                )
             )
-        )
+        }
     }
 
     private fun convertBalanceToSpaceCurrency(account: Account): BigDecimal {

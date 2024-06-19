@@ -6,43 +6,42 @@ import {RuleService} from "../../../services/api/rule-service";
 import {ConditionTypeEnum, Rule} from "../../../models/rule";
 import {CreateRuleService} from "../../../services/communication/create-rule-service";
 import {CreateRuleComponent} from "./create-rule/create-rule.component";
+import {LoaderComponent} from "../../common/loader/loader.component";
 
 @Component({
   selector: 'app-rules-settings',
   standalone: true,
-  imports: [
-    NgIf,
-    MatIcon,
-    NgForOf,
-    CreateRuleComponent
-  ],
+  imports: [NgIf, MatIcon, NgForOf, CreateRuleComponent, LoaderComponent],
   templateUrl: './rules-settings.component.html',
-  styleUrl: './rules-settings.component.scss'
+  styleUrl: './rules-settings.component.scss',
 })
 export class RulesSettingsComponent implements OnInit {
-
   protected isOpened: boolean = false;
+  protected readonly ConditionTypeEnum = ConditionTypeEnum;
+  protected isLoading: boolean = false;
   protected rules: Rule[] = [];
 
-  constructor(private ruleSettingsService: RulesSettingsService,
-              private ruleService: RuleService,
-              private createRuleService: CreateRuleService) {
-
-  }
+  constructor(
+    private ruleSettingsService: RulesSettingsService,
+    private ruleService: RuleService,
+    private createRuleService: CreateRuleService,
+  ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.ruleSettingsService.modalOpened$.subscribe(() => {
       this.showModal();
+      this.loadRules();
     });
-    this.loadRules();
     this.ruleService.refreshRules$.subscribe(() => {
       this.loadRules();
-    })
+    });
   }
 
   private loadRules() {
     this.ruleService.getRules().subscribe((rules) => {
       this.rules = rules;
+      this.isLoading = false;
     });
   }
 
@@ -57,6 +56,4 @@ export class RulesSettingsComponent implements OnInit {
   addRule() {
     this.createRuleService.openModal();
   }
-
-  protected readonly ConditionTypeEnum = ConditionTypeEnum;
 }

@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
-import {AccountType} from '../../models/account-type';
-import {Category, CategoryType} from "../../models/category";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { AccountType } from '../../models/account-type';
+import { Category, CategoryType } from '../../models/category';
 
 @Injectable({
   providedIn: 'root',

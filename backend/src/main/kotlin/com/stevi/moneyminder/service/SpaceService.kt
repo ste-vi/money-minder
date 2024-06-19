@@ -21,7 +21,8 @@ class SpaceService(
     private val spaceRepository: SpaceRepository,
     private val userRepository: UserRepository,
     private val tokenService: TokenService,
-    private val categoryService: CategoryService
+    private val categoryService: CategoryService,
+    private val accountService: AccountService
 ) {
 
     @Transactional(readOnly = true)
@@ -49,7 +50,8 @@ class SpaceService(
 
         val savedSpace = spaceRepository.save(space)
 
-        categoryService.initDefaultCategories(space)
+        categoryService.initDefaultCategories(savedSpace)
+        accountService.createDefaultAccount(savedSpace)
 
         return savedSpace.mapToResponse()
     }

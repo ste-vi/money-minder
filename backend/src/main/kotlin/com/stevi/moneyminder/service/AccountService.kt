@@ -3,9 +3,11 @@ package com.stevi.moneyminder.service
 import com.stevi.moneyminder.entity.Account
 import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.entity.Currency
+import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.Transaction
 import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.mapToResponse
+import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.request.AccountRequest
 import com.stevi.moneyminder.model.response.AccountResponse
 import com.stevi.moneyminder.model.response.MonoBankExchangeRateResponse
@@ -37,8 +39,8 @@ class AccountService(
     }
 
     @Transactional
-    fun saveAccount(account: Account) {
-        accountRepository.save(account);
+    fun saveAccount(account: Account): Account {
+        return accountRepository.save(account);
     }
 
     @Transactional(readOnly = true)
@@ -111,6 +113,24 @@ class AccountService(
     }
 
     @Transactional
+    fun createDefaultAccount(space: Space) {
+        val account = Account(
+            id = null,
+            name = "Cash",
+            description = null,
+            balance = BigDecimal.ZERO,
+            monoBankId = null,
+            currency = Currency.UAH,
+            type = AccountType.CASH,
+            space = space,
+            createdDate = LocalDateTime.now(),
+            default = true
+        )
+
+        accountRepository.save(account);
+    }
+
+    @Transactional
     fun updateAccount(id: UUID, accountRequest: AccountRequest) {
         val account = getAccountById(id)
         val oldBalance = account.balance;
@@ -148,12 +168,13 @@ class AccountService(
 
     @Transactional(readOnly = true)
     fun getDefaultAccount(spaceId: UUID): AccountResponse {
-        return accountRepository.findByDefaultIsTrueAndSpaceId(spaceId).map { it.mapToResponse() }.orElseThrow()
+        return accountRepository.findBySpaceIdAndDefaultIsTrue(spaceId).map { it.mapToResponse() }
+            .orElseThrow { ResourceNotFoundException("No default account found") }
     }
 
     @Transactional
     fun updateDefaultAccount(spaceId: UUID, accountId: UUID) {
-        val currentDefaultAccount = accountRepository.findByDefaultIsTrueAndSpaceId(spaceId).orElseThrow()
+        val currentDefaultAccount = accountRepository.findBySpaceIdAndDefaultIsTrue(spaceId).orElseThrow()
         if (currentDefaultAccount.id?.equals(accountId) == true) {
             return
         }

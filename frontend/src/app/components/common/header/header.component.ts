@@ -59,7 +59,7 @@ export class HeaderComponent {
           this.showReload = true;
           this.showUser = false;
         } else if (path == 'dashboard') {
-          this.showEdit = true;
+          this.showEdit = false;
           this.showAdd = false;
           this.showReload = true;
           this.showUser = false;

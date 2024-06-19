@@ -26,7 +26,7 @@ class RuleService(
     }
 
     @Transactional
-    fun createRule(spaceId: UUID, ruleRequest: RuleRequest, applyToExistingTransactions: Boolean?): RuleResponse {
+    fun createRule(spaceId: UUID, ruleRequest: RuleRequest, applyToExistingTransactions: Boolean): RuleResponse {
         val space = spaceRepository.findById(spaceId).orElseThrow { IllegalArgumentException("Space not found") }
         val category = categoryRepository.findById(ruleRequest.assignCategoryId)
             .orElseThrow { IllegalArgumentException("Category not found") }
@@ -42,7 +42,9 @@ class RuleService(
             space = space
         )
 
-        applyToExistingTransactions.let { transactionService.applyRuleToExistingTransactions(spaceId, rule) }
+        if (applyToExistingTransactions) {
+            transactionService.applyRuleToExistingTransactions(spaceId, rule)
+        }
 
         return ruleRepository.save(rule).mapToResponse()
     }

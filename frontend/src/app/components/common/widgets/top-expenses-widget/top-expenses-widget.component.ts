@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe, DecimalPipe, NgForOf } from '@angular/common';
+import {DatePipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CategoryService } from '../../../../services/api/category-service';
 import { TopExpense } from '../../../../models/top-expense';
@@ -16,7 +16,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-top-expenses-widget',
   standalone: true,
-  imports: [DatePipe, NgForOf, NgApexchartsModule, MatIcon, DecimalPipe],
+  imports: [DatePipe, NgForOf, NgApexchartsModule, MatIcon, DecimalPipe, NgIf],
   templateUrl: './top-expenses-widget.component.html',
   styleUrls: ['./top-expenses-widget.component.scss'],
 })

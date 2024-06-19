@@ -20,7 +20,6 @@ interface AccountBalanceHistoryRepository : JpaRepository<AccountBalanceHistory,
                    abh.account_id,
                    abh.balance,
                    abh.date,
-                   extract(month from abh.date) as month,
                    row_number() over (
                        partition by abh.account_id, extract(month from abh.date)
                        order by abh.date desc
@@ -31,12 +30,12 @@ interface AccountBalanceHistoryRepository : JpaRepository<AccountBalanceHistory,
                 and abh.date >= (current_date - interval '1 year')
         ) t
         where t.rn = 1
-        order by t.account_id, t.month
+        order by t.date
         """,
         nativeQuery = true
     )
     fun findLastBalanceHistoryBySpaceId(@Param("spaceId") spaceId: UUID): List<AccountBalanceHistory>
 
-    fun existsByAccountIdAndDate(accountId: UUID, date: LocalDate): Boolean
+    fun findByAccountIdAndDate(accountId: UUID, date: LocalDate): AccountBalanceHistory?
 
 }

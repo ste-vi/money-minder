@@ -34,5 +34,5 @@ interface AccountRepository : JpaRepository<Account, UUID> {
 
     fun findAllBySpaceIdAndMonoBankIdIsNullOrderByCreatedDate(spaceId: UUID): List<Account>
 
-    fun findByDefaultIsTrueAndSpaceId(spaceId: UUID): Optional<Account>
+    fun findBySpaceIdAndDefaultIsTrue(spaceId: UUID): Optional<Account>
 }

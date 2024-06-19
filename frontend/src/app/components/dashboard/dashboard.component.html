@@ -13,6 +13,7 @@
       <div *ngFor="let transaction of transactions; let i = index">
         <app-transaction [transaction]="transaction" [isLast]="i === transactions.length - 1"></app-transaction>
       </div>
+      <div class="secondary-header-text" *ngIf="transactions.length === 0">No transactions yet</div>
       <app-loader *ngIf="isLoading"></app-loader>
     </div>
   </div>
@@ -21,9 +22,3 @@
 </div>
 
 <app-nav></app-nav>
-
-<app-category-expenses></app-category-expenses>
-<app-transaction-view></app-transaction-view>
-<app-search-transactions></app-search-transactions>
-<app-categories></app-categories>
-<app-create-transaction></app-create-transaction>

@@ -47,8 +47,11 @@ export class CreateAccountComponent {
     this.createAccountService.modalOpened$.subscribe((type) => {
       this.showModal();
       this.accountForm.controls['type'].setValue(type);
+      this.loadCurrencies();
     });
+  }
 
+  private loadCurrencies() {
     this.currencyService.getCurrencies().subscribe((currencies) => {
       this.currencies = currencies;
       this.accountForm.controls['currency'].setValue(currencies[0]);
@@ -61,7 +64,7 @@ export class CreateAccountComponent {
 
   closeModal() {
     this.isOpened = false;
-    this.resetForm()
+    this.resetForm();
   }
 
   formatBalance(): void {
@@ -86,17 +89,19 @@ export class CreateAccountComponent {
       return;
     }
 
-    this.accountService.createAccount({
-      name: this.accountForm.controls['title'].value,
-      currencyCode: this.accountForm.controls['currency'].value.code,
-      balance: parseFloat(
-        parseFloat(this.accountForm.controls['balance'].value).toFixed(2),
-      ),
-      typeId: this.accountForm.controls['type'].value.id,
-    }).subscribe(() => {
-      this.closeModal();
-      this.resetForm();
-    });
+    this.accountService
+      .createAccount({
+        name: this.accountForm.controls['title'].value,
+        currencyCode: this.accountForm.controls['currency'].value.code,
+        balance: parseFloat(
+          parseFloat(this.accountForm.controls['balance'].value).toFixed(2),
+        ),
+        typeId: this.accountForm.controls['type'].value.id,
+      })
+      .subscribe(() => {
+        this.closeModal();
+        this.resetForm();
+      });
   }
 
   private resetForm() {

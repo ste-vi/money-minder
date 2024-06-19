@@ -4,7 +4,7 @@
     <div class="edit-button" (click)="editModal()">Edit</div>
   </div>
 
-  <div class="view-account-body" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="10"
+  <div class="view-account-body" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
        [scrollWindow]="false" (scrolled)="loadMore()">
     <div class="account-icon">
       <mat-icon svgIcon="{{account?.type?.iconName}}" class="icon"></mat-icon>

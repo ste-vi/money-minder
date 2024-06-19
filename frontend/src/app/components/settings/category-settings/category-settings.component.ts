@@ -5,11 +5,12 @@ import {MatIcon} from '@angular/material/icon';
 import {CategoryService} from "../../../services/api/category-service";
 import {Category, CategoryType} from "../../../models/category";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {LoaderComponent} from "../../common/loader/loader.component";
 
 @Component({
   selector: 'app-category-settings',
   standalone: true,
-  imports: [NgIf, MatIcon, NgForOf, MatTabGroup, MatTab],
+  imports: [NgIf, MatIcon, NgForOf, MatTabGroup, MatTab, LoaderComponent],
   templateUrl: './category-settings.component.html',
   styleUrl: './category-settings.component.scss',
 })
@@ -22,17 +23,26 @@ export class CategorySettingsComponent implements OnInit {
   protected isExpenseTabActive: boolean = true;
   protected isIncomeTabActive: boolean = false;
 
-  constructor(private categoriesSettingsService: CategoriesSettingsService, private categoryService: CategoryService) {
-
-  }
+  constructor(
+    private categoriesSettingsService: CategoriesSettingsService,
+    private categoryService: CategoryService,
+  ) {}
 
   ngOnInit(): void {
     this.categoriesSettingsService.modalOpened$.subscribe(() => {
       this.showModal();
+      this.loadCategories();
     });
+  }
+
+  private loadCategories() {
     this.categoryService.getCategories().subscribe((categories) => {
-      this.expenseCategories = categories.filter(category => category.type === CategoryType.EXPENSE);
-      this.incomeCategories = categories.filter(category => category.type === CategoryType.INCOME);
+      this.expenseCategories = categories.filter(
+        (category) => category.type === CategoryType.EXPENSE,
+      );
+      this.incomeCategories = categories.filter(
+        (category) => category.type === CategoryType.INCOME,
+      );
     });
   }
 
@@ -44,16 +54,11 @@ export class CategorySettingsComponent implements OnInit {
     this.isOpened = false;
   }
 
-  addCategory() {
-  }
+  addCategory() {}
 
-  viewCategory(category: Category) {
+  viewCategory(category: Category) {}
 
-  }
-
-  viewSubCategory(subCategory: Category) {
-
-  }
+  viewSubCategory(subCategory: Category) {}
 
   selectExpenseTab() {
     this.isExpenseTabActive = true;

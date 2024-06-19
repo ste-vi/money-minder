@@ -16,8 +16,7 @@
           <span> {{ (topExpense.total || 0).toLocaleString() }} {{ topExpense.currencySign }}</span>
         </div>
       </div>
-
     </div>
-
+    <div class="secondary-header-text" *ngIf="topExpenses.length === 0">No expenses yet</div>
   </div>
 </div>

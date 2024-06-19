@@ -1,12 +1,14 @@
-import {Component} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {MatIcon} from "@angular/material/icon";
-import {CreateRuleService} from "../../../../services/communication/create-rule-service";
-import {RuleService} from "../../../../services/api/rule-service";
-import {ConditionTypeEnum} from "../../../../models/rule";
-import {Category, CategoryType} from "../../../../models/category";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {SelectCategoryService} from "../../../../services/communication/select-category-service";
+import { Component } from '@angular/core';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { CreateRuleService } from '../../../../services/communication/create-rule-service';
+import { RuleService } from '../../../../services/api/rule-service';
+import { ConditionTypeEnum } from '../../../../models/rule';
+import { Category, CategoryType } from '../../../../models/category';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SelectCategoryService } from '../../../../services/communication/select-category-service';
+import { CategorySettingsComponent } from '../../category-settings/category-settings.component';
+import { CategoriesComponent } from '../../../common/categories/categories.component';
 
 @Component({
   selector: 'app-create-rule',
@@ -17,31 +19,33 @@ import {SelectCategoryService} from "../../../../services/communication/select-c
     NgClass,
     NgForOf,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CategorySettingsComponent,
+    CategoriesComponent,
   ],
   templateUrl: './create-rule.component.html',
-  styleUrl: './create-rule.component.scss'
+  styleUrl: './create-rule.component.scss',
 })
 export class CreateRuleComponent {
-
   protected isOpened: boolean = false;
 
   protected readonly ConditionTypeEnum = ConditionTypeEnum;
 
   protected conditionType: ConditionTypeEnum = ConditionTypeEnum.TEXT_CONTAINS;
-  protected conditionText: string = "";
+  protected conditionText: string = '';
   protected assignCategory: Category | undefined = undefined;
   protected applyToExistingTransactions: boolean = false;
 
-  constructor(private createRuleService: CreateRuleService,
-              private ruleService: RuleService,
-              private selectCategoryService: SelectCategoryService) {
+  constructor(
+    private createRuleService: CreateRuleService,
+    private ruleService: RuleService,
+    private selectCategoryService: SelectCategoryService,
+  ) {
     this.createRuleService.modalOpened$.subscribe(() => {
       this.openModal();
-    });
-
-    this.selectCategoryService.categorySelected$.subscribe((category) => {
-      this.assignCategory = category;
+      this.selectCategoryService.categorySelected$.subscribe((category) => {
+        this.assignCategory = category;
+      });
     });
   }
 
@@ -54,7 +58,7 @@ export class CreateRuleComponent {
   }
 
   selectCategory() {
-    this.selectCategoryService.openModal(CategoryType.EXPENSE)
+    this.selectCategoryService.openModal(CategoryType.EXPENSE);
   }
 
   selectConditionType(type: ConditionTypeEnum) {
@@ -62,19 +66,20 @@ export class CreateRuleComponent {
   }
 
   createRule() {
-    if (this.conditionText == "" || this.assignCategory == undefined) {
+    if (this.conditionText == '' || this.assignCategory == undefined) {
       return;
     }
 
     let request = {
-      "assignCategoryId": this.assignCategory?.id,
-      "conditionText": this.conditionText,
-      "conditionType": this.conditionType
-    }
+      assignCategoryId: this.assignCategory?.id,
+      conditionText: this.conditionText,
+      conditionType: this.conditionType,
+    };
 
-    this.ruleService.createRule(request, this.applyToExistingTransactions).subscribe(() => {
-      this.closeModal();
-    })
+    this.ruleService
+      .createRule(request, this.applyToExistingTransactions)
+      .subscribe(() => {
+        this.closeModal();
+      });
   }
-
 }

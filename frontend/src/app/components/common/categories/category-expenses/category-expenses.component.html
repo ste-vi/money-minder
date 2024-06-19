@@ -4,7 +4,7 @@
     <div></div>
   </div>
 
-  <div class="view-category-expenses-body" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="10"
+  <div class="view-category-expenses-body" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
        [scrollWindow]="false" (scrolled)="loadMore()">
     <div class="category-expenses-icon">
       <mat-icon svgIcon="{{ topExpense?.category ? topExpense?.category?.icon : 'question' }}" class="icon"></mat-icon>

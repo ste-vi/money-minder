@@ -10,10 +10,9 @@
   </div>
 
   <div class="actions">
-    <mat-icon svgIcon="reload" class="icon small-icon" *ngIf="showReload"></mat-icon>
     <mat-icon svgIcon="add-circle" class="icon small-icon active" *ngIf="showAdd"
-              (click)="openAddTypeModal()"></mat-icon>
-    <mat-icon svgIcon="edit" class="icon small-icon" *ngIf="showEdit"></mat-icon>
+    (click)="openAddTypeModal()"></mat-icon>
+    <mat-icon svgIcon="reload" class="icon small-icon" *ngIf="showReload"></mat-icon>
     <mat-icon svgIcon="user" class="icon small-icon" *ngIf="showUser" (click)="openProfile()"></mat-icon>
   </div>
 

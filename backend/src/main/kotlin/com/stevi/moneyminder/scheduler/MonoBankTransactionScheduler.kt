@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 class MonoBankTransactionScheduler(
     private val monoBankService: MonoBankService,
-    private val accountService: AccountService
+    private val accountService: AccountService,
 ) {
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -20,7 +20,7 @@ class MonoBankTransactionScheduler(
     fun run() {
         accountService.getAllMonobankAccounts().stream().forEach { projection ->
             GlobalScope.async {
-                monoBankService.fetchRecentTransactionsFromMono(projection)
+                monoBankService.fetchRecentTransactionsFromMono(projection.getAccount(), projection.getMonoBankToken())
             }
         }
     }

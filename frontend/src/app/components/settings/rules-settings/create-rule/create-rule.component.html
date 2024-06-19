@@ -23,10 +23,10 @@
         <div class="centered-text">Action</div>
         <div class="secondary-header-text">Which category should be assigned to a transaction?</div>
         <div class="clickable" (click)="selectCategory()">
-          Category: {{ assignCategory?.name ?? 'none' }}
+          Category: <span class="active">{{ assignCategory?.name ?? 'none' }}</span>
         </div>
         <div class="update-existing-flag">
-          <input type="checkbox" [checked]="applyToExistingTransactions">
+          <input type="checkbox" [checked]="applyToExistingTransactions" [(ngModel)]="applyToExistingTransactions">
           <span>Apply to existing transactions?</span>
         </div>
       </div>

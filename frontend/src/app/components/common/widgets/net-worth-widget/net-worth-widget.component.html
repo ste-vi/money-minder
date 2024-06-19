@@ -5,7 +5,7 @@
   <div class="net-worth-sum">
     <b>{{ (netWorth?.totalAccountsBalance || 0).toLocaleString() }} {{ netWorth?.primaryCurrency?.sign }}</b>
   </div>
-  <div class="net-worth-graphic">
+  <div class="net-worth-graphic" *ngIf="netWorth?.histories?.length !== 0">
     <apx-chart
       [series]="series"
       [labels]="labels"

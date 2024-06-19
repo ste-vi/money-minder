@@ -14,8 +14,6 @@ import com.stevi.moneyminder.repository.MonoBankInfoRepository
 import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.TransactionRepository
-import com.stevi.moneyminder.repository.projection.AccountMonoBankTokenProjection
-import com.stevi.moneyminder.scheduler.MonoBankTransactionScheduler
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -114,6 +112,34 @@ class MonoBankService(
         }
     }
 
+    @Transactional
+    fun linkAccount(spaceId: UUID, request: LinkMonoBankAccountRequest) {
+        val space = spaceRepository.findById(spaceId).orElseThrow()
+
+        if (accountService.existsBySpaceIdAndMonoBankId(spaceId, request.id)) {
+            throw RuntimeException("Account already linked");
+        }
+
+        val accountName = "Monobank " + request.type.capitalize()
+        val savedAccount = accountService.saveAccount(
+            Account(
+                id = null,
+                name = accountName,
+                description = "Monobank | " + request.maskedPan,
+                balance = request.balance,
+                currency = Currency.fromCode(request.currencyCode),
+                type = AccountType.BANK_ACCOUNTS,
+                monoBankId = request.id,
+                space = space,
+                createdDate = LocalDateTime.now()
+            )
+        )
+
+        val monoBankInfo = monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow()
+
+        fetchRecentTransactionsFromMono(account = savedAccount, monoBankInfo.token)
+    }
+
     fun fetchResentTransactions(accountId: String, token: String): List<MonoBankTransactionResponse> {
         val fromEpochTime = LocalDateTime.now().minusDays(31).plusHours(1).toEpochSecond(ZoneOffset.UTC)
         val uri = "$monoBankUrl/personal/statement/$accountId/$fromEpochTime";
@@ -137,39 +163,11 @@ class MonoBankService(
     }
 
     @Transactional
-    fun linkAccount(spaceId: UUID, request: LinkMonoBankAccountRequest) {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
-
-        if (accountService.existsBySpaceIdAndMonoBankId(spaceId, request.id)) {
-            throw RuntimeException("Account already linked");
-        }
-
-        val accountName = "Monobank " + request.type.capitalize()
-        accountService.saveAccount(
-            Account(
-                id = null,
-                name = accountName,
-                description = "Monobank | " + request.maskedPan,
-                balance = request.balance,
-                currency = Currency.fromCode(request.currencyCode),
-                type = AccountType.BANK_ACCOUNTS,
-                monoBankId = request.id,
-                space = space,
-                createdDate = LocalDateTime.now()
-            )
-        )
-
-        // todo: fetch transactions immediately after linking
-        //fetchRecentTransactionsFromMono()
-    }
-
-    @Transactional
-    fun fetchRecentTransactionsFromMono(projection: AccountMonoBankTokenProjection) {
-        val account = projection.getAccount()
+    fun fetchRecentTransactionsFromMono(account: Account, monoBankToken: String) {
         val monoBankAccountId = account.monoBankId ?: throw RuntimeException();
 
         val monoTransactions =
-            fetchResentTransactions(monoBankAccountId, projection.getMonoBankToken())
+            fetchResentTransactions(monoBankAccountId, monoBankToken)
 
         val recentTransactionsMonoIds =
             transactionRepository.findMonoBankIdsByDateGreaterThan(LocalDateTime.now().minusMonths(1));

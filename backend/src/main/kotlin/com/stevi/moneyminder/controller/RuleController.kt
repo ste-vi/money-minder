@@ -29,6 +29,10 @@ class RuleController(private val ruleService: RuleService) {
         @RequestBody ruleRequest: RuleRequest,
         @RequestParam applyToExistingTransactions: Boolean?
     ): RuleResponse {
-        return ruleService.createRule(SecurityUtil.getCurrentUserSpaceId(), ruleRequest, applyToExistingTransactions)
+        return ruleService.createRule(
+            SecurityUtil.getCurrentUserSpaceId(),
+            ruleRequest,
+            applyToExistingTransactions ?: false
+        )
     }
 }
