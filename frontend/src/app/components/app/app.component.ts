@@ -200,6 +200,12 @@ export class AppComponent {
       ),
     );
     this.matIconRegistry.addSvgIcon(
+      'home-2',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/home-2-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
       'bills',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/bill-svgrepo-com.svg',

@@ -1,4 +1,4 @@
-<div class="net-worth-container">
+<div class="net-worth-container" [ngClass]="{'p-b-05': netWorth?.histories?.length == 0}">
   <div class="net-worth-header">
     <p>Net worth of {{ currentDate | date: 'MMMM' }}</p>
   </div>

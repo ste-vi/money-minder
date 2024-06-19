@@ -134,9 +134,21 @@
     "type": "EXPENSE"
   },
   {
+    "name": "home",
+    "icon": "home",
+    "position": 17,
+    "type": "EXPENSE"
+  },
+  {
+    "name": "Rent",
+    "icon": "home-2",
+    "position": 18,
+    "type": "EXPENSE"
+  },
+  {
     "name": "Other expense",
     "icon": "graph-down",
-    "position": 17,
+    "position": 19,
     "type": "EXPENSE"
   },
   {

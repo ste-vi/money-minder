@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NetWorth } from '../../../../models/net-worth';
 import { AccountService } from '../../../../services/api/account-service';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgIf} from '@angular/common';
 
 export type ChartOptions = {
   chart: any;
@@ -18,7 +18,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-net-worth-widget',
   standalone: true,
-  imports: [NgApexchartsModule, DatePipe, NgIf],
+  imports: [NgApexchartsModule, DatePipe, NgIf, NgClass],
   templateUrl: './net-worth-widget.component.html',
   styleUrl: './net-worth-widget.component.scss',
 })
