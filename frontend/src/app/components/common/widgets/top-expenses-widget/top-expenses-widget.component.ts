@@ -53,7 +53,7 @@ export class TopExpensesWidgetComponent implements OnInit {
           const percentage = (expense.total / this.totalExpenses) * 100;
           return { ...expense, percentage };
         });
-        this.totalExpenseCurrencySign = this.topExpenses[0].currencySign;
+        this.totalExpenseCurrencySign = this.topExpenses[0]?.currencySign;
       });
   }
 

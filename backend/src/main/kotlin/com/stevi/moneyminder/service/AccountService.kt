@@ -72,8 +72,15 @@ class AccountService(
     }
 
     @Transactional
-    fun updateAccountBalance(account: Account, balance: Int) {
+    fun updateAccountBalanceFromMonoBank(account: Account, balance: Int) {
         account.balance = balance.toBigDecimal().divide(BigDecimal.valueOf(100))
+        accountRepository.save(account)
+        accountBalanceHistoryService.saveHistory(account)
+    }
+
+    @Transactional
+    fun updateAccountBalance(account: Account, previousAmount: BigDecimal, newAmount: BigDecimal) {
+        //todo
         accountRepository.save(account)
         accountBalanceHistoryService.saveHistory(account)
     }
@@ -194,7 +201,7 @@ class AccountService(
 
         val totalBalance = accountRepository.findAllBySpaceId(spaceId).stream().map { account ->
             val currency = account.currency
-            val balance = if (currency != primaryCurrency) {
+            val balance = if (exchangeRates.isNotEmpty() && currency != primaryCurrency) {
                 exchangeCurrency(exchangeRates, currency, primaryCurrency, account.balance)
             } else {
                 account.balance
@@ -212,7 +219,7 @@ class AccountService(
     @Transactional(readOnly = true)
     fun getTypeGroupedAccounts(spaceId: UUID): List<TypeGroupedAccounts> {
         val space = spaceRepository.findById(spaceId).orElseThrow()
-        val accounts = accountRepository.findAllBySpaceId(spaceId)
+        val accounts = accountRepository.findAllBySpaceIdOrderByCreatedDate(spaceId)
         val groupedAccounts = accounts.stream().collect(Collectors.groupingBy { it.type })
         val exchangeRates = exchangeService.fetchExchangeRates()
 
@@ -220,7 +227,7 @@ class AccountService(
             val totalBalance = entry.value.stream()
                 .map { account ->
                     val currency = account.currency
-                    val balance = if (currency != space.primaryCurrency) {
+                    val balance = if (exchangeRates.isNotEmpty() && currency != space.primaryCurrency) {
                         exchangeCurrency(exchangeRates, currency, space.primaryCurrency, account.balance)
                     } else {
                         account.balance

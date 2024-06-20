@@ -16,7 +16,6 @@
       <div [ngClass]="{'active': transactionForm.valid}" class="clickable" (click)="save()">Save</div>
     </div>
 
-
     <div class="transaction-create-body">
       <div class="tab-content">
         <div class="tab-pane" [class.active-tab]="isExpenseTabActive">
@@ -36,11 +35,11 @@
             <div class="transaction-body">
               <div class="transaction-account" (click)="openAccountFilter()">
                 <div class="icon-container active">
-                  <mat-icon svgIcon="{{ transactionForm.value.account.type.iconName }}" class="icon"></mat-icon>
+                  <mat-icon svgIcon="{{ transactionForm.value.account?.type?.iconName }}" class="icon"></mat-icon>
                 </div>
                 <div class="transaction-account-body">
                   <div class="secondary-text">From account</div>
-                  <div>{{ transactionForm.value.account.name }}</div>
+                  <div>{{ transactionForm.value.account?.name }}</div>
                 </div>
               </div>
               <div class="transaction-category">
@@ -89,11 +88,11 @@
             <div class="transaction-body">
               <div class="transaction-account" (click)="openAccountFilter()">
                 <div class="icon-container active">
-                  <mat-icon svgIcon="{{ transactionForm.value.account.type.iconName }}" class="icon"></mat-icon>
+                  <mat-icon svgIcon="{{ transactionForm.value.account?.type?.iconName }}" class="icon"></mat-icon>
                 </div>
                 <div class="transaction-account-body">
                   <div class="secondary-text">From account</div>
-                  <div>{{ transactionForm.value.account.name }}</div>
+                  <div>{{ transactionForm.value.account?.name }}</div>
                 </div>
               </div>
               <div class="transaction-category">
@@ -142,7 +141,7 @@
             <div class="transaction-body">
               <div class="transaction-account" (click)="openAccountFilter()">
                 <div class="icon-container active">
-                  <mat-icon svgIcon="{{ transactionForm.value.account.type.iconName }}" class="icon"></mat-icon>
+                  <mat-icon svgIcon="{{ transactionForm.value.account?.type?.iconName }}" class="icon"></mat-icon>
                 </div>
                 <div class="transaction-account-body">
                   <div class="secondary-text">From account</div>
@@ -152,11 +151,11 @@
               <div class="transaction-to-account">
                 <div class="transaction-to-account-header" (click)="openToAccountFilter()">
                   <div class="icon-container active">
-                    <mat-icon svgIcon="{{ transactionForm.value.toAccount.type.iconName }}" class="icon"></mat-icon>
+                    <mat-icon svgIcon="{{ transactionForm.value.toAccount?.type?.iconName }}" class="icon"></mat-icon>
                   </div>
                   <div class="transaction-account-body">
                     <div class="secondary-text">To account</div>
-                    <div>{{ transactionForm.value.toAccount.name }}</div>
+                    <div>{{ transactionForm.value.toAccount?.name }}</div>
                   </div>
                 </div>
                 <div>

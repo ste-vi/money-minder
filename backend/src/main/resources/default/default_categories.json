@@ -134,7 +134,7 @@
     "type": "EXPENSE"
   },
   {
-    "name": "home",
+    "name": "Home",
     "icon": "home",
     "position": 17,
     "type": "EXPENSE"

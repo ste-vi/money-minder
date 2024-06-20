@@ -11,4 +11,5 @@ data class UpdateTransactionRequest(
     val amount: BigDecimal?,
     val date: LocalDateTime,
     val categoryId: UUID?,
+    val toAccountId: UUID?
 ) : Serializable

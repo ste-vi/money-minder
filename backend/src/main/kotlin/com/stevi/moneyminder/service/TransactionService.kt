@@ -84,7 +84,7 @@ class TransactionService(
         val transaction = Transaction(
             id = null,
             name = request.name,
-            notes = request.notes,
+            notes = if (request.notes.isNullOrBlank()) null else request.notes,
             amount = request.amount,
             currency = request.currency,
             date = request.date,
@@ -119,17 +119,31 @@ class TransactionService(
         transaction.notes = request.notes
         transaction.date = request.date
 
-        transaction.category = request.categoryId?.let {
-            categoryRepository.findById(it).orElseThrow { IllegalArgumentException("Category not found") }
+        request.categoryId?.let {
+            if (request.categoryId != transaction.category?.id) {
+                transaction.category =
+                    categoryRepository.findById(it).orElseThrow { IllegalArgumentException("Category not found") }
+            }
         }
 
-        // todo: transfer
+        request.toAccountId?.let {
+            if (request.toAccountId != transaction.toAccount?.id) {
+                transaction.toAccount = accountService.getAccountById(it)
+            }
+        }
+
         request.amount?.let {
-            if (transaction.monoBankId == null) {
+            if (transaction.monoBankId == null && request.amount != transaction.amount) {
+                val previousAmount = transaction.amount
+                transaction.amount = it
+                // todo: fix update account balance
                 if (transaction.type == TransactionType.INCOME) {
-                    accountService.increaseAccountBalanceByAmount(transaction.fromAccount, it)
-                } else {
-                    accountService.decreaseAccountBalanceByAmount(transaction.fromAccount, it)
+                    accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
+                } else if (transaction.type == TransactionType.EXPENSE) {
+                    accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
+                } else if (transaction.type == TransactionType.TRANSFER && request.toAccountId != null) {
+                    accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
+                    accountService.updateAccountBalance(transaction.toAccount!!, previousAmount, it)
                 }
             }
         }
@@ -146,7 +160,6 @@ class TransactionService(
         }
 
         transactionRepository.delete(transaction)
-
 
         // todo: transfer
         if (transaction.type == TransactionType.INCOME) {

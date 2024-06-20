@@ -1,6 +1,7 @@
 package com.stevi.moneyminder.service
 
 import com.stevi.moneyminder.model.response.MonoBankExchangeRateResponse
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpMethod
@@ -14,31 +15,20 @@ class ExchangeService(
     @Value("\${monobank.api.url}") private val monoBankUrl: String
 ) {
 
-    @Cacheable("exchangeRates")
+    private val logger = LoggerFactory.getLogger(ExchangeService::class.java)
+
+    @Cacheable("exchangeRates", unless = "#result.isEmpty()")
     fun fetchExchangeRates(): List<MonoBankExchangeRateResponse> {
         val uri = "$monoBankUrl/bank/currency";
-
-        val response = restTemplate.exchange<List<MonoBankExchangeRateResponse>>(
-            uri,
-            HttpMethod.GET
-        )
-
-        return response.body ?: throw RuntimeException("Response body is null")
-    }
-
-    @Cacheable("exchangeRate")
-    fun fetchExchangeRate(currencyCodeFrom: Int, currencyCodeTo: Int): Double {
-        val uri = "$monoBankUrl/bank/currency";
-
-        val response = restTemplate.exchange<List<MonoBankExchangeRateResponse>>(
-            uri,
-            HttpMethod.GET
-        )
-
-        val body = response.body ?: throw RuntimeException("Response body is null")
-
-        return body.firstOrNull {
-            it.currencyCodeA == currencyCodeFrom && it.currencyCodeB == currencyCodeTo
-        }?.rateBuy ?: throw RuntimeException("Exchange rate not found")
+        try {
+            val response = restTemplate.exchange<List<MonoBankExchangeRateResponse>>(
+                uri,
+                HttpMethod.GET
+            )
+            return response.body ?: listOf()
+        } catch (ex: Exception) {
+            logger.error(ex.localizedMessage)
+            return listOf()
+        }
     }
 }

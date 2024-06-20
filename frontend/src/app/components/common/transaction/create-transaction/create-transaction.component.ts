@@ -78,13 +78,13 @@ export class CreateTransactionComponent {
   private openModal() {
     this.accountService.getDefaultAccount().subscribe((account) => {
       this.transactionForm.controls['account'].setValue(account);
-      this.transactionForm.controls['toAccount'].setValue(account);
     });
     this.isOpened = true;
   }
 
   closeModal() {
     this.isOpened = false;
+    this.transactionForm.reset();
   }
 
   selectCategory() {
@@ -115,28 +115,35 @@ export class CreateTransactionComponent {
   }
 
   selectExpenseTab() {
+    this.category = undefined;
+    this.transactionForm.controls['toAccount'].setValue(undefined)
+
     this.isExpenseTabActive = true;
     this.isIncomeTabActive = false;
-    this.isTransferTabActive = false;
 
-    this.category = undefined;
+    this.isTransferTabActive = false;
 
     this.transactionType = TransactionType.EXPENSE;
   }
 
   selectIncomeTab() {
+    this.category = undefined;
+    this.transactionForm.controls['toAccount'].setValue(undefined)
+
     this.isIncomeTabActive = true;
     this.isExpenseTabActive = false;
     this.isTransferTabActive = false;
-
-    this.category = undefined;
 
     this.transactionType = TransactionType.INCOME;
   }
 
   selectTransferTab() {
+    this.category = undefined;
+    this.transactionForm.controls['toAccount'].setValue(this.transactionForm.controls['account'].value);
+
     this.isTransferTabActive = true;
     this.isIncomeTabActive = false;
+
     this.isExpenseTabActive = false;
 
     this.transactionType = TransactionType.TRANSFER;
@@ -171,7 +178,7 @@ export class CreateTransactionComponent {
       return;
     }
 
-    let toAccountId = this.transactionForm.controls['toAccount'].value.id;
+    let toAccountId = this.transactionForm.controls['toAccount']?.value?.id;
     let fromAccountId = this.transactionForm.controls['account'].value.id;
     if (this.isTransferTabActive) {
       if (

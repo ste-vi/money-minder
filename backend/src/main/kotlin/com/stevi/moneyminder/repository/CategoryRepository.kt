@@ -27,7 +27,8 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
         where t.fromAccount.space.id = :spaceId 
             and (c.type = :categoryType or c is null)
             and t.date >= :dateFrom 
-            and t.date <= :dateTo 
+            and t.date <= :dateTo
+            and t.type <> com.stevi.moneyminder.entity.TransactionType.TRANSFER
         group by c, t.fromAccount.currency
         order by sum(t.amount) desc
     """

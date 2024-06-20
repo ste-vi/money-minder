@@ -13,7 +13,7 @@
           <span class="secondary-text"> {{ (topExpense.percentage | number:'1.2-2') + ' %' }}</span>
         </div>
         <div>
-          <span> {{ (topExpense.total || 0).toLocaleString() }} {{ topExpense.currencySign }}</span>
+          <span> {{ (topExpense.total || 0).toLocaleString() }} {{ topExpense?.currencySign }}</span>
         </div>
       </div>
     </div>

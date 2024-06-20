@@ -164,6 +164,18 @@ export class AppComponent {
       ),
     );
     this.matIconRegistry.addSvgIcon(
+      'arrow-right',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/arrow-right-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'transfer',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/transfer-horizontal-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
       'textarea',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/sort-by-alphabet-svgrepo-com.svg',

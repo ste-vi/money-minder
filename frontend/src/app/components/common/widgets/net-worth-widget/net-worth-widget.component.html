@@ -1,6 +1,6 @@
-<div class="net-worth-container" [ngClass]="{'p-b-05': netWorth?.histories?.length == 0}">
+<div class="net-worth-container" [ngClass]="{'p-b-05': netWorth === undefined || netWorth.histories.length == 0}">
   <div class="net-worth-header">
-    <p>Net worth of {{ currentDate | date: 'MMMM' }}</p>
+    <p>Net worth in {{ currentDate | date: 'MMMM' }}</p>
   </div>
   <div class="net-worth-sum">
     <b>{{ (netWorth?.totalAccountsBalance || 0).toLocaleString() }} {{ netWorth?.primaryCurrency?.sign }}</b>

@@ -75,11 +75,12 @@ class AccountBalanceHistoryService(
         var balance = account.balance
         if (account.currency != account.space.primaryCurrency) {
             val exchangeRates = exchangeService.fetchExchangeRates()
-            val exchangeRate = exchangeRates.find { rate ->
-                rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
-            } ?: throw RuntimeException("Exchange rate not found")
-
-            balance = balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
+            if (exchangeRates.isNotEmpty()) {
+                val exchangeRate = exchangeRates.find { rate ->
+                    rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
+                } ?: throw RuntimeException("Exchange rate not found")
+                balance = balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
+            }
         }
         return balance
     }

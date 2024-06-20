@@ -209,7 +209,7 @@ class MonoBankService(
             }.toList()
 
         if (newTransactions.isNotEmpty()) {
-            accountService.updateAccountBalance(account, monoTransactions.first().balance)
+            accountService.updateAccountBalanceFromMonoBank(account, monoTransactions.first().balance)
         }
 
         transactionRepository.saveAll(newTransactions)
