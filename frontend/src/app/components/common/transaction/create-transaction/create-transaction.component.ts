@@ -66,9 +66,19 @@ export class CreateTransactionComponent {
     private selectCategoryService: SelectCategoryService,
     private transactionService: TransactionService,
   ) {
-    this.createTransactionService.modalOpened$.subscribe(() => {
-      this.openModal();
-    });
+    this.createTransactionService.modalOpened$.subscribe(
+      (preselectedAccount) => {
+        if (preselectedAccount === undefined) {
+          this.accountService.getDefaultAccount().subscribe((account) => {
+            this.transactionForm.controls['account'].setValue(account);
+          });
+        } else {
+          this.transactionForm.controls['account'].setValue(preselectedAccount);
+        }
+
+        this.openModal();
+      },
+    );
 
     this.selectCategoryService.categorySelected$.subscribe((category) => {
       this.category = category;
@@ -76,15 +86,15 @@ export class CreateTransactionComponent {
   }
 
   private openModal() {
-    this.accountService.getDefaultAccount().subscribe((account) => {
-      this.transactionForm.controls['account'].setValue(account);
-    });
     this.isOpened = true;
   }
 
   closeModal() {
     this.isOpened = false;
-    this.transactionForm.reset();
+    this.transactionForm.controls['name'].setValue('');
+    this.transactionForm.controls['amount'].setValue('0.00');
+    this.transactionForm.controls['date'].setValue(new Date());
+    this.transactionForm.controls['notes'].setValue('');
   }
 
   selectCategory() {
@@ -116,7 +126,7 @@ export class CreateTransactionComponent {
 
   selectExpenseTab() {
     this.category = undefined;
-    this.transactionForm.controls['toAccount'].setValue(undefined)
+    this.transactionForm.controls['toAccount'].setValue(undefined);
 
     this.isExpenseTabActive = true;
     this.isIncomeTabActive = false;
@@ -128,7 +138,7 @@ export class CreateTransactionComponent {
 
   selectIncomeTab() {
     this.category = undefined;
-    this.transactionForm.controls['toAccount'].setValue(undefined)
+    this.transactionForm.controls['toAccount'].setValue(undefined);
 
     this.isIncomeTabActive = true;
     this.isExpenseTabActive = false;
@@ -139,7 +149,9 @@ export class CreateTransactionComponent {
 
   selectTransferTab() {
     this.category = undefined;
-    this.transactionForm.controls['toAccount'].setValue(this.transactionForm.controls['account'].value);
+    this.transactionForm.controls['toAccount'].setValue(
+      this.transactionForm.controls['account'].value,
+    );
 
     this.isTransferTabActive = true;
     this.isIncomeTabActive = false;

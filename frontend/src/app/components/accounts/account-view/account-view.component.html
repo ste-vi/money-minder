@@ -36,5 +36,6 @@
       </div>
     </div>
   </div>
-  <app-create-transaction-button></app-create-transaction-button>
+  <app-create-transaction-button *ngIf="!account?.isBankAccount"
+                                 [preSelectedAccount]="account"></app-create-transaction-button>
 </div>

@@ -10,5 +10,6 @@ data class AccountResponse(
     val description: String?,
     val balance: BigDecimal = BigDecimal.ZERO,
     val currency: CurrencyResponse,
-    val type: AccountTypeResponse
+    val type: AccountTypeResponse,
+    val isBankAccount: Boolean
 ) : Serializable

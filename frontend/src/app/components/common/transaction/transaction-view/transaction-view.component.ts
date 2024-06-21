@@ -170,14 +170,13 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
       this.transactionForm.controls['fromAccount'].value.id ===
       this.transactionForm.controls['toAccount'].value?.id
     ) {
-      console.log('from and to accounts are the same');
       return;
     }
 
     let updateRequest = {
       name: this.transactionForm.controls['name'].value,
       amount: this.transactionForm.controls['amount'].value,
-      toAccountId: this.transactionForm.controls['toAccountId']?.value,
+      toAccountId: this.transactionForm.controls['toAccount']?.value?.id,
       date: new Date(this.transactionForm.controls['date'].value),
       notes: this.transactionForm.controls['notes'].value,
       categoryId: this.transaction.category?.id,

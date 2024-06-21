@@ -38,6 +38,12 @@ class AccountService(
         return accountRepository.findById(id).orElseThrow { IllegalArgumentException("Account not found") }
     }
 
+    @Transactional(readOnly = true)
+    fun getAccountResponseById(spaceId: UUID, id: UUID): AccountResponse {
+        return accountRepository.findById(id).map { it.mapToResponse() }
+            .orElseThrow { IllegalArgumentException("Account not found") }
+    }
+
     @Transactional
     fun saveAccount(account: Account): Account {
         return accountRepository.save(account);
@@ -80,7 +86,7 @@ class AccountService(
 
     @Transactional
     fun updateAccountBalance(account: Account, previousAmount: BigDecimal, newAmount: BigDecimal) {
-        //todo
+        account.balance = account.balance.minus(previousAmount).add(newAmount);
         accountRepository.save(account)
         accountBalanceHistoryService.saveHistory(account)
     }

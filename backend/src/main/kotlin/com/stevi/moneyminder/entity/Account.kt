@@ -63,5 +63,6 @@ fun Account.mapToResponse(): AccountResponse {
         balance = balance,
         currency = currency.mapToResponse(),
         type = type.mapToResponse(),
+        isBankAccount = monoBankId != null
     )
 }

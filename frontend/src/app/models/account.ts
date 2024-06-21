@@ -7,5 +7,6 @@ export interface Account {
   description?: string;
   balance: number;
   currency: Currency;
-  type: AccountType
+  type: AccountType;
+  isBankAccount: boolean;
 }

@@ -9,7 +9,7 @@ export interface Transaction {
   currency: Currency;
   date: Date;
   fromAccount: Account;
-  toAccount: Account;
+  toAccount?: Account;
   notes?: string;
   type: TransactionType,
   isBankTransaction: boolean;

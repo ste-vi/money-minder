@@ -1,54 +1,63 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject, tap} from 'rxjs';
-import {Account} from '../../models/account';
-import {HttpClient} from '@angular/common/http';
-import {environment} from "../../../environments/environment";
-import {AccountType} from "../../models/account-type";
-import {NetWorth} from "../../models/net-worth";
-import {TypeGroupedAccounts} from "../../models/typeGroupedAccounts";
+import { Injectable } from '@angular/core';
+import { Observable, Subject, tap } from 'rxjs';
+import { Account } from '../../models/account';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { AccountType } from '../../models/account-type';
+import { NetWorth } from '../../models/net-worth';
+import { TypeGroupedAccounts } from '../../models/typeGroupedAccounts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-
   private readonly rootUrl = environment.apiUrl + '/accounts';
 
   private newAccountSubject = new Subject<void>();
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getTypeGroupedAccounts(): Observable<TypeGroupedAccounts[]> {
-    return this.httpClient.get<TypeGroupedAccounts[]>(this.rootUrl + "/type-grouped")
+    return this.httpClient.get<TypeGroupedAccounts[]>(
+      this.rootUrl + '/type-grouped',
+    );
   }
 
   getAccounts(skipBankAccounts: boolean = false): Observable<Account[]> {
-    return this.httpClient.get<Account[]>(this.rootUrl + "?skipBankAccounts=" + skipBankAccounts)
+    return this.httpClient.get<Account[]>(
+      this.rootUrl + '?skipBankAccounts=' + skipBankAccounts,
+    );
+  }
+
+  getAccount(accountId: string): Observable<Account> {
+    return this.httpClient.get<Account>(this.rootUrl + '/' + accountId);
   }
 
   getDefaultAccount(): Observable<Account> {
-    return this.httpClient.get<Account>(this.rootUrl + "/default")
+    return this.httpClient.get<Account>(this.rootUrl + '/default');
   }
 
   getNetWorth(): Observable<NetWorth> {
-    return this.httpClient.get<NetWorth>(this.rootUrl + "/net-worth")
+    return this.httpClient.get<NetWorth>(this.rootUrl + '/net-worth');
   }
 
   updateDefaultAccount(account: Account): Observable<void> {
-    return this.httpClient.put<void>(this.rootUrl + "/default" + "?accountId=" + account.id, {})
+    return this.httpClient.put<void>(
+      this.rootUrl + '/default' + '?accountId=' + account.id,
+      {},
+    );
   }
 
   getAccountTypes(): Observable<AccountType[]> {
-    return this.httpClient.get<AccountType[]>(this.rootUrl + "/types")
+    return this.httpClient.get<AccountType[]>(this.rootUrl + '/types');
   }
 
   createAccount(account: any): Observable<any> {
-    return this.httpClient.post(this.rootUrl, account)
-      .pipe(tap(() => {
-          this.newAccountSubject.next();
-        })
-      );
+    return this.httpClient.post(this.rootUrl, account).pipe(
+      tap(() => {
+        this.newAccountSubject.next();
+      }),
+    );
   }
 
   get newAccount$(): Observable<void> {

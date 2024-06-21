@@ -15,6 +15,7 @@ import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.TransactionRepository
 import com.stevi.moneyminder.repository.specification.TransactionRuleSpecification
 import com.stevi.moneyminder.repository.specification.TransactionSearchSpecification
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 import org.springframework.data.domain.PageRequest
@@ -136,13 +137,20 @@ class TransactionService(
             if (transaction.monoBankId == null && request.amount != transaction.amount) {
                 val previousAmount = transaction.amount
                 transaction.amount = it
-                // todo: fix update account balance
                 if (transaction.type == TransactionType.INCOME) {
                     accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
                 } else if (transaction.type == TransactionType.EXPENSE) {
-                    accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
+                    accountService.updateAccountBalance(
+                        transaction.fromAccount,
+                        previousAmount.multiply(BigDecimal.valueOf(-1)),
+                        it.multiply(BigDecimal.valueOf(-1))
+                    )
                 } else if (transaction.type == TransactionType.TRANSFER && request.toAccountId != null) {
-                    accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
+                    accountService.updateAccountBalance(
+                        transaction.fromAccount,
+                        previousAmount.multiply(BigDecimal.valueOf(-1)),
+                        it.multiply(BigDecimal.valueOf(-1))
+                    )
                     accountService.updateAccountBalance(transaction.toAccount!!, previousAmount, it)
                 }
             }
@@ -161,11 +169,13 @@ class TransactionService(
 
         transactionRepository.delete(transaction)
 
-        // todo: transfer
         if (transaction.type == TransactionType.INCOME) {
             accountService.decreaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
-        } else {
+        } else if (transaction.type == TransactionType.EXPENSE) {
             accountService.increaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+        } else if (transaction.type == TransactionType.TRANSFER && transaction.toAccount != null) {
+            accountService.increaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+            accountService.decreaseAccountBalanceByAmount(transaction.toAccount!!, transaction.amount)
         }
     }
 
@@ -176,7 +186,7 @@ class TransactionService(
 
     @Transactional
     fun applyRuleToExistingTransactions(spaceId: UUID, rule: Rule) {
-        // todo: transfer
+        // todo: transfer (only mono?)
 
         val ruleSpecification = TransactionRuleSpecification(rule, spaceId)
         val transactions = transactionRepository.findAll(ruleSpecification)

@@ -42,6 +42,12 @@ class AccountController(private val accountService: AccountService) {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{accountId}")
+    fun getAccount(@PathVariable accountId: UUID): AccountResponse {
+        return accountService.getAccountResponseById(SecurityUtil.getCurrentUserSpaceId(), accountId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/type-grouped")
     fun getTypeGroupedAccounts(): List<TypeGroupedAccounts> {
         return accountService.getTypeGroupedAccounts(SecurityUtil.getCurrentUserSpaceId());

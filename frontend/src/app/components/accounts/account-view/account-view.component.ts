@@ -1,17 +1,16 @@
-import {Component} from '@angular/core';
-import {ViewAccountService} from "../../../services/communication/view-account-service";
-import {Account} from "../../../models/account";
-import {MatIcon} from "@angular/material/icon";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {SearchTransactionsService} from "../../../services/communication/search-transactions-service";
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
-import {LoaderComponent} from "../../common/loader/loader.component";
-import {TransactionComponent} from "../../common/transaction/transaction.component";
-import {Transaction} from "../../../models/transaction";
-import {TransactionService} from "../../../services/api/transaction-service";
-import {
-  CreateTransactionButtonComponent
-} from "../../common/transaction/create-transaction-button/create-transaction-button.component";
+import { Component } from '@angular/core';
+import { ViewAccountService } from '../../../services/communication/view-account-service';
+import { Account } from '../../../models/account';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { SearchTransactionsService } from '../../../services/communication/search-transactions-service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { LoaderComponent } from '../../common/loader/loader.component';
+import { TransactionComponent } from '../../common/transaction/transaction.component';
+import { Transaction } from '../../../models/transaction';
+import { TransactionService } from '../../../services/api/transaction-service';
+import { CreateTransactionButtonComponent } from '../../common/transaction/create-transaction-button/create-transaction-button.component';
+import { AccountService } from '../../../services/api/account-service';
 
 @Component({
   selector: 'app-account-view',
@@ -24,13 +23,12 @@ import {
     LoaderComponent,
     NgForOf,
     TransactionComponent,
-    CreateTransactionButtonComponent
+    CreateTransactionButtonComponent,
   ],
   templateUrl: './account-view.component.html',
-  styleUrl: './account-view.component.scss'
+  styleUrl: './account-view.component.scss',
 })
 export class AccountViewComponent {
-
   protected isOpen: boolean = false;
   protected account: Account | undefined;
 
@@ -41,9 +39,12 @@ export class AccountViewComponent {
   protected searchQuery: string = '';
   protected isLoading: boolean = true;
 
-  constructor(private viewAccountService: ViewAccountService,
-              private searchTransactionsService: SearchTransactionsService,
-              private transactionService: TransactionService) {
+  constructor(
+    private viewAccountService: ViewAccountService,
+    private searchTransactionsService: SearchTransactionsService,
+    private transactionService: TransactionService,
+    private accountService: AccountService,
+  ) {
     this.viewAccountService.modalOpened$.subscribe((account) => {
       this.account = account;
       this.openModal();
@@ -53,24 +54,38 @@ export class AccountViewComponent {
         this.accountTransactions = [];
         this.loadTransactions();
       });
+      this.transactionService.refreshAccountBalance$.subscribe(() => {
+        this.loadUpdatedAccount();
+      });
     });
   }
 
   private loadTransactions() {
     this.isLoading = true;
-    this.transactionService.searchTransactions(this.currentPage,
-      this.itemsPerPage,
-      this.searchQuery,
-      this.account?.id,
-      undefined,
-      false,
-      undefined,
-      undefined)
+    this.transactionService
+      .searchTransactions(
+        this.currentPage,
+        this.itemsPerPage,
+        this.searchQuery,
+        this.account?.id,
+        undefined,
+        false,
+        undefined,
+        undefined,
+      )
       .subscribe((pageResponse) => {
-        this.accountTransactions = this.accountTransactions.concat(pageResponse.content);
+        this.accountTransactions = this.accountTransactions.concat(
+          pageResponse.content,
+        );
         this.hasMoreTransactions = !pageResponse.last;
         this.isLoading = false;
-      })
+      });
+  }
+
+  private loadUpdatedAccount() {
+    this.accountService.getAccount(this.account!.id!).subscribe((account) => {
+      this.account = account;
+    });
   }
 
   private openModal() {
@@ -80,10 +95,11 @@ export class AccountViewComponent {
 
   closeModal() {
     this.isOpen = false;
+    this.currentPage = 0;
   }
 
   openSearch() {
-    this.searchTransactionsService.openModal({account: this.account});
+    this.searchTransactionsService.openModal({ account: this.account });
   }
 
   loadMore() {

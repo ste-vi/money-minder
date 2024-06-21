@@ -13,6 +13,7 @@ export class TransactionService {
   readonly rootUrl = environment.apiUrl + '/transactions';
 
   private refreshTransactionsSubject = new Subject<number>();
+  private refreshAccountBalanceSubject = new Subject<void>();
 
   constructor(private httpClient: HttpClient) {}
 
@@ -69,6 +70,7 @@ export class TransactionService {
     return this.httpClient.post<Transaction>(this.rootUrl, createRequest).pipe(
       tap(() => {
         this.refreshTransactionsSubject.next(createRequest.amount);
+        this.refreshAccountBalanceSubject.next();
       }),
     );
   }
@@ -83,18 +85,27 @@ export class TransactionService {
       categoryId?: string;
     },
   ) {
-    return this.httpClient.put(this.rootUrl + '/' + id, updateRequest);
+    return this.httpClient.put(this.rootUrl + '/' + id, updateRequest).pipe(
+      tap(() => {
+        this.refreshAccountBalanceSubject.next();
+      }),
+    );
   }
 
   delete(transaction: Transaction) {
     return this.httpClient.delete(this.rootUrl + '/' + transaction.id).pipe(
       tap(() => {
         this.refreshTransactionsSubject.next(transaction.amount);
+        this.refreshAccountBalanceSubject.next();
       }),
     );
   }
 
   get refreshTransactions$(): Observable<number> {
     return this.refreshTransactionsSubject.asObservable();
+  }
+
+  get refreshAccountBalance$(): Observable<void> {
+    return this.refreshAccountBalanceSubject.asObservable();
   }
 }

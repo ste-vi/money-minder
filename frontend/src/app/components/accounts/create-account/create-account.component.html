@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="info-item">
-          <div>Balance ({{ accountForm.get('currency')?.value.shortName }})</div>
+          <div>Balance ({{ accountForm.get('currency')?.value?.shortName }})</div>
           <div>
             <input #balanceInput appAutoResize formControlName="balance"
                    type="number" min="0.00"
