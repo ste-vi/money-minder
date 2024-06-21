@@ -25,7 +25,7 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
         from Transaction t 
             left join t.category c 
         where t.fromAccount.space.id = :spaceId 
-            and (c.type = :categoryType or c is null)
+            and (c.type = :categoryType or (c is null and t.type = com.stevi.moneyminder.entity.TransactionType.EXPENSE))
             and t.date >= :dateFrom 
             and t.date <= :dateTo
             and t.type <> com.stevi.moneyminder.entity.TransactionType.TRANSFER

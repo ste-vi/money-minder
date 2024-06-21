@@ -1,6 +1,6 @@
-<app-header></app-header>
+<app-header *ngIf="authService.isAuthenticated()"></app-header>
 <router-outlet/>
-<app-nav></app-nav>
+<app-nav *ngIf="authService.isAuthenticated()"></app-nav>
 <app-spaces></app-spaces>
 <app-categories></app-categories>
 <app-category-expenses></app-category-expenses>

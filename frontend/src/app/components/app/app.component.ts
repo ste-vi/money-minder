@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import {NavComponent} from '../common/nav/nav.component';
 import {HeaderComponent} from '../common/header/header.component';
 import {MatIconRegistry} from '@angular/material/icon';
@@ -15,6 +15,8 @@ import {CreateTransactionComponent} from "../common/transaction/create-transacti
 import {CategoryExpensesComponent} from "../common/categories/category-expenses/category-expenses.component";
 import {AuthComponent} from "../../auth/auth.component";
 import {SpacesComponent} from "../common/spaces/spaces.component";
+import {AuthService} from "../../auth/auth.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -34,6 +36,7 @@ import {SpacesComponent} from "../common/spaces/spaces.component";
     CategoryExpensesComponent,
     AuthComponent,
     SpacesComponent,
+    NgIf,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -44,6 +47,7 @@ export class AppComponent {
   constructor(
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
+    protected authService: AuthService,
   ) {
     this.initSvgIcons();
   }

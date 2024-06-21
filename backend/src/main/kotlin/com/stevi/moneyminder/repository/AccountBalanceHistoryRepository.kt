@@ -30,7 +30,7 @@ interface AccountBalanceHistoryRepository : JpaRepository<AccountBalanceHistory,
                 and abh.date >= (current_date - interval '1 year')
         ) t
         where t.rn = 1
-        order by t.date
+        order by t.date desc
         """,
         nativeQuery = true
     )

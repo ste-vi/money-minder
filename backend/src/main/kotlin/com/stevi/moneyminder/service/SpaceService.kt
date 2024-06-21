@@ -3,6 +3,7 @@ package com.stevi.moneyminder.service
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.mapToResponse
+import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.request.SpaceRequest
 import com.stevi.moneyminder.model.response.SpaceResponse
 import com.stevi.moneyminder.repository.SpaceRepository
@@ -27,7 +28,8 @@ class SpaceService(
 
     @Transactional(readOnly = true)
     fun getSpaceResponse(spaceId: UUID): SpaceResponse {
-        return spaceRepository.findById(spaceId).map { it.mapToResponse() }.orElseThrow()
+        return spaceRepository.findById(spaceId).map { it.mapToResponse() }
+            .orElseThrow { ResourceNotFoundException("Entity not found") }
     }
 
     @Transactional(readOnly = true)
@@ -37,7 +39,7 @@ class SpaceService(
 
     @Transactional
     fun createSpace(userId: UUID, spaceRequest: SpaceRequest): SpaceResponse {
-        val user = userRepository.findById(userId).orElseThrow()
+        val user = userRepository.findById(userId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
         val space = Space(
             id = null,
@@ -58,7 +60,7 @@ class SpaceService(
 
     @Transactional
     fun updateSpaceName(spaceId: UUID, newName: String) {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
         space.name = newName
     }
 
@@ -70,7 +72,7 @@ class SpaceService(
     ): SpaceResponse {
         val space = spaceRepository.findByIdAndUserId(spaceId, userId) ?: throw Exception("Space not found")
 
-        val user = userRepository.findById(userId).orElseThrow()
+        val user = userRepository.findById(userId).orElseThrow { ResourceNotFoundException("Entity not found") }
         user.lastLoggedInSpaceId = space.id
 
         val token = tokenService.generate(userId, spaceId)

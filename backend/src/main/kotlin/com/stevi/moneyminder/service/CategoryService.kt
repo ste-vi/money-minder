@@ -5,6 +5,7 @@ import com.stevi.moneyminder.entity.Category
 import com.stevi.moneyminder.entity.CategoryType
 import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.mapToResponse
+import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.request.CategoryRequest
 import com.stevi.moneyminder.model.request.CategoryRequestDefault
 import com.stevi.moneyminder.repository.CategoryRepository
@@ -64,7 +65,7 @@ class CategoryService(
 
     @Transactional
     fun createCategory(spaceId: UUID, categoryRequest: CategoryRequest): CategoryResponse {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
         val category = Category(
             id = null,
             name = categoryRequest.name,

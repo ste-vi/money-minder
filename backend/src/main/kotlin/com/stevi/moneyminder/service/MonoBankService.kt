@@ -7,6 +7,7 @@ import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.entity.Transaction
 import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.applyRule
+import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.request.LinkMonoBankAccountRequest
 import com.stevi.moneyminder.model.response.MonoBankAccountResponse
 import com.stevi.moneyminder.model.response.MonoBankTransactionResponse
@@ -71,13 +72,14 @@ class MonoBankService(
     }
 
     private fun saveMonoBankInfo(spaceId: UUID, clientId: Any, clientToken: String) {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
         val monoBankInfo = MonoBankInfo(null, clientId.toString(), clientToken, space)
         monoBankInfoRepository.save(monoBankInfo);
     }
 
     fun fetchAccounts(spaceId: UUID): List<MonoBankAccountResponse> {
-        val monoBankInfo = monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow()
+        val monoBankInfo =
+            monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
         val uri = "$monoBankUrl/personal/client-info";
 
@@ -114,7 +116,7 @@ class MonoBankService(
 
     @Transactional
     fun linkAccount(spaceId: UUID, request: LinkMonoBankAccountRequest) {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
         if (accountService.existsBySpaceIdAndMonoBankId(spaceId, request.id)) {
             throw RuntimeException("Account already linked");
@@ -135,7 +137,8 @@ class MonoBankService(
             )
         )
 
-        val monoBankInfo = monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow()
+        val monoBankInfo =
+            monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
         fetchRecentTransactionsFromMono(account = savedAccount, monoBankInfo.token)
     }

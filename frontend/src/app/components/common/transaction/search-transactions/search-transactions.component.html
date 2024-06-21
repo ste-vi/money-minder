@@ -27,7 +27,7 @@
              (click)="applyNeedReviewFilter()">Need review
         </div>
         <div class="filter" [ngClass]="{'active': categoryFilter, 'active-border': categoryFilter}"
-             (click)="openCategoryFilter()">{{ categoryFilter?.name || 'categories' }}
+             (click)="openCategoryFilter()">{{ categoryFilter?.name || 'All categories' }}
         </div>
       </div>
     </div>
@@ -37,7 +37,6 @@
       <app-loader *ngIf="isLoading"></app-loader>
     </div>
     <app-create-transaction-button></app-create-transaction-button>
-
   </div>
 </div>
 

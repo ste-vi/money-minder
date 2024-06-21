@@ -20,7 +20,7 @@ class ApiExceptionHandler {
     }
 
     @ExceptionHandler
-    fun handleResourceNotFoundException(ex: RuntimeException): ResponseEntity<ApiErrorResponse> {
+    fun handleRuntimeException(ex: RuntimeException): ResponseEntity<ApiErrorResponse> {
         val errorMessage = ApiErrorResponse(
             HttpStatus.INTERNAL_SERVER_ERROR.value(),
             ex.localizedMessage

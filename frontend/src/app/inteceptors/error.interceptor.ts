@@ -10,10 +10,9 @@ export function errorInterceptor(
 ) {
   return next(req).pipe(
     catchError((err) => {
-      if (err.status === 403) {
+      if (err.status === 401) {
         inject(AuthService).logout();
       }
-
       const error = err.error || err.statusText;
       return throwError(error);
     }),

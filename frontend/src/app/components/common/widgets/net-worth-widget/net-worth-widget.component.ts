@@ -40,7 +40,7 @@ export class NetWorthWidgetComponent {
           data: netWorth.histories.map((history) => history.balance),
         },
       ];
-      this.labels = netWorth.histories.map((history) => history.date);
+      this.labels = netWorth.histories?.map((history) => history.date);
       this.initChartOptions();
     });
   }
@@ -64,25 +64,23 @@ export class NetWorthWidgetComponent {
         enabled: false,
       },
       stroke: {
-        curve: 'smooth',
+        curve: 'monotoneCubic',
       },
       xaxis: {
         type: 'datetime',
         labels: {
           format: 'MMM',
         },
-        showDuplicates: false,
         style: {
           fontFamily: 'Nunito Sans, sans-serif',
         },
         axisBorder: {
           show: true,
           color: '#edf2fd',
-        },
+        }
       },
       yaxis: {
         opposite: true,
-
         style: {
           fontFamily: 'Nunito Sans, sans-serif',
         },

@@ -117,7 +117,7 @@ class AccountService(
             monoBankId = null,
             currency = Currency.fromCode(accountRequest.currencyCode),
             type = AccountType.fromId(accountRequest.typeId),
-            space = spaceRepository.findById(spaceId).orElseThrow(),
+            space = spaceRepository.findById(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")},
             createdDate = LocalDateTime.now(),
             default = isDefault
         )
@@ -187,21 +187,21 @@ class AccountService(
 
     @Transactional
     fun updateDefaultAccount(spaceId: UUID, accountId: UUID) {
-        val currentDefaultAccount = accountRepository.findBySpaceIdAndDefaultIsTrue(spaceId).orElseThrow()
+        val currentDefaultAccount = accountRepository.findBySpaceIdAndDefaultIsTrue(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")}
         if (currentDefaultAccount.id?.equals(accountId) == true) {
             return
         }
         currentDefaultAccount.default = false
         accountRepository.save(currentDefaultAccount)
 
-        val newDefaultAccount = accountRepository.findById(accountId).orElseThrow()
+        val newDefaultAccount = accountRepository.findById(accountId).orElseThrow{ ResourceNotFoundException("Entity not found")}
         newDefaultAccount.default = true
         accountRepository.save(newDefaultAccount)
     }
 
     @Transactional(readOnly = true)
     fun getNetWorthResponse(spaceId: UUID): NetWorthResponse {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val space = spaceRepository.findById(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")}
         val exchangeRates = exchangeService.fetchExchangeRates()
         val primaryCurrency = space.primaryCurrency
 
@@ -224,7 +224,7 @@ class AccountService(
 
     @Transactional(readOnly = true)
     fun getTypeGroupedAccounts(spaceId: UUID): List<TypeGroupedAccounts> {
-        val space = spaceRepository.findById(spaceId).orElseThrow()
+        val space = spaceRepository.findById(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")}
         val accounts = accountRepository.findAllBySpaceIdOrderByCreatedDate(spaceId)
         val groupedAccounts = accounts.stream().collect(Collectors.groupingBy { it.type })
         val exchangeRates = exchangeService.fetchExchangeRates()

@@ -3,6 +3,7 @@ package com.stevi.moneyminder.service
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.Space
 import com.stevi.moneyminder.entity.User
+import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.response.UserResponse
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.UserRepository
@@ -15,12 +16,13 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val spaceRepository: SpaceRepository,
-    private val categoryService: CategoryService
+    private val categoryService: CategoryService,
+    private val accountService: AccountService
 ) {
 
     @Transactional(readOnly = true)
     fun getCurrentUserResponse(userId: UUID): UserResponse {
-        val user = userRepository.findById(userId).orElseThrow()
+        val user = userRepository.findById(userId).orElseThrow { ResourceNotFoundException("Entity not found") }
         return user.let {
             UserResponse(
                 email = it.email,
@@ -46,6 +48,7 @@ class UserService(
     private fun initSpaceForUser(user: User): Space {
         val space = spaceRepository.save(Space(null, "Personal", user, Currency.UAH, LocalDateTime.now(), LocalDateTime.now()))
         categoryService.initDefaultCategories(space)
+        accountService.createDefaultAccount(space)
         return space
     }
 }
