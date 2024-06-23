@@ -1,31 +1,37 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
-import {CreateAccountService} from '../../../services/communication/create-account-service';
-import {MatIcon} from '@angular/material/icon';
-import {CurrencyService} from '../../../services/api/currency-service';
-import {Currency} from '../../../models/currency';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {AutoResizeDirective} from '../../../directives/auto-resize.directive';
-import {AccountService} from '../../../services/api/account-service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AutoResizeDirective } from '../../../directives/auto-resize.directive';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { Currency } from '../../../models/currency';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { AccountService } from '../../../services/api/account-service';
+import { CurrencyService } from '../../../services/api/currency-service';
+import { UpdateAccountService } from '../../../services/communication/update-account-service';
+import { Account } from '../../../models/account';
 
 @Component({
-  selector: 'app-create-account',
+  selector: 'app-update-account',
   standalone: true,
   imports: [
-    NgIf,
+    AutoResizeDirective,
     MatIcon,
     NgForOf,
-    FormsModule,
+    NgIf,
     ReactiveFormsModule,
     NgClass,
-    DecimalPipe,
-    AutoResizeDirective,
   ],
-  templateUrl: './create-account.component.html',
-  styleUrl: './create-account.component.scss',
+  templateUrl: './update-account.component.html',
+  styleUrl: './update-account.component.scss',
 })
-export class CreateAccountComponent {
+export class UpdateAccountComponent implements OnInit {
   protected isOpened: boolean = false;
+
+  protected account: Account | undefined = undefined;
   protected currencies: Currency[] = [];
   protected accountForm: FormGroup;
 
@@ -33,19 +39,38 @@ export class CreateAccountComponent {
   @ViewChild('balanceInput') protected balanceInput: ElementRef;
 
   constructor(
-    private createAccountService: CreateAccountService,
+    private updateAccountService: UpdateAccountService,
     private accountService: AccountService,
     private currencyService: CurrencyService,
   ) {
     this.accountForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      type: new FormControl(Validators.required),
       currency: new FormControl(this.currencies[0], Validators.required),
       balance: new FormControl('0.00', [Validators.required]),
     });
+  }
 
-    this.createAccountService.modalOpened$.subscribe((type) => {
-      this.accountForm.controls['type'].setValue(type);
+  ngOnInit(): void {
+    this.updateAccountService.modalOpened$.subscribe((account) => {
+      this.account = account;
+
+      this.accountForm.controls['title'].setValue(account.name);
+      this.accountForm.controls['currency'].setValue(account.currency);
+
+      if (account.balance !== 0) {
+        this.accountForm.controls['balance'].setValue(account.balance);
+        setTimeout(() => {
+          this.formatBalance();
+        }, 100);
+      } else {
+        this.accountForm.controls['balance'].setValue('0.00');
+      }
+
+      if (account.isBankAccount) {
+        this.accountForm.controls['currency'].disable();
+        this.accountForm.controls['balance'].disable();
+      }
+
       this.loadCurrencies();
       this.showModal();
     });
@@ -64,7 +89,6 @@ export class CreateAccountComponent {
 
   closeModal() {
     this.isOpened = false;
-    this.resetForm();
   }
 
   formatBalance(): void {
@@ -90,25 +114,16 @@ export class CreateAccountComponent {
     }
 
     this.accountService
-      .createAccount({
+      .updateAccount(this.account?.id!, {
         name: this.accountForm.controls['title'].value,
         currencyCode: this.accountForm.controls['currency'].value.code,
         balance: parseFloat(
           parseFloat(this.accountForm.controls['balance'].value).toFixed(2),
         ),
-        typeId: this.accountForm.controls['type'].value.id,
       })
-      .subscribe(() => {
+      .subscribe((account) => {
+        this.account = account;
         this.closeModal();
       });
-  }
-
-  private resetForm() {
-    this.accountForm.reset({
-      title: '',
-      type: Validators.required,
-      currency: this.currencies[0],
-      balance: '0.00',
-    });
   }
 }

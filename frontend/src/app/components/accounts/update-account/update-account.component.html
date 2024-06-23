@@ -1,14 +1,14 @@
 <div class="page-mask" *ngIf="isOpened"></div>
 
 <div *ngIf="isOpened">
-  <div class="create-account-container bottom-modal">
+  <div class="update-account-container bottom-modal">
     <form [formGroup]="accountForm">
-      <div class="create-account-header">
+      <div class="update-account-header">
         <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
-        <div><b>New account</b></div>
+        <div><b>Edit account</b></div>
         <div [ngClass]="{'active': accountForm.valid}" class="clickable" (click)="createAccount()">Save</div>
       </div>
-      <div class="create-account-body">
+      <div class="update-account-body">
         <div class="account-icon">
           <mat-icon svgIcon="wallet" class="large-icon"></mat-icon>
         </div>
@@ -17,7 +17,7 @@
         </div>
         <div class="info-item">
           <div>Account type</div>
-          <div>{{ accountForm.get('type')?.value.fullName }}</div>
+          <div>{{ account?.type?.fullName }}</div>
         </div>
         <div class="info-item">
           <div>Currency</div>

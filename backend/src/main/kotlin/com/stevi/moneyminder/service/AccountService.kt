@@ -117,7 +117,7 @@ class AccountService(
             monoBankId = null,
             currency = Currency.fromCode(accountRequest.currencyCode),
             type = AccountType.fromId(accountRequest.typeId),
-            space = spaceRepository.findById(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")},
+            space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") },
             createdDate = LocalDateTime.now(),
             default = isDefault
         )
@@ -144,36 +144,41 @@ class AccountService(
     }
 
     @Transactional
-    fun updateAccount(id: UUID, accountRequest: AccountRequest) {
+    fun updateAccount(id: UUID, accountRequest: AccountRequest): AccountResponse {
         val account = getAccountById(id)
         val oldBalance = account.balance;
 
         account.name = accountRequest.name
-        account.type = AccountType.fromId(accountRequest.typeId)
-        account.currency = Currency.fromCode(accountRequest.currencyCode)
-        account.balance = accountRequest.balance ?: BigDecimal.ZERO
+
+        if (account.monoBankId == null) {
+            account.currency = Currency.fromCode(accountRequest.currencyCode)
+            account.balance = accountRequest.balance ?: BigDecimal.ZERO
+        }
 
         accountRepository.save(account)
 
-        if (oldBalance != accountRequest.balance) {
+        if (oldBalance.compareTo(accountRequest.balance!!) != 0) {
             createBalanceCorrectionTransaction(account, oldBalance)
             accountBalanceHistoryService.saveHistory(account)
         }
+
+        return account.mapToResponse()
     }
 
     private fun createBalanceCorrectionTransaction(account: Account, oldBalance: BigDecimal) {
-        val newAmount = account.balance.subtract(oldBalance)
+        val amount = account.balance.minus(oldBalance)
+
         val transaction = Transaction(
             id = null,
             name = "Balance correction",
-            notes = "Happened due to account update",
-            amount = newAmount,
+            notes = "Happened due to account balance update",
+            amount = amount.abs(),
             currency = account.currency,
             fromAccount = account,
             toAccount = null,
             date = LocalDateTime.now(),
             category = null,
-            type = if (newAmount > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE,
+            type = if (amount > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE,
             createdDate = LocalDateTime.now()
         )
         transactionRepository.save(transaction)
@@ -187,21 +192,23 @@ class AccountService(
 
     @Transactional
     fun updateDefaultAccount(spaceId: UUID, accountId: UUID) {
-        val currentDefaultAccount = accountRepository.findBySpaceIdAndDefaultIsTrue(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")}
+        val currentDefaultAccount = accountRepository.findBySpaceIdAndDefaultIsTrue(spaceId)
+            .orElseThrow { ResourceNotFoundException("Entity not found") }
         if (currentDefaultAccount.id?.equals(accountId) == true) {
             return
         }
         currentDefaultAccount.default = false
         accountRepository.save(currentDefaultAccount)
 
-        val newDefaultAccount = accountRepository.findById(accountId).orElseThrow{ ResourceNotFoundException("Entity not found")}
+        val newDefaultAccount =
+            accountRepository.findById(accountId).orElseThrow { ResourceNotFoundException("Entity not found") }
         newDefaultAccount.default = true
         accountRepository.save(newDefaultAccount)
     }
 
     @Transactional(readOnly = true)
     fun getNetWorthResponse(spaceId: UUID): NetWorthResponse {
-        val space = spaceRepository.findById(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")}
+        val space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
         val exchangeRates = exchangeService.fetchExchangeRates()
         val primaryCurrency = space.primaryCurrency
 
@@ -224,7 +231,7 @@ class AccountService(
 
     @Transactional(readOnly = true)
     fun getTypeGroupedAccounts(spaceId: UUID): List<TypeGroupedAccounts> {
-        val space = spaceRepository.findById(spaceId).orElseThrow{ ResourceNotFoundException("Entity not found")}
+        val space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
         val accounts = accountRepository.findAllBySpaceIdOrderByCreatedDate(spaceId)
         val groupedAccounts = accounts.stream().collect(Collectors.groupingBy { it.type })
         val exchangeRates = exchangeService.fetchExchangeRates()

@@ -11,6 +11,8 @@ import { Transaction } from '../../../models/transaction';
 import { TransactionService } from '../../../services/api/transaction-service';
 import { CreateTransactionButtonComponent } from '../../common/transaction/create-transaction-button/create-transaction-button.component';
 import { AccountService } from '../../../services/api/account-service';
+import { UpdateAccountService } from '../../../services/communication/update-account-service';
+import {UpdateAccountComponent} from "../update-account/update-account.component";
 
 @Component({
   selector: 'app-account-view',
@@ -24,6 +26,7 @@ import { AccountService } from '../../../services/api/account-service';
     NgForOf,
     TransactionComponent,
     CreateTransactionButtonComponent,
+    UpdateAccountComponent,
   ],
   templateUrl: './account-view.component.html',
   styleUrl: './account-view.component.scss',
@@ -44,6 +47,7 @@ export class AccountViewComponent {
     private searchTransactionsService: SearchTransactionsService,
     private transactionService: TransactionService,
     private accountService: AccountService,
+    private updateAccountService: UpdateAccountService,
   ) {
     this.viewAccountService.modalOpened$.subscribe((account) => {
       this.account = account;
@@ -56,6 +60,11 @@ export class AccountViewComponent {
       });
       this.transactionService.refreshAccountBalance$.subscribe(() => {
         this.loadUpdatedAccount();
+      });
+      this.accountService.updatedAccount$.subscribe(() => {
+        this.loadUpdatedAccount();
+        this.accountTransactions = [];
+        this.loadTransactions();
       });
     });
   }
@@ -110,6 +119,6 @@ export class AccountViewComponent {
   }
 
   editModal() {
-    // implement
+    this.updateAccountService.openModal(this.account!);
   }
 }

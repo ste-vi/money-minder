@@ -61,7 +61,7 @@
           <div>
             <input #amountInput appAutoResize formControlName="amount"
                    type="number" min="0.00"
-                   (blur)="formatAmount()">{{ transaction.currency.sign }}
+                   (blur)="formatAmount()"> {{ transaction.currency.sign }}
           </div>
         </div>
         <div class="transaction-category" *ngIf="transaction.type !== TransactionType.TRANSFER">
@@ -80,7 +80,7 @@
           <div>
             <input #amountInput appAutoResize formControlName="amount"
                    type="number" min="0.00"
-                   (blur)="formatAmount()">{{ transaction.currency.sign }}
+                   (blur)="formatAmount()"> {{ transaction.currency.sign }}
           </div>
         </div>
         <div class="transaction-notes">

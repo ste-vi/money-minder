@@ -38,7 +38,7 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun createNewUser(email: String, username: String): User {
-        val user = userRepository.save(User(null, email, username, null))
+        val user = userRepository.save(User(null, username, email, null))
         val space = initSpaceForUser(user)
         user.lastLoggedInSpaceId = space.id
         userRepository.save(user)

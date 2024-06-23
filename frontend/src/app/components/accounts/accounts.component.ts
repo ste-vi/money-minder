@@ -49,6 +49,9 @@ export class AccountsComponent {
     this.accountService.newAccount$.subscribe(() => {
       this.loadAccounts();
     });
+    this.accountService.updatedAccount$.subscribe(() => {
+      this.loadAccounts();
+    })
   }
 
   private loadAccounts() {

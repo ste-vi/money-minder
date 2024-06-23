@@ -14,6 +14,7 @@ export class AccountService {
   private readonly rootUrl = environment.apiUrl + '/accounts';
 
   private newAccountSubject = new Subject<void>();
+  private updatedAccountSubject = new Subject<void>();
 
   constructor(private httpClient: HttpClient) {}
 
@@ -52,15 +53,27 @@ export class AccountService {
     return this.httpClient.get<AccountType[]>(this.rootUrl + '/types');
   }
 
-  createAccount(account: any): Observable<any> {
-    return this.httpClient.post(this.rootUrl, account).pipe(
+  createAccount(accountRequest: any): Observable<any> {
+    return this.httpClient.post(this.rootUrl, accountRequest).pipe(
       tap(() => {
         this.newAccountSubject.next();
       }),
     );
   }
 
+  updateAccount(accountId: string, accountRequest: any): Observable<any> {
+    return this.httpClient.put(this.rootUrl + "/" + accountId, accountRequest).pipe(
+      tap(() => {
+        this.updatedAccountSubject.next();
+      }),
+    );
+  }
+
   get newAccount$(): Observable<void> {
     return this.newAccountSubject.asObservable();
+  }
+
+  get updatedAccount$(): Observable<void> {
+    return this.updatedAccountSubject.asObservable();
   }
 }

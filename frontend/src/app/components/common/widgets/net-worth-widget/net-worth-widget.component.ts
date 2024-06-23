@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NetWorth } from '../../../../models/net-worth';
 import { AccountService } from '../../../../services/api/account-service';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import {DatePipe, NgClass, NgIf} from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 
 export type ChartOptions = {
   chart: any;
@@ -31,8 +31,19 @@ export class NetWorthWidgetComponent {
   protected series: any = [];
   protected labels: string[] = [];
 
-  constructor(private accountsService: AccountService) {
-    this.accountsService.getNetWorth().subscribe((netWorth) => {
+  constructor(private accountService: AccountService) {
+    this.loadNetWorth();
+
+    this.accountService.newAccount$.subscribe(() => {
+      this.loadNetWorth();
+    });
+    this.accountService.updatedAccount$.subscribe(() => {
+      this.loadNetWorth();
+    });
+  }
+
+  private loadNetWorth() {
+    this.accountService.getNetWorth().subscribe((netWorth) => {
       this.netWorth = netWorth;
       this.series = [
         {
@@ -77,7 +88,7 @@ export class NetWorthWidgetComponent {
         axisBorder: {
           show: true,
           color: '#edf2fd',
-        }
+        },
       },
       yaxis: {
         opposite: true,
