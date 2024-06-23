@@ -1,22 +1,22 @@
-import {Component} from '@angular/core';
-import {ActivatedRoute, RouterOutlet} from '@angular/router';
-import {NavComponent} from '../common/nav/nav.component';
-import {HeaderComponent} from '../common/header/header.component';
-import {MatIconRegistry} from '@angular/material/icon';
-import {DomSanitizer} from '@angular/platform-browser';
-import {SelectAccountTypeComponent} from '../accounts/select-account-type/select-account-type.component';
-import {CreateAccountComponent} from "../accounts/create-account/create-account.component";
-import {TransactionViewComponent} from "../common/transaction/transaction-view/transaction-view.component";
-import {CategorySettingsComponent} from "../settings/category-settings/category-settings.component";
-import {SearchTransactionsComponent} from "../common/transaction/search-transactions/search-transactions.component";
-import {AccountViewComponent} from "../accounts/account-view/account-view.component";
-import {CategoriesComponent} from "../common/categories/categories.component";
-import {CreateTransactionComponent} from "../common/transaction/create-transaction/create-transaction.component";
-import {CategoryExpensesComponent} from "../common/categories/category-expenses/category-expenses.component";
-import {AuthComponent} from "../../auth/auth.component";
-import {SpacesComponent} from "../common/spaces/spaces.component";
-import {AuthService} from "../../auth/auth.service";
-import {NgIf} from "@angular/common";
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { NavComponent } from '../common/nav/nav.component';
+import { HeaderComponent } from '../common/header/header.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SelectAccountTypeComponent } from '../accounts/select-account-type/select-account-type.component';
+import { CreateAccountComponent } from '../accounts/create-account/create-account.component';
+import { TransactionViewComponent } from '../common/transaction/transaction-view/transaction-view.component';
+import { CategorySettingsComponent } from '../settings/category-settings/category-settings.component';
+import { SearchTransactionsComponent } from '../common/transaction/search-transactions/search-transactions.component';
+import { AccountViewComponent } from '../accounts/account-view/account-view.component';
+import { CategoriesComponent } from '../common/categories/categories.component';
+import { CreateTransactionComponent } from '../common/transaction/create-transaction/create-transaction.component';
+import { CategoryExpensesComponent } from '../common/categories/category-expenses/category-expenses.component';
+import { AuthComponent } from '../../auth/auth.component';
+import { SpacesComponent } from '../common/spaces/spaces.component';
+import { AuthService } from '../../auth/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -381,6 +381,12 @@ export class AppComponent {
       'bank',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/bank-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'shield-key',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/shield-keyhole-svgrepo-com.svg',
       ),
     );
   }

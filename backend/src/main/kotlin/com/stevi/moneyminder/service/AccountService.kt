@@ -157,7 +157,7 @@ class AccountService(
 
         accountRepository.save(account)
 
-        if (oldBalance.compareTo(accountRequest.balance!!) != 0) {
+        if (oldBalance.compareTo(accountRequest.balance!!) != 0 && transactionRepository.existsByFromAccountId(id)) {
             createBalanceCorrectionTransaction(account, oldBalance)
             accountBalanceHistoryService.saveHistory(account)
         }

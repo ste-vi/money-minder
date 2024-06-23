@@ -18,13 +18,13 @@ open class MonoBankInfo(
     @GeneratedValue(strategy = GenerationType.UUID)
     open var id: UUID?,
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     open var clientId: String,
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     open var token: String,
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(nullable = false)
     open var space: Space
 )

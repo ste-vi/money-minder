@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/mono")
 class MonoBankController(private val monoBankService: MonoBankService) {
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/link")
     fun linkClient(@RequestParam clientToken: String) {
         monoBankService.linkClient(SecurityUtil.getCurrentUserSpaceId(), clientToken)

@@ -18,4 +18,6 @@ interface TransactionRepository : JpaRepository<Transaction, UUID>, JpaSpecifica
 
     @EntityGraph(attributePaths = ["fromAccount", "toAccount", "category"])
     override fun findAll(specification: Specification<Transaction>, pageable: Pageable): Page<Transaction>
+
+    fun existsByFromAccountId(accountId: UUID): Boolean
 }

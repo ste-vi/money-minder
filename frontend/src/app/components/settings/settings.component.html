@@ -13,10 +13,10 @@
         <mat-icon svgIcon="alt-arrow-right" class="small-icon"></mat-icon>
       </div>
 
-      <div class="accounting-settings-item-container">
+      <div class="accounting-settings-item-container" (click)="openBanks()">
         <div class="accounting-settings-item-header">
           <mat-icon svgIcon="bank" class="small-icon active"></mat-icon>
-          Connected banks
+          Connected institutions
         </div>
         <mat-icon svgIcon="alt-arrow-right" class="small-icon"></mat-icon>
       </div>
@@ -72,3 +72,4 @@
 <app-category-settings></app-category-settings>
 <app-rules-settings></app-rules-settings>
 <app-profile></app-profile>
+<app-banks></app-banks>

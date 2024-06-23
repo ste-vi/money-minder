@@ -12,6 +12,8 @@ import { HeaderComponent } from '../common/header/header.component';
 import { NavComponent } from '../common/nav/nav.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ViewSpacesService } from '../../services/communication/view-spaces-service';
+import {ViewBanksService} from "../../services/communication/view-banks-service";
+import {BanksComponent} from "./banks/banks.component";
 
 @Component({
   selector: 'app-settings',
@@ -25,6 +27,7 @@ import { ViewSpacesService } from '../../services/communication/view-spaces-serv
     HeaderComponent,
     NavComponent,
     ProfileComponent,
+    BanksComponent,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
@@ -38,6 +41,7 @@ export class SettingsComponent implements OnInit {
     private rulesSettingsService: RulesSettingsService,
     private accountService: AccountService,
     private viewSpacesService: ViewSpacesService,
+    private viewBanksService: ViewBanksService,
   ) {}
 
   ngOnInit(): void {
@@ -69,5 +73,9 @@ export class SettingsComponent implements OnInit {
 
   openSpaces() {
     this.viewSpacesService.openModal();
+  }
+
+  openBanks() {
+    this.viewBanksService.openModal();
   }
 }
