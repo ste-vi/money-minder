@@ -7,7 +7,7 @@ import java.util.*
 data class BankResponse(
     val id: UUID?,
     val name: String,
-    val bankType: BankType
+    val type: BankType
 ) : Serializable {
 
     enum class BankType {

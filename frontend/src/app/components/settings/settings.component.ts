@@ -76,6 +76,6 @@ export class SettingsComponent implements OnInit {
   }
 
   openBanks() {
-    this.viewBanksService.openModal();
+    this.viewBanksService.openModal(false);
   }
 }

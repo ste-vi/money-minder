@@ -17,8 +17,8 @@ class BankService(private val monoBankInfoRepository: MonoBankInfoRepository) {
             bankResponses.add(
                 BankResponse(
                     id = it.id,
-                    "Monobank",
-                    BankResponse.BankType.MONOBANK
+                    name = "Monobank",
+                    type = BankResponse.BankType.MONOBANK
                 )
             )
         }

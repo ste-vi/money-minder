@@ -17,6 +17,8 @@ import { AuthComponent } from '../../auth/auth.component';
 import { SpacesComponent } from '../common/spaces/spaces.component';
 import { AuthService } from '../../auth/auth.service';
 import { NgIf } from '@angular/common';
+import {BanksComponent} from "../settings/banks/banks.component";
+import {LinkMonobankAccountComponent} from "../accounts/link-monobank-account/link-monobank-account.component";
 
 @Component({
   selector: 'app-root',
@@ -37,6 +39,8 @@ import { NgIf } from '@angular/common';
     AuthComponent,
     SpacesComponent,
     NgIf,
+    BanksComponent,
+    LinkMonobankAccountComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -387,6 +391,12 @@ export class AppComponent {
       'shield-key',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/shield-keyhole-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'document-add',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/document-add-svgrepo-com.svg',
       ),
     );
   }

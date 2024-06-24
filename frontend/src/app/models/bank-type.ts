@@ -1,3 +1,3 @@
 export enum BankType {
-  MONOBANK = 'Monobank',
+  MONOBANK = 'MONOBANK',
 }

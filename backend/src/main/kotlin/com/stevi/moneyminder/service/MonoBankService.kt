@@ -7,6 +7,7 @@ import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.entity.Transaction
 import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.applyRule
+import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.request.LinkMonoBankAccountRequest
 import com.stevi.moneyminder.model.response.MonoBankAccountResponse
@@ -81,6 +82,8 @@ class MonoBankService(
         val monoBankInfo =
             monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
+        accountService.getAllMonobankAccounts()
+
         val uri = "$monoBankUrl/personal/client-info";
 
         val headers = HttpHeaders();
@@ -102,14 +105,15 @@ class MonoBankService(
 
         val linkedMonoBankIds = accountService.getMonobankAccountIds(spaceId)
 
-        return accountsMap.filter { account -> !linkedMonoBankIds.contains(account["id"] as String) }.map { account ->
+        return accountsMap.map { account ->
             MonoBankAccountResponse(
                 id = account["id"] as String,
                 type = account["type"] as String,
                 balance = (account["balance"].toString()).toBigDecimal().divide(BigDecimal(100)),
-                currencyCode = account["currencyCode"] as Int,
+                currency = Currency.fromCode(account["currencyCode"] as Int).mapToResponse(),
                 maskedPan = (account["maskedPan"] as List<String>).firstOrNull(),
                 iban = account["iban"] as String,
+                isLinked = linkedMonoBankIds.contains(account["id"] as String)
             )
         }
     }

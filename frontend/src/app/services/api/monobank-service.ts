@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { User } from '../../models/user';
+import { MonobankAccount } from '../../models/monobank-account';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,15 @@ export class MonobankService {
       {},
       { observe: 'response' },
     );
+  }
+
+  linkAccount(request: any): Observable<HttpResponse<void>> {
+    return this.httpClient.post<any>(this.rootUrl + '/accounts/link', request, {
+      observe: 'response',
+    });
+  }
+
+  getMonoBankAccounts(): Observable<MonobankAccount[]> {
+    return this.httpClient.get<MonobankAccount[]>(this.rootUrl + '/accounts');
   }
 }

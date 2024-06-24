@@ -15,7 +15,7 @@
       </div>
 
       <div *ngIf="banks.length > 0">
-        <div class="bank-container" *ngFor="let bank of banks">
+        <div class="bank-container" *ngFor="let bank of banks" (click)="openViewBankModal(bank)">
           {{ bank.name }}
         </div>
       </div>

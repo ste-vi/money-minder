@@ -30,7 +30,7 @@ class MonoBankController(private val monoBankService: MonoBankService) {
         return monoBankService.fetchAccounts(SecurityUtil.getCurrentUserSpaceId())
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/accounts/link")
     fun linkAccount(@RequestBody monoBankAccountRequest: LinkMonoBankAccountRequest) {
         monoBankService.linkAccount(SecurityUtil.getCurrentUserSpaceId(), monoBankAccountRequest)

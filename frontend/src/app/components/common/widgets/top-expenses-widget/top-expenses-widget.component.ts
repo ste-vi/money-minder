@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DatePipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
+import { DatePipe, DecimalPipe, NgForOf, NgIf } from '@angular/common';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CategoryService } from '../../../../services/api/category-service';
 import { TopExpense } from '../../../../models/top-expense';
@@ -34,10 +34,9 @@ export class TopExpensesWidgetComponent implements OnInit {
     private categoryService: CategoryService,
     private viewCategoryExpensesService: ViewCategoryExpensesService,
   ) {
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    this.dateFrom = new Date(currentYear, currentMonth, 1);
-    this.dateTo = new Date(currentYear, currentMonth + 1, 0);
+    const date = new Date();
+    this.dateFrom = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.dateTo = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
   ngOnInit(): void {

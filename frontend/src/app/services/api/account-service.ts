@@ -62,11 +62,17 @@ export class AccountService {
   }
 
   updateAccount(accountId: string, accountRequest: any): Observable<any> {
-    return this.httpClient.put(this.rootUrl + "/" + accountId, accountRequest).pipe(
-      tap(() => {
-        this.updatedAccountSubject.next();
-      }),
-    );
+    return this.httpClient
+      .put(this.rootUrl + '/' + accountId, accountRequest)
+      .pipe(
+        tap(() => {
+          this.updatedAccountSubject.next();
+        }),
+      );
+  }
+
+  refreshAccounts(): void {
+    this.newAccountSubject.next();
   }
 
   get newAccount$(): Observable<void> {

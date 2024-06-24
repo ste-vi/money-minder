@@ -6,7 +6,8 @@ data class MonoBankAccountResponse(
     val id: String,
     val type: String,
     val balance: BigDecimal,
-    val currencyCode: Int,
+    val currency: CurrencyResponse,
     val maskedPan: String?,
-    val iban: String
+    val iban: String,
+    val isLinked: Boolean
 )

@@ -1,0 +1,18 @@
+<div class="page-mask" *ngIf="isOpened" (click)="closeModal()"></div>
+
+<div *ngIf="isOpened">
+  <div class="monobank-accounts-container right-modal">
+
+    <div class="monobank-accounts-container-header">
+      <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
+      <div><b>Link Monobank account</b></div>
+      <div></div>
+    </div>
+    <div class="monobank-accounts-container-body">
+      <app-loader *ngIf="isLoading"></app-loader>
+      <div class="mono-account" *ngFor="let account of monobankAccounts">
+        <app-monobank-account-card [monobankAccount]="account" (click)="linkAccount(account)"></app-monobank-account-card>
+      </div>
+    </div>
+  </div>
+</div>

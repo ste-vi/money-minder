@@ -5,12 +5,12 @@ import { AccountType } from '../../models/account-type';
 @Injectable({
   providedIn: 'root',
 })
-export class ViewBanksService {
-  private openModalSource = new Subject<boolean>();
+export class LinkMonobankAccountService {
+  private openModalSource = new Subject<void>();
 
   modalOpened$ = this.openModalSource.asObservable();
 
-  openModal(shouldLinkAccount: boolean) {
-    this.openModalSource.next(shouldLinkAccount);
+  openModal() {
+    this.openModalSource.next();
   }
 }
