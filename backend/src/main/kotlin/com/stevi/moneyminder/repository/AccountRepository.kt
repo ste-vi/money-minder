@@ -6,6 +6,7 @@ import java.util.*
 import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 interface AccountRepository : JpaRepository<Account, UUID> {
 
@@ -27,6 +28,17 @@ interface AccountRepository : JpaRepository<Account, UUID> {
     """
     )
     fun findAllByMonoBankIdIsNotNull(): List<AccountMonoBankTokenProjection>
+
+    @Query(
+        """
+        select mbf.token as monoBankToken, a as account
+        from Account a 
+        inner join a.space s
+        inner join MonoBankInfo mbf on mbf.space.id = s.id
+        where s.id = :spaceId and a.monoBankId is not null
+    """
+    )
+    fun findAllBySpaceIdAndMonoBankIdIsNotNull(@Param("spaceId") spaceId: UUID): List<AccountMonoBankTokenProjection>
 
     fun findAllBySpaceId(spaceId: UUID): List<Account>
 

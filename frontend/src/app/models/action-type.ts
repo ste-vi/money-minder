@@ -1,0 +1,4 @@
+export enum ActionType {
+  ASSIGN_CATEGORY = 'ASSIGN_CATEGORY',
+  MARK_AS_TRANSFER = 'MARK_AS_TRANSFER'
+}

@@ -26,8 +26,7 @@ import {
 } from '@angular/material/datepicker';
 import { TransactionService } from '../../../../services/api/transaction-service';
 import { CategoriesComponent } from '../../categories/categories.component';
-import { CategoryType } from '../../../../models/category';
-import { SelectCategoryService } from '../../../../services/communication/select-category-service';
+import { Category, CategoryType } from '../../../../models/category';
 import { TransactionAccountFilterComponent } from '../search-transactions/filters/transaction-account-filter/transaction-account-filter.component';
 import { Account } from '../../../../models/account';
 
@@ -60,6 +59,7 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   protected isOpened: boolean = false;
   protected editName: boolean = false;
   protected isToAccountFilterOpened: boolean = false;
+  protected isCategorySelectModalOpened: boolean = false;
 
   protected transaction!: Transaction;
 
@@ -82,7 +82,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   constructor(
     private viewTransactionService: ViewTransactionService,
     private transactionService: TransactionService,
-    private selectCategoryService: SelectCategoryService,
   ) {
     this.transactionForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -116,10 +115,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
       }
 
       this.showModal();
-    });
-
-    this.selectCategoryService.categorySelected$.subscribe((category) => {
-      this.transaction.category = category;
     });
   }
 
@@ -186,7 +181,8 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
       .subscribe((data) => {
         this.transaction.name = this.transactionForm.controls['name'].value;
         this.transaction.amount = this.transactionForm.controls['amount'].value;
-        this.transaction.toAccount = this.transactionForm.controls['toAccount']?.value;
+        this.transaction.toAccount =
+          this.transactionForm.controls['toAccount']?.value;
         this.transaction.date = this.transactionForm.controls['date'].value;
         this.transaction.notes = this.transactionForm.controls['notes'].value;
         this.closeModal();
@@ -200,11 +196,12 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   }
 
   selectCategory() {
-    let categoryType =
-      this.transaction.type === TransactionType.EXPENSE
-        ? CategoryType.EXPENSE
-        : CategoryType.INCOME;
-    this.selectCategoryService.openModal(categoryType);
+    this.isCategorySelectModalOpened = true;
+  }
+
+  onCategorySelected(category: Category) {
+    this.isCategorySelectModalOpened = false;
+    this.transaction.category = category;
   }
 
   openToAccountFilter() {
@@ -218,4 +215,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   onToAccountSelected(account: Account) {
     this.transactionForm.controls['toAccount'].setValue(account);
   }
+
+  protected readonly CategoryType = CategoryType;
 }

@@ -51,7 +51,8 @@
         <div class="transaction-to-account" *ngIf="transaction.type === TransactionType.TRANSFER">
           <div class="transaction-to-account-header" (click)="openToAccountFilter()">
             <div class="icon-container">
-              <mat-icon svgIcon="{{ transactionForm.controls['toAccount'].value?.type?.iconName }}" class="icon"></mat-icon>
+              <mat-icon svgIcon="{{ transactionForm.controls['toAccount'].value?.type?.iconName }}"
+                        class="icon"></mat-icon>
             </div>
             <div class="transaction-to-account-body">
               <div class="secondary-text">To account</div>
@@ -98,12 +99,18 @@
     </form>
 
   </div>
+  <app-transaction-account-filter
+    *ngIf="isToAccountFilterOpened"
+    [selectedAccount]="transactionForm.controls['toAccount'].value"
+    [skipBankAccounts]="true"
+    (closed)="closeToAccountFilter()"
+    (accountSelected)="onToAccountSelected($event)"
+  ></app-transaction-account-filter>
+
+  <app-categories *ngIf="isCategorySelectModalOpened"
+                  [type]="this.transaction.type === TransactionType.EXPENSE ? CategoryType.EXPENSE : CategoryType.INCOME"
+                  (selectedCategory)="onCategorySelected($event)">
+  </app-categories>
+
 </div>
 
-<app-transaction-account-filter
-  *ngIf="isToAccountFilterOpened"
-  [selectedAccount]="transactionForm.controls['toAccount'].value"
-  [skipBankAccounts]="true"
-  (closed)="closeToAccountFilter()"
-  (accountSelected)="onToAccountSelected($event)"
-></app-transaction-account-filter>

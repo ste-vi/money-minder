@@ -35,11 +35,16 @@ export class TopExpensesWidgetComponent implements OnInit {
     private viewCategoryExpensesService: ViewCategoryExpensesService,
   ) {
     const date = new Date();
-    this.dateFrom = new Date(date.getFullYear(), date.getMonth(), 1);
-    this.dateTo = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    this.dateFrom = new Date(date.getFullYear(), date.getMonth(), 2);
+    this.dateTo = new Date(date.getFullYear(), date.getMonth() + 1, 1);
   }
 
   ngOnInit(): void {
+    this.loadTopExpenses();
+    this.categoryService.refreshTopExpenses$.subscribe(() => this.loadTopExpenses())
+  }
+
+  private loadTopExpenses() {
     this.categoryService
       .getTopExpensesByCategories(this.dateFrom, this.dateTo)
       .subscribe((topExpenses) => {

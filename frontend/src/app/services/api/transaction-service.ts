@@ -12,7 +12,7 @@ import { Currency } from '../../models/currency';
 export class TransactionService {
   readonly rootUrl = environment.apiUrl + '/transactions';
 
-  private refreshTransactionsSubject = new Subject<number>();
+  private refreshTransactionsSubject = new Subject<void>();
   private refreshAccountBalanceSubject = new Subject<void>();
 
   constructor(private httpClient: HttpClient) {}
@@ -48,9 +48,11 @@ export class TransactionService {
       path = path + '&needReview=' + needReview;
     }
     if (dateFrom) {
+      dateFrom.setUTCHours(0,0,0,0);
       path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
     }
     if (dateTo) {
+      dateTo.setUTCHours(0,0,0,0);
       path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
     }
 
@@ -69,7 +71,7 @@ export class TransactionService {
   }): Observable<Transaction> {
     return this.httpClient.post<Transaction>(this.rootUrl, createRequest).pipe(
       tap(() => {
-        this.refreshTransactionsSubject.next(createRequest.amount);
+        this.refreshTransactionsSubject.next();
         this.refreshAccountBalanceSubject.next();
       }),
     );
@@ -95,13 +97,17 @@ export class TransactionService {
   delete(transaction: Transaction) {
     return this.httpClient.delete(this.rootUrl + '/' + transaction.id).pipe(
       tap(() => {
-        this.refreshTransactionsSubject.next(transaction.amount);
+        this.refreshTransactionsSubject.next();
         this.refreshAccountBalanceSubject.next();
       }),
     );
   }
 
-  get refreshTransactions$(): Observable<number> {
+  refreshTransactions() {
+    this.refreshTransactionsSubject.next();
+  }
+
+  get refreshTransactions$(): Observable<void> {
     return this.refreshTransactionsSubject.asObservable();
   }
 

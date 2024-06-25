@@ -16,10 +16,13 @@ import com.stevi.moneyminder.repository.MonoBankInfoRepository
 import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.TransactionRepository
+import com.stevi.moneyminder.util.SecurityUtil
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -82,8 +85,6 @@ class MonoBankService(
         val monoBankInfo =
             monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
-        accountService.getAllMonobankAccounts()
-
         val uri = "$monoBankUrl/personal/client-info";
 
         val headers = HttpHeaders();
@@ -126,14 +127,16 @@ class MonoBankService(
             throw RuntimeException("Account already linked");
         }
 
-        val accountName = "Monobank " + request.type.capitalize()
+        val currency = Currency.fromCode(request.currencyCode)
+        val accountName = "Monobank ${request.type} (${currency.name})" // todo: check it if for all cards is required?
+
         val savedAccount = accountService.saveAccount(
             Account(
                 id = null,
                 name = accountName,
-                description = "Monobank | " + request.maskedPan,
+                description = "Monobank | " + (request.maskedPan ?: request.iban),
                 balance = request.balance,
-                currency = Currency.fromCode(request.currencyCode),
+                currency = currency,
                 type = AccountType.BANK_ACCOUNTS,
                 monoBankId = request.id,
                 space = space,
@@ -144,7 +147,7 @@ class MonoBankService(
         val monoBankInfo =
             monoBankInfoRepository.findBySpaceId(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") }
 
-        fetchRecentTransactionsFromMono(account = savedAccount, monoBankInfo.token)
+        updateRecentTransactionsFromMono(account = savedAccount, monoBankInfo.token)
     }
 
     fun fetchResentTransactions(accountId: String, token: String): List<MonoBankTransactionResponse> {
@@ -170,14 +173,17 @@ class MonoBankService(
     }
 
     @Transactional
-    fun fetchRecentTransactionsFromMono(account: Account, monoBankToken: String) {
+    fun updateRecentTransactionsFromMono(account: Account, monoBankToken: String) {
         val monoBankAccountId = account.monoBankId ?: throw RuntimeException();
 
         val monoTransactions =
             fetchResentTransactions(monoBankAccountId, monoBankToken)
 
         val recentTransactionsMonoIds =
-            transactionRepository.findMonoBankIdsByDateGreaterThan(LocalDateTime.now().minusMonths(1));
+            transactionRepository.findMonoBankIdsByDateGreaterThan(
+                account.space.id!!,
+                LocalDateTime.now().minusMonths(1)
+            )
 
         val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(account.space.id!!)
 
@@ -185,11 +191,11 @@ class MonoBankService(
             .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
             .map { monoTransaction ->
                 val transactionType =
-                    if (monoTransaction.amount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
+                    if (monoTransaction.operationAmount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
 
                 val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC)
 
-                val amount = monoTransaction.amount.toBigDecimal()
+                val amount = monoTransaction.operationAmount.toBigDecimal()
                     .divide(BigDecimal.valueOf(100))
                     .abs()
 
@@ -208,9 +214,7 @@ class MonoBankService(
                     createdDate = date
                 )
 
-                // todo: transfer
-
-                rules.stream().anyMatch { rule -> transaction.applyRule(rule) }
+                rules.stream().forEach { rule -> transaction.applyRule(rule) }
 
                 return@map transaction
             }.toList()
@@ -220,5 +224,12 @@ class MonoBankService(
         }
 
         transactionRepository.saveAll(newTransactions)
+    }
+
+    @Transactional
+    fun refreshRecentTransactionsFromMonoForSpace(spaceId: UUID) {
+        accountService.getAllMonobankAccountsForSpace(spaceId).stream().forEach { projection ->
+            updateRecentTransactionsFromMono(projection.getAccount(), projection.getMonoBankToken())
+        }
     }
 }

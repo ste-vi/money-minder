@@ -22,13 +22,21 @@ open class Rule(
     @Column(name = "id", nullable = false)
     open var id: UUID? = null,
 
-    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE], optional = false, orphanRemoval = true)
+    @OneToOne(
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE],
+        optional = false,
+        orphanRemoval = true
+    )
     @JoinColumn(nullable = false, unique = true)
     open var condition: Condition,
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "assign_category_id", nullable = false)
-    open var assignCategory: Category,
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "assign_category_id")
+    open var assignCategory: Category?,
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "mark_as_transfer_to_account_id")
+    open var markAsTransferToAccount: Account?,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
@@ -39,6 +47,7 @@ fun Rule.mapToResponse(): RuleResponse {
     return RuleResponse(
         id = this.id ?: UUID.randomUUID(),
         condition = this.condition.mapToResponse(),
-        assignCategory = this.assignCategory.mapToResponse(),
+        assignCategory = this.assignCategory?.mapToResponse(),
+        markAsTransferToAccount = markAsTransferToAccount?.mapToShortResponse()
     )
 }

@@ -8,5 +8,6 @@ import java.util.*
 data class RuleRequest(
     val conditionType: ConditionType,
     val conditionText: String,
-    val assignCategoryId: UUID,
+    val assignCategoryId: UUID?,
+    val markAsTransferToAccountId: UUID?
 ) : Serializable

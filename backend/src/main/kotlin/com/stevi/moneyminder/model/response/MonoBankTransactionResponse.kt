@@ -6,6 +6,7 @@ data class MonoBankTransactionResponse(
     val description: String,
     val currencyCode: Int,
     val amount: Int,
+    val operationAmount: Int,
     val balance: Int,
     val comment: String?
 )

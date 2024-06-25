@@ -13,8 +13,8 @@ import org.springframework.data.jpa.repository.Query
 
 interface TransactionRepository : JpaRepository<Transaction, UUID>, JpaSpecificationExecutor<Transaction> {
 
-    @Query("select t.monoBankId from Transaction t where t.date >= :date")
-    fun findMonoBankIdsByDateGreaterThan(date: LocalDateTime): List<String>
+    @Query("select t.monoBankId from Transaction t where t.fromAccount.space.id = :spaceId and t.date >= :date")
+    fun findMonoBankIdsByDateGreaterThan(spaceId: UUID, date: LocalDateTime): List<String>
 
     @EntityGraph(attributePaths = ["fromAccount", "toAccount", "category"])
     override fun findAll(specification: Specification<Transaction>, pageable: Pageable): Page<Transaction>

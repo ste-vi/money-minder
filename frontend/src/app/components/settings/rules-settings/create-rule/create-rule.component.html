@@ -21,21 +21,41 @@
       </div>
       <div class="action">
         <div class="centered-text">Action</div>
-        <div class="secondary-header-text">Which category should be assigned to a transaction?</div>
-        <div class="clickable" (click)="selectCategory()">
-          Category: <span class="active">{{ assignCategory?.name ?? 'none' }}</span>
-        </div>
+        <div class="secondary-header-text">What should happen to these transactions?</div>
+        <select [(ngModel)]="actionType">
+          <option [value]="ActionType.ASSIGN_CATEGORY">Assign category</option>
+          <option [value]="ActionType.MARK_AS_TRANSFER">Mark as transfer to account</option>
+        </select>
+
+        <input *ngIf="actionType === ActionType.ASSIGN_CATEGORY"
+               class="clickable" placeholder="Select category"
+               [value]="assignCategory?.name" (click)="selectCategory()">
+
+        <input *ngIf="actionType === ActionType.MARK_AS_TRANSFER"
+               class="clickable" placeholder="Select account"
+               [value]="markAsTransferToAccount?.name" (click)="selectAccount()">
+
         <div class="update-existing-flag">
           <input type="checkbox" [checked]="applyToExistingTransactions" [(ngModel)]="applyToExistingTransactions">
-          <span>Apply to existing transactions?</span>
+          <div>apply to existing transactions?</div>
         </div>
       </div>
     </div>
     <div class="create-rule-container-footer">
-      <div class="save-button" (click)="createRule()">Save & apply
-        <!--           [ngClass]="{'disabled-button': this.conditionText == '' || this.assignCategory == undefined}"-->
-
-      </div>
+      <div class="save-button" (click)="createRule()">Save & apply</div>
     </div>
   </div>
+
+  <app-transaction-account-filter
+    *ngIf="isToAccountFilterOpened"
+    [skipBankAccounts]="false"
+    (accountSelected)="onToAccountSelected($event)"
+    (closed)="closeToAccountFilter()"
+  ></app-transaction-account-filter>
+
+  <app-categories *ngIf="isCategorySelectModalOpened"
+                  [type]="CategoryType.EXPENSE"
+                  (selectedCategory)="onCategorySelected($event)">
+  </app-categories>
 </div>
+

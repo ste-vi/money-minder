@@ -9,17 +9,30 @@
     <div class="rules-container-body">
       <app-loader *ngIf="isLoading"></app-loader>
 
-      <div class="rule" *ngFor="let rule of rules">
-        <div class="rule-header">
-          <mat-icon svgIcon="{{ rule.assignCategory.icon }}"></mat-icon>
+      <div *ngFor="let rule of rules">
+        <div class="rule" *ngIf="rule.assignCategory">
+          <div class="rule-header" >
+            <mat-icon svgIcon="{{ rule.assignCategory?.icon }}"></mat-icon>
+          </div>
+          <div class="rule-body">
+            <div>if transaction
+              name {{ rule.condition.type.value === ConditionTypeEnum.TEXT_CONTAINS ? 'contains' : 'is' }}
+              <b class="black-text">{{ rule.condition.textToApply }}</b></div>
+            <div>assign category <b class="black-text">{{ rule.assignCategory?.name }}</b></div>
+          </div>
         </div>
-        <div class="rule-body">
-          <div>if transaction name {{ rule.condition.type.value === ConditionTypeEnum.TEXT_CONTAINS ? 'contains' : 'is' }}
-            <b class="black-text">{{ rule.condition.textToApply }}</b></div>
-          <div>assign category <b class="black-text">{{ rule.assignCategory.name }}</b></div>
+        <div class="rule" *ngIf="rule.markAsTransferToAccount">
+          <div class="rule-header">
+            <mat-icon svgIcon="{{ rule.markAsTransferToAccount?.type?.iconName }}"></mat-icon>
+          </div>
+          <div class="rule-body">
+            <div>if transaction
+              name {{ rule.condition.type.value === ConditionTypeEnum.TEXT_CONTAINS ? 'contains' : 'is' }}
+              <b class="black-text">{{ rule.condition.textToApply }}</b></div>
+            <div>mark it as transfer to <b class="black-text">{{ rule.markAsTransferToAccount?.name }}</b></div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

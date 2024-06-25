@@ -97,7 +97,7 @@ class TransactionService(
             createdDate = LocalDateTime.now()
         )
 
-        rules.stream().anyMatch { rule -> transaction.applyRule(rule) }
+        rules.stream().forEach { rule -> transaction.applyRule(rule) }
 
         val savedTransaction = transactionRepository.save(transaction)
 
@@ -186,12 +186,10 @@ class TransactionService(
 
     @Transactional
     fun applyRuleToExistingTransactions(spaceId: UUID, rule: Rule) {
-        // todo: transfer (only mono?)
-
         val ruleSpecification = TransactionRuleSpecification(rule, spaceId)
         val transactions = transactionRepository.findAll(ruleSpecification)
 
-        transactions.map { t -> t.category = rule.assignCategory }.toString()
+        transactions.map { t -> t.applyRule(rule) }
 
         transactionRepository.saveAll(transactions)
     }

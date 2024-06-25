@@ -45,6 +45,7 @@ export class LinkMonobankAccountComponent {
 
   closeModal() {
     this.isOpened = false;
+    this.monobankAccounts = [];
   }
 
   linkAccount(account: MonobankAccount) {

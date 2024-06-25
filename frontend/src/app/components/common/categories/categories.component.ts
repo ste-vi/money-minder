@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
-import { Category } from '../../../models/category';
+import { Category, CategoryType } from '../../../models/category';
 import { CategoryService } from '../../../services/api/category-service';
-import { SelectCategoryService } from '../../../services/communication/select-category-service';
 
 @Component({
   selector: 'app-categories',
@@ -12,31 +11,26 @@ import { SelectCategoryService } from '../../../services/communication/select-ca
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {
-  protected isOpened: boolean = false;
+export class CategoriesComponent implements OnInit {
   protected isSubCategoriesOpened: boolean = false;
 
   protected categories: Category[] = [];
   protected parentCategory: Category | undefined = undefined;
 
-  constructor(
-    private categoryService: CategoryService,
-    private selectCategoryService: SelectCategoryService,
-  ) {
-    this.selectCategoryService.modalOpened$.subscribe((type) => {
-      this.openModal();
-      this.categoryService.getCategories(type).subscribe((categories) => {
-        this.categories = categories;
-      });
+  // @ts-ignore
+  @Input() type: CategoryType;
+  @Output() selectedCategory = new EventEmitter<Category>();
+
+  constructor(private categoryService: CategoryService) {}
+
+  ngOnInit(): void {
+    this.categoryService.getCategories(this.type).subscribe((categories) => {
+      this.categories = categories;
     });
   }
 
-  openModal() {
-    this.isOpened = true;
-  }
-
   closeModal() {
-    this.isOpened = false;
+    this.selectedCategory.emit(undefined);
     this.closeSubCategoriesModal();
   }
 
@@ -49,13 +43,11 @@ export class CategoriesComponent {
       this.parentCategory = category;
       this.isSubCategoriesOpened = true;
     } else {
-      this.selectCategoryService.selectCategory(category);
-      this.closeModal();
+      this.selectedCategory.emit(category);
     }
   }
 
   selectSubCategory(subCategory: Category) {
-    this.selectCategoryService.selectCategory(subCategory);
-    this.closeModal();
+    this.selectedCategory.emit(subCategory);
   }
 }

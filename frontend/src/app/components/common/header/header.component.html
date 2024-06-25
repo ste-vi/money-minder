@@ -12,7 +12,7 @@
   <div class="actions">
     <mat-icon svgIcon="add-circle" class="icon small-icon active" *ngIf="showAdd"
     (click)="openAddTypeModal()"></mat-icon>
-    <mat-icon svgIcon="reload" class="icon small-icon" *ngIf="showReload"></mat-icon>
+    <mat-icon svgIcon="reload" class="icon small-icon" *ngIf="showReload" (click)="refresh()"></mat-icon>
     <mat-icon svgIcon="user" class="icon small-icon" *ngIf="showUser" (click)="openProfile()"></mat-icon>
   </div>
 

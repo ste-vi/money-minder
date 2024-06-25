@@ -1,9 +1,11 @@
 import {Category} from "./category";
+import {Account} from "./account";
 
 export interface Rule {
   id: string;
-  assignCategory: Category;
   condition: Condition;
+  assignCategory?: Category;
+  markAsTransferToAccount?: Account;
 }
 
 export interface Condition {

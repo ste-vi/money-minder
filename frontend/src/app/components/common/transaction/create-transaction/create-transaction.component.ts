@@ -13,10 +13,10 @@ import { MatIcon } from '@angular/material/icon';
 import { CreateTransactionService } from '../../../../services/communication/create-transaction-service';
 import { AccountService } from '../../../../services/api/account-service';
 import { Category, CategoryType } from '../../../../models/category';
-import { SelectCategoryService } from '../../../../services/communication/select-category-service';
 import { TransactionAccountFilterComponent } from '../search-transactions/filters/transaction-account-filter/transaction-account-filter.component';
 import { Account } from '../../../../models/account';
 import { TransactionService } from '../../../../services/api/transaction-service';
+import { CategoriesComponent } from '../../categories/categories.component';
 
 @Component({
   selector: 'app-create-transaction',
@@ -31,6 +31,7 @@ import { TransactionService } from '../../../../services/api/transaction-service
     ReactiveFormsModule,
     NgClass,
     TransactionAccountFilterComponent,
+    CategoriesComponent,
   ],
   templateUrl: './create-transaction.component.html',
   styleUrl: './create-transaction.component.scss',
@@ -44,6 +45,7 @@ export class CreateTransactionComponent {
 
   isAccountFilterOpened: boolean = false;
   isToAccountFilterOpened: boolean = false;
+  isCategorySelectModalOpened: boolean = false;
 
   // @ts-ignore
   @ViewChild('amountInput') protected amountInput: ElementRef;
@@ -63,7 +65,6 @@ export class CreateTransactionComponent {
   constructor(
     private createTransactionService: CreateTransactionService,
     private accountService: AccountService,
-    private selectCategoryService: SelectCategoryService,
     private transactionService: TransactionService,
   ) {
     this.createTransactionService.modalOpened$.subscribe(
@@ -79,10 +80,6 @@ export class CreateTransactionComponent {
         this.openModal();
       },
     );
-
-    this.selectCategoryService.categorySelected$.subscribe((category) => {
-      this.category = category;
-    });
   }
 
   private openModal() {
@@ -98,11 +95,7 @@ export class CreateTransactionComponent {
   }
 
   selectCategory() {
-    let categoryType =
-      this.transactionType === TransactionType.EXPENSE
-        ? CategoryType.EXPENSE
-        : CategoryType.INCOME;
-    this.selectCategoryService.openModal(categoryType);
+    this.isCategorySelectModalOpened = true;
   }
 
   formatAmount() {
@@ -218,4 +211,12 @@ export class CreateTransactionComponent {
       this.closeModal();
     });
   }
+
+  onCategorySelected(category: Category) {
+    this.category = category;
+    this.isCategorySelectModalOpened = false;
+  }
+
+  protected readonly CategoryType = CategoryType;
+  protected readonly TransactionType = TransactionType;
 }

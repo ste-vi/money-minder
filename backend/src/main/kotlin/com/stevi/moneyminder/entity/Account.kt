@@ -1,6 +1,7 @@
 package com.stevi.moneyminder.entity
 
 import com.stevi.moneyminder.model.response.AccountResponse
+import com.stevi.moneyminder.model.response.AccountShortResponse
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -64,5 +65,13 @@ fun Account.mapToResponse(): AccountResponse {
         currency = currency.mapToResponse(),
         type = type.mapToResponse(),
         isBankAccount = monoBankId != null
+    )
+}
+
+fun Account.mapToShortResponse(): AccountShortResponse {
+    return AccountShortResponse(
+        id = id!!,
+        name = name,
+        type = type.mapToResponse(),
     )
 }

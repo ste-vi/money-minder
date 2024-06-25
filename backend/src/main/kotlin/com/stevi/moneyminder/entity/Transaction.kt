@@ -77,13 +77,18 @@ fun Transaction.mapToResponse() = TransactionResponse(
     isBankTransaction = this.monoBankId != null
 )
 
-fun Transaction.applyRule(rule: Rule): Boolean {
+fun Transaction.applyRule(rule: Rule) {
     if (rule.condition.type == ConditionType.TEXT_CONTAINS && this.name.contains(rule.condition.textToApply)) {
-        this.category = rule.assignCategory
-        return true
+        applyRuleActions(rule)
     } else if (rule.condition.type == ConditionType.TEXT_EQUALS && this.name == rule.condition.textToApply) {
-        this.category = rule.assignCategory
-        return true
+        applyRuleActions(rule)
     }
-    return false
+}
+
+private fun Transaction.applyRuleActions(rule: Rule) {
+    if (rule.assignCategory != null) {
+        this.category = rule.assignCategory
+    } else if (rule.markAsTransferToAccount != null) {
+        this.toAccount = rule.markAsTransferToAccount
+    }
 }

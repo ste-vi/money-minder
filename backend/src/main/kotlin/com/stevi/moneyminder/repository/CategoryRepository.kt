@@ -21,15 +21,14 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
         select 
             sum(t.amount) as total,
             c as category,
-            t.fromAccount.currency as currency
+            t.currency as currency
         from Transaction t 
             left join t.category c 
         where t.fromAccount.space.id = :spaceId 
             and (c.type = :categoryType or (c is null and t.type = com.stevi.moneyminder.entity.TransactionType.EXPENSE))
             and t.date >= :dateFrom 
             and t.date <= :dateTo
-            and t.type <> com.stevi.moneyminder.entity.TransactionType.TRANSFER
-        group by c, t.fromAccount.currency
+        group by c, t.currency
         order by sum(t.amount) desc
     """
     )

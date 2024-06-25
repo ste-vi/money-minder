@@ -30,4 +30,10 @@ export class MonobankService {
   getMonoBankAccounts(): Observable<MonobankAccount[]> {
     return this.httpClient.get<MonobankAccount[]>(this.rootUrl + '/accounts');
   }
+
+  refreshMonoBankTransactions(): Observable<HttpResponse<void>> {
+    return this.httpClient.get<HttpResponse<void>>(
+      this.rootUrl + '/accounts/refresh',
+    );
+  }
 }

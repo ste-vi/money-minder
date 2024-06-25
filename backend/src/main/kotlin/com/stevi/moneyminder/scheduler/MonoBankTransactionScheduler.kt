@@ -20,7 +20,7 @@ class MonoBankTransactionScheduler(
     fun run() {
         accountService.getAllMonobankAccounts().stream().forEach { projection ->
             GlobalScope.async {
-                monoBankService.fetchRecentTransactionsFromMono(projection.getAccount(), projection.getMonoBankToken())
+                monoBankService.updateRecentTransactionsFromMono(projection.getAccount(), projection.getMonoBankToken())
             }
         }
     }

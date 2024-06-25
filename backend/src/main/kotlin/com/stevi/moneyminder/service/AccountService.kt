@@ -60,6 +60,11 @@ class AccountService(
     }
 
     @Transactional(readOnly = true)
+    fun getAllMonobankAccountsForSpace(spaceId: UUID): List<AccountMonoBankTokenProjection> {
+        return accountRepository.findAllBySpaceIdAndMonoBankIdIsNotNull(spaceId);
+    }
+
+    @Transactional(readOnly = true)
     fun getAllMonobankAccounts(): List<AccountMonoBankTokenProjection> {
         return accountRepository.findAllByMonoBankIdIsNotNull();
     }

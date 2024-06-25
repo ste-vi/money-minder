@@ -178,20 +178,26 @@
       </div>
     </div>
   </div>
+
+  <app-transaction-account-filter
+    *ngIf="isAccountFilterOpened"
+    [selectedAccount]="transactionForm.controls['account'].value"
+    [skipBankAccounts]="true"
+    (closed)="closeAccountFilter()"
+    (accountSelected)="onAccountSelected($event)"
+  ></app-transaction-account-filter>
+
+  <app-transaction-account-filter
+    *ngIf="isToAccountFilterOpened"
+    [selectedAccount]="transactionForm.controls['toAccount'].value"
+    [skipBankAccounts]="true"
+    (closed)="closeToAccountFilter()"
+    (accountSelected)="onToAccountSelected($event)"
+  ></app-transaction-account-filter>
+
+  <app-categories *ngIf="isCategorySelectModalOpened"
+                  [type]="this.transactionType === TransactionType.EXPENSE ? CategoryType.EXPENSE : CategoryType.INCOME"
+                  (selectedCategory)="onCategorySelected($event)">
+  </app-categories>
 </div>
 
-<app-transaction-account-filter
-  *ngIf="isAccountFilterOpened"
-  [selectedAccount]="transactionForm.controls['account'].value"
-  [skipBankAccounts]="true"
-  (closed)="closeAccountFilter()"
-  (accountSelected)="onAccountSelected($event)"
-></app-transaction-account-filter>
-
-<app-transaction-account-filter
-  *ngIf="isToAccountFilterOpened"
-  [selectedAccount]="transactionForm.controls['toAccount'].value"
-  [skipBankAccounts]="true"
-  (closed)="closeToAccountFilter()"
-  (accountSelected)="onToAccountSelected($event)"
-></app-transaction-account-filter>

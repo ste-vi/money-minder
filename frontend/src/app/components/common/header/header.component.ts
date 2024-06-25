@@ -1,13 +1,17 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SelectAccountTypeServiceService } from '../../../services/communication/select-account-type-service.service';
 import { SpaceService } from '../../../services/api/space-service';
 import { Space } from '../../../models/space';
 import { ProfileService } from '../../../services/communication/profile-service';
 import { SpacesComponent } from '../spaces/spaces.component';
 import { ViewSpacesService } from '../../../services/communication/view-spaces-service';
+import { MonobankService } from '../../../services/api/monobank-service';
+import { CategoryService } from '../../../services/api/category-service';
+import { TransactionService } from '../../../services/api/transaction-service';
+import { AccountService } from '../../../services/api/account-service';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +34,11 @@ export class HeaderComponent {
     private spaceService: SpaceService,
     private profileService: ProfileService,
     private viewSpacesService: ViewSpacesService,
+    private monoBankService: MonobankService,
+    private categoryService: CategoryService,
+    private transactionService: TransactionService,
+    private accountService: AccountService,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.initButtons();
 
@@ -83,5 +92,18 @@ export class HeaderComponent {
 
   openSpaces() {
     this.viewSpacesService.openModal();
+  }
+
+  refresh() {
+    this.monoBankService.refreshMonoBankTransactions().subscribe((response) => {
+      if (response.status === 201) {
+        if (this.activatedRoute.snapshot.url[0].path === 'dashboard') {
+          this.categoryService.refreshTopExpenses();
+          this.transactionService.refreshTransactions();
+        } else if (this.activatedRoute.snapshot.url[0].path === 'accounts') {
+          this.accountService.refreshAccounts();
+        }
+      }
+    });
   }
 }

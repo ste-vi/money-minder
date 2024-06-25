@@ -38,10 +38,9 @@ export class ConnectMonobankComponent {
       return;
     }
     this.monoBankService.link(this.token).subscribe((response) => {
-      console.log(response.status);
       if (response.status === 201) {
         this.closeModal();
-        this.banksService.triggerRefreshBanks;
+        this.banksService.triggerRefreshBanks();
         this.selectNewBankService.closeModal();
       }
     });

@@ -6,7 +6,8 @@ import java.util.*
 data class RuleResponse(
     val id: UUID,
     val condition: ConditionResponse,
-    val assignCategory: CategoryResponse
+    val assignCategory: CategoryResponse?,
+    val markAsTransferToAccount: AccountShortResponse?
 ) : Serializable {
 
     data class ConditionResponse(

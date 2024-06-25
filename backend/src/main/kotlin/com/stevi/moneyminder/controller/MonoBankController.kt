@@ -35,4 +35,10 @@ class MonoBankController(private val monoBankService: MonoBankService) {
     fun linkAccount(@RequestBody monoBankAccountRequest: LinkMonoBankAccountRequest) {
         monoBankService.linkAccount(SecurityUtil.getCurrentUserSpaceId(), monoBankAccountRequest)
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/accounts/refresh")
+    fun refreshRecentTransactionsFromMonoForSpace() {
+        monoBankService.refreshRecentTransactionsFromMonoForSpace(SecurityUtil.getCurrentUserSpaceId())
+    }
 }

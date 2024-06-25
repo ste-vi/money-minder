@@ -1,6 +1,6 @@
-<div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
+<div class="page-mask" (click)="closeModal()"></div>
 
-<div *ngIf="isOpened">
+<div>
   <div class="categories-container bottom-modal">
     <div class="categories-container-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
@@ -40,7 +40,8 @@
       </div>
     </div>
     <div class="categories-container-body">
-      <div class="category" *ngFor="let subCategory of this.parentCategory?.subCategories" (click)="selectSubCategory(subCategory)">
+      <div class="category" *ngFor="let subCategory of this.parentCategory?.subCategories"
+           (click)="selectSubCategory(subCategory)">
         <div class="category-icon">
           <mat-icon svgIcon="{{subCategory.icon}}"></mat-icon>
         </div>

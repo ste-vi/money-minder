@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Category, CategoryType } from '../../models/category';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,8 @@ import { TopExpense } from '../../models/top-expense';
 })
 export class CategoryService {
   private readonly rootUrl = environment.apiUrl + '/categories';
+
+  private refreshTopExpensesSubject = new Subject<void>();
 
   constructor(private httpClient: HttpClient) {}
 
@@ -26,8 +28,18 @@ export class CategoryService {
     dateTo: Date,
   ): Observable<TopExpense[]> {
     let path = this.rootUrl + '/top-expenses?';
+    dateFrom.setUTCHours(0, 0, 0, 0);
+    dateTo.setUTCHours(0, 0, 0, 0);
     path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
     path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
     return this.httpClient.get<TopExpense[]>(path);
+  }
+
+  refreshTopExpenses() {
+    this.refreshTopExpensesSubject.asObservable();
+  }
+
+  get refreshTopExpenses$(): Observable<void> {
+    return this.refreshTopExpensesSubject.asObservable();
   }
 }

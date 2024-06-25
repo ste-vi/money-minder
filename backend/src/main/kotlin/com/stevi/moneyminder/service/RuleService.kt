@@ -6,6 +6,7 @@ import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.model.request.RuleRequest
 import com.stevi.moneyminder.model.response.RuleResponse
+import com.stevi.moneyminder.repository.AccountRepository
 import com.stevi.moneyminder.repository.CategoryRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import java.util.*
@@ -17,7 +18,8 @@ class RuleService(
     private val ruleRepository: RuleRepository,
     private val spaceRepository: SpaceRepository,
     private val transactionService: TransactionService,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val accountRepository: AccountRepository
 ) {
 
     @Transactional(readOnly = true)
@@ -28,12 +30,18 @@ class RuleService(
     @Transactional
     fun createRule(spaceId: UUID, ruleRequest: RuleRequest, applyToExistingTransactions: Boolean): RuleResponse {
         val space = spaceRepository.findById(spaceId).orElseThrow { IllegalArgumentException("Space not found") }
-        val category = categoryRepository.findById(ruleRequest.assignCategoryId)
-            .orElseThrow { IllegalArgumentException("Category not found") }
+        val category = ruleRequest.assignCategoryId?.let {
+            categoryRepository.findById(it)
+                .orElseThrow { IllegalArgumentException("Category not found") }
+        }
+        val account = ruleRequest.markAsTransferToAccountId?.let {
+            accountRepository.findById(it).orElseThrow { IllegalArgumentException("Account not found") }
+        }
 
         val rule = Rule(
             id = null,
             assignCategory = category,
+            markAsTransferToAccount = account,
             condition = Condition(
                 id = null,
                 type = ruleRequest.conditionType,
