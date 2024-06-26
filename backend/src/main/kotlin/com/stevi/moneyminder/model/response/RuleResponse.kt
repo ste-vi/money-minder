@@ -7,6 +7,7 @@ data class RuleResponse(
     val id: UUID,
     val condition: ConditionResponse,
     val assignCategory: CategoryResponse?,
+    val markAsTransferFromAccount: AccountShortResponse?,
     val markAsTransferToAccount: AccountShortResponse?
 ) : Serializable {
 

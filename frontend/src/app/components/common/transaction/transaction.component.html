@@ -12,11 +12,18 @@
     <div class="transaction-body">
       <div class="transaction-title">{{ transaction.name }}</div>
       <div class="transaction-account secondary-text">
-        <mat-icon svgIcon="{{ transaction.fromAccount.type.iconName }}" class="transaction-account-icon"></mat-icon>
-        <div>{{ transaction.fromAccount.name }}</div>
-        <mat-icon svgIcon="arrow-right" class="transaction-account-icon" *ngIf="transaction.toAccount"></mat-icon>
-        <mat-icon svgIcon="{{ transaction.toAccount?.type?.iconName }}" class="transaction-account-icon"></mat-icon>
-        <div>{{ transaction.toAccount?.name }}</div>
+        <div class="transaction-account-names" *ngIf="transaction.type !== TransactionType.TRANSFER">
+          <mat-icon svgIcon="{{ transaction.account.type.iconName }}" class="transaction-account-icon"></mat-icon>
+          <div>{{ transaction.account.name }}</div>
+        </div>
+
+        <div class="transaction-account-names" *ngIf="transaction.type === TransactionType.TRANSFER">
+          <mat-icon svgIcon="{{ transaction.fromAccount?.type?.iconName }}" class="transaction-account-icon"></mat-icon>
+          <div>{{ transaction.fromAccount?.name }}</div>
+          <mat-icon svgIcon="arrow-right" class="transaction-account-icon" *ngIf="transaction.toAccount"></mat-icon>
+          <mat-icon svgIcon="{{ transaction.toAccount?.type?.iconName }}" class="transaction-account-icon"></mat-icon>
+          <div>{{ transaction.toAccount?.name }}</div>
+        </div>
       </div>
     </div>
   </div>

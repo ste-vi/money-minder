@@ -51,9 +51,15 @@ open class Transaction(
     open var monoBankId: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "from_account_id", nullable = false)
-    open var fromAccount: Account,
+    @JoinColumn(name = "account_id", nullable = false)
+    open var account: Account,
 
+    // used only for transfer transactions
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "from_account_id", nullable = true)
+    open var fromAccount: Account?,
+
+    // used only for transfer transactions
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "to_account_id", nullable = true)
     open var toAccount: Account?,
@@ -69,7 +75,8 @@ fun Transaction.mapToResponse() = TransactionResponse(
     notes = this.notes,
     amount = this.amount,
     currency = this.currency.mapToResponse(),
-    fromAccount = this.fromAccount.mapToResponse(),
+    account = this.account.mapToResponse(),
+    fromAccount = this.fromAccount?.mapToResponse(),
     toAccount = this.toAccount?.mapToResponse(),
     date = this.date,
     category = this.category?.mapToResponse(),
@@ -89,6 +96,12 @@ private fun Transaction.applyRuleActions(rule: Rule) {
     if (rule.assignCategory != null) {
         this.category = rule.assignCategory
     } else if (rule.markAsTransferToAccount != null) {
+        this.type = TransactionType.TRANSFER
         this.toAccount = rule.markAsTransferToAccount
+        this.fromAccount = this.account;
+    } else if (rule.markAsTransferFromAccount != null) {
+        this.type = TransactionType.TRANSFER
+        this.fromAccount = rule.markAsTransferFromAccount
+        this.toAccount = this.account;
     }
 }

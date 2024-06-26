@@ -2,7 +2,6 @@ package com.stevi.moneyminder.repository;
 
 import com.stevi.moneyminder.entity.Category
 import com.stevi.moneyminder.entity.CategoryType
-import com.stevi.moneyminder.model.response.TopExpenseResponse
 import com.stevi.moneyminder.repository.projection.TopExpensesProjection
 import java.time.LocalDateTime
 import java.util.*
@@ -24,8 +23,8 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
             t.currency as currency
         from Transaction t 
             left join t.category c 
-        where t.fromAccount.space.id = :spaceId 
-            and (c.type = :categoryType or (c is null and t.type = com.stevi.moneyminder.entity.TransactionType.EXPENSE))
+        where t.account.space.id = :spaceId 
+            and t.type = com.stevi.moneyminder.entity.TransactionType.EXPENSE
             and t.date >= :dateFrom 
             and t.date <= :dateTo
         group by c, t.currency
@@ -34,7 +33,6 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
     )
     fun findTopExpenses(
         @Param("spaceId") spaceId: UUID,
-        @Param("categoryType") categoryType: CategoryType,
         @Param("dateFrom") dateFrom: LocalDateTime,
         @Param("dateTo") dateTo: LocalDateTime
     ): List<TopExpensesProjection>

@@ -48,27 +48,18 @@ export class TransactionService {
       path = path + '&needReview=' + needReview;
     }
     if (dateFrom) {
-      dateFrom.setUTCHours(0,0,0,0);
+      dateFrom.setUTCHours(0, 0, 0, 0);
       path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
     }
     if (dateTo) {
-      dateTo.setUTCHours(0,0,0,0);
+      dateTo.setUTCHours(0, 0, 0, 0);
       path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
     }
 
     return this.httpClient.get<PageResponse<Transaction>>(this.rootUrl + path);
   }
 
-  create(createRequest: {
-    fromAccountId: string;
-    currency: Currency;
-    date: Date;
-    amount: number;
-    notes: string;
-    name: string;
-    categoryId?: string;
-    type: TransactionType;
-  }): Observable<Transaction> {
+  create(createRequest: any): Observable<Transaction> {
     return this.httpClient.post<Transaction>(this.rootUrl, createRequest).pipe(
       tap(() => {
         this.refreshTransactionsSubject.next();
@@ -77,16 +68,7 @@ export class TransactionService {
     );
   }
 
-  update(
-    id: string,
-    updateRequest: {
-      date: any;
-      amount: any;
-      notes: any;
-      name: any;
-      categoryId?: string;
-    },
-  ) {
+  update(id: string, updateRequest: any) {
     return this.httpClient.put(this.rootUrl + '/' + id, updateRequest).pipe(
       tap(() => {
         this.refreshAccountBalanceSubject.next();

@@ -5,6 +5,7 @@ export interface Rule {
   id: string;
   condition: Condition;
   assignCategory?: Category;
+  markAsTransferFromAccount?: Account;
   markAsTransferToAccount?: Account;
 }
 

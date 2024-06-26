@@ -20,11 +20,7 @@ export class RuleService {
     return this.httpClient.get<Rule[]>(this.rootUrl);
   }
 
-  createRule(request: {
-    assignCategoryId: string | undefined;
-    conditionText: string;
-    conditionType: ConditionTypeEnum
-  }, applyToExistingTransactions: boolean): Observable<Object> {
+  createRule(request: any, applyToExistingTransactions: boolean): Observable<Object> {
     return this.httpClient.post(this.rootUrl + "?applyToExistingTransactions=" + applyToExistingTransactions, request)
       .pipe(tap(() => {
           this.refreshRulesSubject.next();

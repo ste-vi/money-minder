@@ -13,7 +13,8 @@ data class CreateTransactionRequest(
     val currency: Currency,
     val amount: BigDecimal = BigDecimal.ZERO,
     val date: LocalDateTime,
-    val fromAccountId: UUID,
+    val accountId: UUID,
+    val fromAccountId: UUID?,
     val toAccountId: UUID?,
     val categoryId: UUID?,
     val type: TransactionType

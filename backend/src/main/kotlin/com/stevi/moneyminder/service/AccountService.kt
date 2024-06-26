@@ -162,7 +162,7 @@ class AccountService(
 
         accountRepository.save(account)
 
-        if (oldBalance.compareTo(accountRequest.balance!!) != 0 && transactionRepository.existsByFromAccountId(id)) {
+        if (oldBalance.compareTo(accountRequest.balance!!) != 0 && transactionRepository.existsByAccountId(id)) {
             createBalanceCorrectionTransaction(account, oldBalance)
             accountBalanceHistoryService.saveHistory(account)
         }
@@ -179,7 +179,8 @@ class AccountService(
             notes = "Happened due to account balance update",
             amount = amount.abs(),
             currency = account.currency,
-            fromAccount = account,
+            account = account,
+            fromAccount = null,
             toAccount = null,
             date = LocalDateTime.now(),
             category = null,

@@ -31,8 +31,8 @@ class TransactionRuleSpecification(
             predicates.add(cb.like(cb.lower(root.get("name")), rule.condition.textToApply.lowercase()))
         }
 
-        val fromAccountRoot = root.join<Transaction, Account>("fromAccount", JoinType.INNER)
-        predicates.add(cb.equal(fromAccountRoot.get<Space>("space").get<UUID>("id"), spaceId))
+        val accountRoot = root.join<Transaction, Account>("account", JoinType.INNER)
+        predicates.add(cb.equal(accountRoot.get<Space>("space").get<UUID>("id"), spaceId))
 
         return predicates.takeIf { it.isNotEmpty() }?.let { cb.and(*it.toTypedArray()) }
     }

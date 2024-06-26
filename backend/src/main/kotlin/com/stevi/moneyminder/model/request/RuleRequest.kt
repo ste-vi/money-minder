@@ -9,5 +9,6 @@ data class RuleRequest(
     val conditionType: ConditionType,
     val conditionText: String,
     val assignCategoryId: UUID?,
+    val markAsTransferFromAccountId: UUID?,
     val markAsTransferToAccountId: UUID?
 ) : Serializable

@@ -1,9 +1,9 @@
 package com.stevi.moneyminder.service
 
 import com.stevi.moneyminder.entity.Account
+import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.entity.Currency
 import com.stevi.moneyminder.entity.MonoBankInfo
-import com.stevi.moneyminder.entity.AccountType
 import com.stevi.moneyminder.entity.Transaction
 import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.applyRule
@@ -16,20 +16,22 @@ import com.stevi.moneyminder.repository.MonoBankInfoRepository
 import com.stevi.moneyminder.repository.RuleRepository
 import com.stevi.moneyminder.repository.SpaceRepository
 import com.stevi.moneyminder.repository.TransactionRepository
-import com.stevi.moneyminder.util.SecurityUtil
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 
@@ -193,7 +195,10 @@ class MonoBankService(
                 val transactionType =
                     if (monoTransaction.operationAmount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
 
-                val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, ZoneOffset.UTC)
+                val now = LocalDateTime.now()
+                val zone = ZoneId.of("Europe/Kyiv")
+                val zoneOffSet = zone.rules.getOffset(now)
+                val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, zoneOffSet)
 
                 val amount = monoTransaction.operationAmount.toBigDecimal()
                     .divide(BigDecimal.valueOf(100))
@@ -207,7 +212,8 @@ class MonoBankService(
                     currency = Currency.fromCode(monoTransaction.currencyCode),
                     date = date,
                     monoBankId = monoTransaction.id,
-                    fromAccount = account,
+                    account = account,
+                    fromAccount = null,
                     toAccount = null,
                     category = null,
                     type = transactionType,

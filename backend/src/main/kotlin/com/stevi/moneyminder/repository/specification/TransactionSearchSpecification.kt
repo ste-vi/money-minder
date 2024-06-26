@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.Specification
 class TransactionSearchSpecification(
     private val name: String?,
     private val notes: String?,
-    private val fromAccountId: UUID? = null,
+    private val accountId: UUID? = null,
     private val categoryId: UUID? = null,
     private val needReview: Boolean? = false,
     private val dateFrom: LocalDateTime? = null,
@@ -52,6 +52,8 @@ class TransactionSearchSpecification(
 
         needReview?.let {
             predicates.add(cb.isNull(root.get<Category>("category")))
+            predicates.add(cb.isNull(root.get<Account>("fromAccount")))
+            predicates.add(cb.isNull(root.get<Account>("toAccount")))
         }
 
         dateFrom?.let { dateFrom ->
@@ -62,11 +64,11 @@ class TransactionSearchSpecification(
             predicates.add(cb.lessThanOrEqualTo(root.get("date"), dateTo))
         }
 
-        val fromAccountRoot = root.join<Transaction, Account>("fromAccount", JoinType.INNER)
-        fromAccountId?.let { fromAccountId ->
-            predicates.add(cb.equal(fromAccountRoot.get<UUID>("id"), fromAccountId))
+        val accountRoot = root.join<Transaction, Account>("account", JoinType.INNER)
+        accountId?.let { accountId ->
+            predicates.add(cb.equal(accountRoot.get<UUID>("id"), accountId))
         } ?: run {
-            predicates.add(cb.equal(fromAccountRoot.get<Space>("space").get<UUID>("id"), spaceId))
+            predicates.add(cb.equal(accountRoot.get<Space>("space").get<UUID>("id"), spaceId))
         }
 
         return predicates.takeIf { it.isNotEmpty() }?.let { cb.and(*it.toTypedArray()) }

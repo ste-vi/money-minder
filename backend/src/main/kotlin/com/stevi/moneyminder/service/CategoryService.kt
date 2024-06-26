@@ -115,11 +115,10 @@ class CategoryService(
     @Transactional(readOnly = true)
     fun getTopExpensesByCategories(
         spaceId: UUID,
-        type: CategoryType?,
         dateFrom: LocalDateTime,
         dateTo: LocalDateTime
     ): List<TopExpenseResponse> {
-        return categoryRepository.findTopExpenses(spaceId, type ?: CategoryType.EXPENSE, dateFrom, dateTo).map {
+        return categoryRepository.findTopExpenses(spaceId, dateFrom, dateTo).map {
             TopExpenseResponse(
                 total = it.getTotal(),
                 category = it.getCategory()?.mapToResponse(),

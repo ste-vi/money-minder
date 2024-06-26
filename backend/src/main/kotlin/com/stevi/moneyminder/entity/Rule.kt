@@ -38,6 +38,10 @@ open class Rule(
     @JoinColumn(name = "mark_as_transfer_to_account_id")
     open var markAsTransferToAccount: Account?,
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "mark_as_transfer_from_account_id")
+    open var markAsTransferFromAccount: Account?,
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     open var space: Space,
@@ -48,6 +52,7 @@ fun Rule.mapToResponse(): RuleResponse {
         id = this.id ?: UUID.randomUUID(),
         condition = this.condition.mapToResponse(),
         assignCategory = this.assignCategory?.mapToResponse(),
+        markAsTransferFromAccount = markAsTransferFromAccount?.mapToShortResponse(),
         markAsTransferToAccount = markAsTransferToAccount?.mapToShortResponse()
     )
 }

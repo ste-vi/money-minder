@@ -68,7 +68,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   protected transactionForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     amount: new FormControl(Validators.required),
-    fromAccount: new FormControl(Validators.required),
     toAccount: new FormControl(Validators.required),
     date: new FormControl(Validators.required),
     notes: new FormControl(''),
@@ -86,7 +85,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     this.transactionForm = new FormGroup({
       name: new FormControl('', Validators.required),
       amount: new FormControl(Validators.required),
-      fromAccount: new FormControl(Validators.required),
       toAccount: new FormControl(),
       date: new FormControl(Validators.required),
       notes: new FormControl(''),
@@ -99,9 +97,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
 
       this.transactionForm.controls['name'].setValue(transaction.name);
       this.transactionForm.controls['date'].setValue(transaction.date);
-      this.transactionForm.controls['fromAccount'].setValue(
-        transaction.fromAccount,
-      );
       this.transactionForm.controls['toAccount'].setValue(
         transaction.toAccount,
       );
@@ -162,7 +157,7 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
 
   save() {
     if (
-      this.transactionForm.controls['fromAccount'].value.id ===
+      this.transaction.account.id ===
       this.transactionForm.controls['toAccount'].value?.id
     ) {
       return;

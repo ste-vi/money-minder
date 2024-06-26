@@ -184,22 +184,22 @@ export class CreateTransactionComponent {
     }
 
     let toAccountId = this.transactionForm.controls['toAccount']?.value?.id;
-    let fromAccountId = this.transactionForm.controls['account'].value.id;
+    let accountId = this.transactionForm.controls['account'].value.id;
     if (this.isTransferTabActive) {
       if (
         toAccountId === null ||
         toAccountId === undefined ||
-        fromAccountId === toAccountId
+        accountId === toAccountId
       ) {
         return;
       }
     }
 
     let createRequest = {
-      fromAccountId: fromAccountId,
-      toAccountId: toAccountId,
-      currency:
-        this.transactionForm.controls['account'].value.currency.shortName,
+      accountId: accountId,
+      fromAccountId: this.isTransferTabActive ? accountId : null,
+      toAccountId: this.isTransferTabActive ? toAccountId : null,
+      currency:   this.transactionForm.controls['account'].value.currency.shortName,
       date: new Date(this.transactionForm.controls['date'].value),
       amount: this.transactionForm.controls['amount'].value,
       notes: this.transactionForm.controls['notes'].value,

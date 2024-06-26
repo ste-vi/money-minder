@@ -24,16 +24,21 @@
         <div class="secondary-header-text">What should happen to these transactions?</div>
         <select [(ngModel)]="actionType">
           <option [value]="ActionType.ASSIGN_CATEGORY">Assign category</option>
-          <option [value]="ActionType.MARK_AS_TRANSFER">Mark as transfer to account</option>
+          <option [value]="ActionType.MARK_AS_TRANSFER_TO">Mark as transfer to account</option>
+          <option [value]="ActionType.MARK_AS_TRANSFER_FROM">Mark as transfer from account</option>
         </select>
 
         <input *ngIf="actionType === ActionType.ASSIGN_CATEGORY"
                class="clickable" placeholder="Select category"
                [value]="assignCategory?.name" (click)="selectCategory()">
 
-        <input *ngIf="actionType === ActionType.MARK_AS_TRANSFER"
-               class="clickable" placeholder="Select account"
-               [value]="markAsTransferToAccount?.name" (click)="selectAccount()">
+        <input *ngIf="actionType === ActionType.MARK_AS_TRANSFER_TO"
+               class="clickable" placeholder="Select account to"
+               [value]="markAsTransferToAccount?.name" (click)="selectAccountTo()">
+
+        <input *ngIf="actionType === ActionType.MARK_AS_TRANSFER_FROM"
+               class="clickable" placeholder="Select account from"
+               [value]="markAsTransferFromAccount?.name" (click)="selectAccountFrom()">
 
         <div class="update-existing-flag">
           <input type="checkbox" [checked]="applyToExistingTransactions" [(ngModel)]="applyToExistingTransactions">
@@ -51,6 +56,13 @@
     [skipBankAccounts]="false"
     (accountSelected)="onToAccountSelected($event)"
     (closed)="closeToAccountFilter()"
+  ></app-transaction-account-filter>
+
+  <app-transaction-account-filter
+    *ngIf="isFromAccountFilterOpened"
+    [skipBankAccounts]="false"
+    (accountSelected)="onFromAccountSelected($event)"
+    (closed)="closeFromAccountFilter()"
   ></app-transaction-account-filter>
 
   <app-categories *ngIf="isCategorySelectModalOpened"

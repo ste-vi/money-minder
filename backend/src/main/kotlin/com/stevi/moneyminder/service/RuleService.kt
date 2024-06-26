@@ -34,14 +34,22 @@ class RuleService(
             categoryRepository.findById(it)
                 .orElseThrow { IllegalArgumentException("Category not found") }
         }
-        val account = ruleRequest.markAsTransferToAccountId?.let {
+        val fromAccount = ruleRequest.markAsTransferFromAccountId?.let {
             accountRepository.findById(it).orElseThrow { IllegalArgumentException("Account not found") }
+        }
+        val toAccount = ruleRequest.markAsTransferToAccountId?.let {
+            accountRepository.findById(it).orElseThrow { IllegalArgumentException("Account not found") }
+        }
+
+        if (category == null && fromAccount == null && toAccount == null) {
+            throw IllegalArgumentException("At least one of category, fromAccount or toAccount is required")
         }
 
         val rule = Rule(
             id = null,
             assignCategory = category,
-            markAsTransferToAccount = account,
+            markAsTransferFromAccount = fromAccount,
+            markAsTransferToAccount = toAccount,
             condition = Condition(
                 id = null,
                 type = ruleRequest.conditionType,

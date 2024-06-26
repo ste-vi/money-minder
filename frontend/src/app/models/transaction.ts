@@ -8,7 +8,8 @@ export interface Transaction {
   amount: number;
   currency: Currency;
   date: Date;
-  fromAccount: Account;
+  account: Account;
+  fromAccount?: Account;
   toAccount?: Account;
   notes?: string;
   type: TransactionType,

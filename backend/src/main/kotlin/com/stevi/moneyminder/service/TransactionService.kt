@@ -36,7 +36,7 @@ class TransactionService(
         val specification = TransactionSearchSpecification(
             searchRequest.name,
             searchRequest.notes,
-            searchRequest.fromAccountId,
+            searchRequest.accountId,
             searchRequest.categoryId,
             searchRequest.needReview,
             searchRequest.dateFrom,
@@ -70,11 +70,12 @@ class TransactionService(
 
     @Transactional
     fun createTransaction(currentUserSpaceId: UUID, request: CreateTransactionRequest): TransactionResponse {
-        val fromAccount = accountService.getAccountById(request.fromAccountId)
+        val account = accountService.getAccountById(request.accountId)
+        val fromAccount = request.fromAccountId?.let { accountService.getAccountById(it) }
         val toAccount = request.toAccountId?.let { accountService.getAccountById(it) }
         val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(currentUserSpaceId)
 
-        fromAccount.monoBankId?.let {
+        account.monoBankId?.let {
             throw IllegalArgumentException("Account is linked to Monobank, manual transaction is not allowed")
         }
 
@@ -90,7 +91,8 @@ class TransactionService(
             currency = request.currency,
             date = request.date,
             monoBankId = null,
-            fromAccount = fromAccount,
+            account = account,
+            fromAccount = if (fromAccount == null) null else account,
             toAccount = toAccount,
             category = category,
             type = request.type,
@@ -102,11 +104,11 @@ class TransactionService(
         val savedTransaction = transactionRepository.save(transaction)
 
         if (request.type == TransactionType.INCOME) {
-            accountService.increaseAccountBalanceByAmount(fromAccount, request.amount)
+            accountService.increaseAccountBalanceByAmount(account, request.amount)
         } else if (request.type == TransactionType.EXPENSE) {
-            accountService.decreaseAccountBalanceByAmount(fromAccount, request.amount)
+            accountService.decreaseAccountBalanceByAmount(account, request.amount)
         } else if (request.type == TransactionType.TRANSFER && toAccount != null) {
-            accountService.decreaseAccountBalanceByAmount(fromAccount, request.amount)
+            accountService.decreaseAccountBalanceByAmount(fromAccount!!, request.amount)
             accountService.increaseAccountBalanceByAmount(toAccount, request.amount)
         }
 
@@ -138,16 +140,16 @@ class TransactionService(
                 val previousAmount = transaction.amount
                 transaction.amount = it
                 if (transaction.type == TransactionType.INCOME) {
-                    accountService.updateAccountBalance(transaction.fromAccount, previousAmount, it)
+                    accountService.updateAccountBalance(transaction.account, previousAmount, it)
                 } else if (transaction.type == TransactionType.EXPENSE) {
                     accountService.updateAccountBalance(
-                        transaction.fromAccount,
+                        transaction.account,
                         previousAmount.multiply(BigDecimal.valueOf(-1)),
                         it.multiply(BigDecimal.valueOf(-1))
                     )
                 } else if (transaction.type == TransactionType.TRANSFER && request.toAccountId != null) {
                     accountService.updateAccountBalance(
-                        transaction.fromAccount,
+                        transaction.fromAccount!!,
                         previousAmount.multiply(BigDecimal.valueOf(-1)),
                         it.multiply(BigDecimal.valueOf(-1))
                     )
@@ -170,11 +172,11 @@ class TransactionService(
         transactionRepository.delete(transaction)
 
         if (transaction.type == TransactionType.INCOME) {
-            accountService.decreaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+            accountService.decreaseAccountBalanceByAmount(transaction.account, transaction.amount)
         } else if (transaction.type == TransactionType.EXPENSE) {
-            accountService.increaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+            accountService.increaseAccountBalanceByAmount(transaction.account, transaction.amount)
         } else if (transaction.type == TransactionType.TRANSFER && transaction.toAccount != null) {
-            accountService.increaseAccountBalanceByAmount(transaction.fromAccount, transaction.amount)
+            accountService.increaseAccountBalanceByAmount(transaction.fromAccount!!, transaction.amount)
             accountService.decreaseAccountBalanceByAmount(transaction.toAccount!!, transaction.amount)
         }
     }

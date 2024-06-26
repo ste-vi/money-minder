@@ -36,9 +36,12 @@
         font-size: 13px;
       }
 
-      .transaction-account {
+      .transaction-account-names {
         display: flex;
         align-items: center;
+        justify-content: start;
+        flex-wrap: nowrap;
+        text-overflow: ellipsis;
         gap: 2px;
 
         .transaction-account-icon {

@@ -41,11 +41,13 @@ export class CreateRuleComponent {
 
   protected isCategorySelectModalOpened: boolean = false;
   protected isToAccountFilterOpened: boolean = false;
+  protected isFromAccountFilterOpened: boolean = false;
 
   protected conditionType: ConditionTypeEnum = ConditionTypeEnum.TEXT_CONTAINS;
   protected conditionText: string = '';
   protected assignCategory: Category | undefined = undefined;
   protected markAsTransferToAccount: Account | undefined = undefined;
+  protected markAsTransferFromAccount: Account | undefined = undefined;
   protected applyToExistingTransactions: boolean = false;
 
   constructor(
@@ -66,48 +68,23 @@ export class CreateRuleComponent {
     this.conditionText = '';
     this.assignCategory = undefined;
     this.markAsTransferToAccount = undefined;
+    this.markAsTransferFromAccount = undefined;
   }
 
   selectCategory() {
     this.isCategorySelectModalOpened = true;
   }
 
-  selectAccount() {
+  selectAccountTo() {
     this.isToAccountFilterOpened = true;
+  }
+
+  selectAccountFrom() {
+    this.isFromAccountFilterOpened = true;
   }
 
   selectConditionType(type: ConditionTypeEnum) {
     this.conditionType = type;
-  }
-
-  createRule() {
-    if (
-      this.conditionText == '' ||
-      (this.actionType === ActionType.ASSIGN_CATEGORY &&
-        this.assignCategory == undefined) ||
-      (this.actionType === ActionType.MARK_AS_TRANSFER &&
-        this.markAsTransferToAccount == undefined)
-    ) {
-      return;
-    }
-    let request = {
-      assignCategoryId:
-        this.actionType === ActionType.ASSIGN_CATEGORY
-          ? this.assignCategory?.id
-          : undefined,
-      markAsTransferToAccountId:
-        this.actionType === ActionType.MARK_AS_TRANSFER
-          ? this.markAsTransferToAccount?.id
-          : undefined,
-      conditionText: this.conditionText,
-      conditionType: this.conditionType,
-    };
-
-    this.ruleService
-      .createRule(request, this.applyToExistingTransactions)
-      .subscribe(() => {
-        this.closeModal();
-      });
   }
 
   onCategorySelected(category: Category) {
@@ -120,7 +97,52 @@ export class CreateRuleComponent {
     this.markAsTransferToAccount = toAccount;
   }
 
+  onFromAccountSelected(fromAccount: Account) {
+    this.isFromAccountFilterOpened = false;
+    this.markAsTransferFromAccount = fromAccount;
+  }
+
   closeToAccountFilter() {
     this.isToAccountFilterOpened = false;
+  }
+
+  closeFromAccountFilter() {
+    this.isFromAccountFilterOpened = false;
+  }
+
+  createRule() {
+    if (
+      this.conditionText == '' ||
+      (this.actionType === ActionType.ASSIGN_CATEGORY &&
+        this.assignCategory == undefined) ||
+      (this.actionType === ActionType.MARK_AS_TRANSFER_TO &&
+        this.markAsTransferToAccount == undefined) ||
+      (this.actionType === ActionType.MARK_AS_TRANSFER_FROM &&
+        this.markAsTransferFromAccount == undefined)
+    ) {
+      return;
+    }
+    let request = {
+      assignCategoryId:
+        this.actionType === ActionType.ASSIGN_CATEGORY
+          ? this.assignCategory?.id
+          : undefined,
+      markAsTransferToAccountId:
+        this.actionType === ActionType.MARK_AS_TRANSFER_TO
+          ? this.markAsTransferToAccount?.id
+          : undefined,
+      markAsTransferFromAccountId:
+        this.actionType === ActionType.MARK_AS_TRANSFER_FROM
+          ? this.markAsTransferFromAccount?.id
+          : undefined,
+      conditionText: this.conditionText,
+      conditionType: this.conditionType,
+    };
+
+    this.ruleService
+      .createRule(request, this.applyToExistingTransactions)
+      .subscribe(() => {
+        this.closeModal();
+      });
   }
 }

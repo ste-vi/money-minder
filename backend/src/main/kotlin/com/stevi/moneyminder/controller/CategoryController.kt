@@ -36,7 +36,6 @@ class CategoryController(private val categoryService: CategoryService) {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/top-expenses")
     fun getTopExpenses(
-        @RequestParam(required = false) type: CategoryType?,
         @RequestParam(required = false) accountId: UUID?,
         @RequestParam(required = false) categoryIds: List<UUID>?,
         @RequestParam(required = false) needReview: Boolean?,
@@ -45,7 +44,6 @@ class CategoryController(private val categoryService: CategoryService) {
     ): List<TopExpenseResponse> {
         return categoryService.getTopExpensesByCategories(
             SecurityUtil.getCurrentUserSpaceId(),
-            type,
             dateFrom,
             dateTo
         )

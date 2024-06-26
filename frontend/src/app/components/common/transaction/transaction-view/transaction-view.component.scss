@@ -90,6 +90,10 @@
           color: var(--accent) !important;
           cursor: pointer;
         }
+
+        .disabled-date-input {
+          width: 76px;
+        }
       }
     }
   }
