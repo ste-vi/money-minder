@@ -1,0 +1,23 @@
+.category-expenses-search-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+
+  .search-category-expenses-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .search-category-expenses-body {
+    padding: 0 0.5rem 0.5rem 0.8rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

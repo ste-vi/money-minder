@@ -19,6 +19,9 @@ import { AuthService } from '../../auth/auth.service';
 import { NgIf } from '@angular/common';
 import {BanksComponent} from "../settings/banks/banks.component";
 import {LinkMonobankAccountComponent} from "../accounts/link-monobank-account/link-monobank-account.component";
+import {
+  SearchCategoryExpensesComponent
+} from "../common/categories/search-category-expenses/search-category-expenses.component";
 
 @Component({
   selector: 'app-root',
@@ -41,6 +44,7 @@ import {LinkMonobankAccountComponent} from "../accounts/link-monobank-account/li
     NgIf,
     BanksComponent,
     LinkMonobankAccountComponent,
+    SearchCategoryExpensesComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

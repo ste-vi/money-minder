@@ -1,14 +1,15 @@
 <div class="top-expenses-container">
-  <div class="top-expenses-header">
+  <div class="top-expenses-header" (click)="openSearchTopExpenses()">
     <div>Top expenses of {{ currentDate | date: 'MMMM' }}</div>
     <div>{{ (totalExpenses || 0).toLocaleString() }} {{ totalExpenseCurrencySign }}</div>
   </div>
   <div class="top-expenses-body">
-    <div  *ngFor="let topExpense of topExpenses" (click)="openCategoryExpensesPage(topExpense)">
-      <div class="top-expense">
+    <div *ngFor="let topExpense of topExpenses; let i = index">
+      <div class="top-expense" *ngIf="i < 12" (click)="openCategoryExpensesPage(topExpense)">
         <div class="top-expense-header">
-          <mat-icon svgIcon="{{ topExpense.category ? topExpense.category.icon : 'question' }}" class="tiny-icon"></mat-icon>
-          <span>{{ topExpense.category ? topExpense.category.name : 'Uncategorized expense'}} </span>
+          <mat-icon svgIcon="{{ topExpense.category ? topExpense.category.icon : 'question' }}"
+                    class="tiny-icon"></mat-icon>
+          <span>{{ topExpense.category ? topExpense.category.name : 'Uncategorized expense' }} </span>
           <span> - </span>
           <span class="secondary-text"> {{ (topExpense.percentage | number:'1.2-2') + ' %' }}</span>
         </div>
@@ -16,7 +17,20 @@
           <span> {{ (topExpense.total || 0).toLocaleString() }} {{ topExpense?.currencySign }}</span>
         </div>
       </div>
+      <div class="top-expense other-top-expense" *ngIf="i == 12 && moreExpense !== undefined"
+           (click)="openSearchTopExpenses()">
+        <div class="top-expense-header">
+          <div></div>
+          <span>Others ... </span>
+          <span> - </span>
+          <span class="secondary-text"> {{ (moreExpense.percentage | number:'1.2-2') + ' %' }}</span>
+        </div>
+        <div>
+          <span> {{ (moreExpense.total || 0).toLocaleString() }} {{ moreExpense.currencySign }}</span>
+        </div>
+      </div>
     </div>
+
     <div class="secondary-header-text" *ngIf="topExpenses.length === 0">No expenses yet</div>
   </div>
 </div>

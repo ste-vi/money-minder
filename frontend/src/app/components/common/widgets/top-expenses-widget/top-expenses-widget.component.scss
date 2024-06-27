@@ -10,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
+    cursor: pointer;
   }
 
   .top-expenses-body {
@@ -39,6 +40,11 @@
         align-items: center;
         gap: 4px
       }
+    }
+
+    .other-top-expense {
+      padding-left: 1rem;
+      height: 24px;
     }
   }
 
