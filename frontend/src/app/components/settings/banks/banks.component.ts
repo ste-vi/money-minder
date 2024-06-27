@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { MatIcon } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
@@ -40,6 +40,11 @@ export class BanksComponent {
 
   private getBanks() {
     this.bankService.getBanks().subscribe((banks) => (this.banks = banks));
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

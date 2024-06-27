@@ -15,6 +15,8 @@
   .top-expenses-body {
     padding-top: 0.2rem;
     font-size: 13px;
+    animation: fade-in-scale 0.3s ease-in-out;
+
 
     .top-expense {
       display: flex;

@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {CreateAccountService} from '../../../services/communication/create-account-service';
 import {MatIcon} from '@angular/material/icon';
@@ -60,6 +60,11 @@ export class CreateAccountComponent {
 
   private showModal() {
     this.isOpened = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

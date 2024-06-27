@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { SearchTransactionsService } from '../../../../services/communication/search-transactions-service';
@@ -38,7 +38,7 @@ import { Category } from '../../../../models/category';
   templateUrl: './search-transactions.component.html',
   styleUrl: './search-transactions.component.scss',
 })
-export class SearchTransactionsComponent {
+export class SearchTransactionsComponent implements OnInit {
   protected isOpened: boolean = false;
 
   protected transactions: Transaction[] = [];
@@ -67,12 +67,15 @@ export class SearchTransactionsComponent {
   constructor(
     private searchTransactionsService: SearchTransactionsService,
     private transactionService: TransactionService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.searchTransactionsService.modalOpened$.subscribe((filters) => {
       this.showModal(filters);
 
-      this.transactionService.refreshTransactions$.subscribe(() =>
-        this.loadTransactions(true),
+      this.transactionService.refreshTransactions$.subscribe(() =>{
+          this.loadTransactions(true);
+        }
       );
     });
   }
@@ -86,6 +89,11 @@ export class SearchTransactionsComponent {
     this.isOpened = true;
     this.currentPage = 0;
     this.loadTransactions(true);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

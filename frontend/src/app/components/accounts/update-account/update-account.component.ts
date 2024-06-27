@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { AutoResizeDirective } from '../../../directives/auto-resize.directive';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
@@ -52,6 +52,8 @@ export class UpdateAccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateAccountService.modalOpened$.subscribe((account) => {
+      this.loadCurrencies();
+
       this.account = account;
 
       this.accountForm.controls['title'].setValue(account.name);
@@ -71,7 +73,8 @@ export class UpdateAccountComponent implements OnInit {
         this.accountForm.controls['balance'].disable();
       }
 
-      this.loadCurrencies();
+      console.log(this.accountForm.controls['currency'].value);
+
       this.showModal();
     });
   }
@@ -79,12 +82,16 @@ export class UpdateAccountComponent implements OnInit {
   private loadCurrencies() {
     this.currencyService.getCurrencies().subscribe((currencies) => {
       this.currencies = currencies;
-      this.accountForm.controls['currency'].setValue(currencies[0]);
     });
   }
 
   private showModal() {
     this.isOpened = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

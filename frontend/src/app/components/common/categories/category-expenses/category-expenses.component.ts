@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CreateTransactionButtonComponent } from '../../transaction/create-transaction-button/create-transaction-button.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoaderComponent } from '../../loader/loader.component';
@@ -26,7 +26,7 @@ import { TopExpense } from '../../../../models/top-expense';
   templateUrl: './category-expenses.component.html',
   styleUrl: './category-expenses.component.scss',
 })
-export class CategoryExpensesComponent {
+export class CategoryExpensesComponent implements OnInit {
   protected isOpen: boolean = false;
 
   protected transactions: Transaction[] = [];
@@ -42,7 +42,9 @@ export class CategoryExpensesComponent {
     private viewCategoryExpensesService: ViewCategoryExpensesService,
     private searchTransactionsService: SearchTransactionsService,
     private transactionService: TransactionService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.viewCategoryExpensesService.modalOpened$.subscribe((object) => {
       this.topExpense = object.topExpense;
       this.dateFrom = object.dateFrom;
@@ -50,11 +52,6 @@ export class CategoryExpensesComponent {
 
       this.openModal();
       this.loadTransactions();
-
-      this.transactionService.refreshTransactions$.subscribe(() => {
-        this.transactions = [];
-        this.loadTransactions();
-      });
     });
   }
 

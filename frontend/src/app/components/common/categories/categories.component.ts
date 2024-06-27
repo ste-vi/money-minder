@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { Category, CategoryType } from '../../../models/category';
@@ -27,6 +27,11 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.getCategories(this.type).subscribe((categories) => {
       this.categories = categories;
     });
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

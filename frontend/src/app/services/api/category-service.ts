@@ -36,7 +36,7 @@ export class CategoryService {
   }
 
   refreshTopExpenses() {
-    this.refreshTopExpensesSubject.asObservable();
+    this.refreshTopExpensesSubject.next();
   }
 
   get refreshTopExpenses$(): Observable<void> {

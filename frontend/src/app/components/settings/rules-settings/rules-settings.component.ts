@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {RulesSettingsService} from "../../../services/communication/rules-settings-service";
@@ -48,6 +48,11 @@ export class RulesSettingsComponent implements OnInit {
 
   private showModal() {
     this.isOpened = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

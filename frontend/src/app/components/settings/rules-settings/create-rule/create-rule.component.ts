@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { CreateRuleService } from '../../../../services/communication/create-rule-service';
@@ -61,6 +61,11 @@ export class CreateRuleComponent {
 
   private openModal() {
     this.isOpened = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { ProfileService } from '../../../services/communication/profile-service';
@@ -32,6 +32,11 @@ export class ProfileComponent {
 
   private openModal() {
     this.isOpened = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

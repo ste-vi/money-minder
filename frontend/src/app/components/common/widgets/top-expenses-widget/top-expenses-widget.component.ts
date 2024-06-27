@@ -41,7 +41,9 @@ export class TopExpensesWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTopExpenses();
-    this.categoryService.refreshTopExpenses$.subscribe(() => this.loadTopExpenses())
+    this.categoryService.refreshTopExpenses$.subscribe(() => {
+      this.loadTopExpenses();
+    });
   }
 
   private loadTopExpenses() {

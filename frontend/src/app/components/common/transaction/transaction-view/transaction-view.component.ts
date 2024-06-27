@@ -1,7 +1,7 @@
 import {
   AfterViewChecked,
   Component,
-  ElementRef,
+  ElementRef, HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -117,6 +117,11 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     if (this.editName) {
       this.nameInputRef.nativeElement.focus();
     }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   showModal() {

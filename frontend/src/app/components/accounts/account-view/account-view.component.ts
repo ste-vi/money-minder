@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import { ViewAccountService } from '../../../services/communication/view-account-service';
 import { Account } from '../../../models/account';
 import { MatIcon } from '@angular/material/icon';
@@ -100,6 +100,11 @@ export class AccountViewComponent {
   private openModal() {
     this.accountTransactions = [];
     this.isOpen = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

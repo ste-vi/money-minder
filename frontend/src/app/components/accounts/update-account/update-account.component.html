@@ -25,7 +25,7 @@
             <select formControlName="currency">
               <option *ngFor="let currency of currencies, let i = index"
                       [ngValue]="currency"
-                      [selected]="i == 0 ? true : null">{{ currency.shortName }} {{ currency.sign }}
+                      [selected]="currency.code === account?.currency?.code ? true : null">{{ currency.shortName }} {{ currency.sign }}
               </option>
             </select>
           </div>

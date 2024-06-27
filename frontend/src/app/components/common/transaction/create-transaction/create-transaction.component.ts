@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import { DatePipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
 import { TransactionType } from '../../../../models/transaction';
 import { AutoResizeDirective } from '../../../../directives/auto-resize.directive';
@@ -84,6 +84,11 @@ export class CreateTransactionComponent {
 
   private openModal() {
     this.isOpened = true;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscKey() {
+    this.closeModal();
   }
 
   closeModal() {

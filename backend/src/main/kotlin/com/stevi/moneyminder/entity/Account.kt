@@ -35,7 +35,7 @@ open class Account(
     open var balance: BigDecimal = BigDecimal.ZERO,
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "currency", nullable = false, updatable = false)
+    @Column(name = "currency", nullable = false, updatable = true)
     open var currency: Currency,
 
     @Enumerated(value = EnumType.STRING)

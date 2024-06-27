@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SelectAccountTypeServiceService } from '../../../services/communication/select-account-type-service.service';
 import { SpaceService } from '../../../services/api/space-service';
 import { Space } from '../../../models/space';
@@ -37,8 +37,7 @@ export class HeaderComponent {
     private monoBankService: MonobankService,
     private categoryService: CategoryService,
     private transactionService: TransactionService,
-    private accountService: AccountService,
-    private activatedRoute: ActivatedRoute,
+    private accountService: AccountService
   ) {
     this.initButtons();
 
@@ -95,15 +94,16 @@ export class HeaderComponent {
   }
 
   refresh() {
-    this.monoBankService.refreshMonoBankTransactions().subscribe((response) => {
-      if (response.status === 201) {
-        if (this.activatedRoute.snapshot.url[0].path === 'dashboard') {
-          this.categoryService.refreshTopExpenses();
-          this.transactionService.refreshTransactions();
-        } else if (this.activatedRoute.snapshot.url[0].path === 'accounts') {
-          this.accountService.refreshAccounts();
+    if (this.router.url === '/dashboard') {
+      this.categoryService.refreshTopExpenses();
+      this.transactionService.refreshTransactions();
+    } else if (this.router.url === '/accounts') {
+      this.accountService.refreshAccounts();
+    }
+    // getting error: too many requests from monobank api
+    /*  this.monoBankService.refreshMonoBankTransactions().subscribe((response) => {
+        if (response.status === 201) {
         }
-      }
-    });
+      });*/
   }
 }
