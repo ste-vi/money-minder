@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
@@ -17,7 +18,10 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "transactions", indexes = [
+    Index(name = "idx_transaction_account_id", columnList = "account_id, category_id, mono_bank_id"),
+    Index(name = "idx_transaction_date", columnList = "date, account_id")
+])
 open class Transaction(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

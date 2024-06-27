@@ -36,6 +36,7 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
+	implementation("org.liquibase:liquibase-core:4.28.0")
 	runtimeOnly("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.security:spring-security-test")
