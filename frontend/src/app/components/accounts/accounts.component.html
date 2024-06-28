@@ -12,7 +12,7 @@
       <div class="account-type-body">
         <div *ngFor="let account of type.accounts" class="account" (click)="openAccountView(account)">
           <div class="account-item-header">
-            <mat-icon svgIcon="{{account?.type?.iconName}}" class=""></mat-icon>
+            <mat-icon svgIcon="{{account?.type?.iconName}}" class="account-icon"></mat-icon>
           </div>
           <div class="account-item">{{ account.name }}</div>
           <div class="account-item">{{ (account.balance || 0).toLocaleString() }} {{ account.currency.sign }}</div>

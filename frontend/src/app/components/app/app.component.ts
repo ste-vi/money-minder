@@ -17,11 +17,9 @@ import { AuthComponent } from '../../auth/auth.component';
 import { SpacesComponent } from '../common/spaces/spaces.component';
 import { AuthService } from '../../auth/auth.service';
 import { NgIf } from '@angular/common';
-import {BanksComponent} from "../settings/banks/banks.component";
-import {LinkMonobankAccountComponent} from "../accounts/link-monobank-account/link-monobank-account.component";
-import {
-  SearchCategoryExpensesComponent
-} from "../common/categories/search-category-expenses/search-category-expenses.component";
+import { BanksComponent } from '../settings/banks/banks.component';
+import { LinkMonobankAccountComponent } from '../accounts/link-monobank-account/link-monobank-account.component';
+import { SearchCategoryExpensesComponent } from '../common/categories/search-category-expenses/search-category-expenses.component';
 
 @Component({
   selector: 'app-root',
@@ -407,6 +405,18 @@ export class AppComponent {
       'login-2',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/login-2-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'confirm',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/unread-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'reorder',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/reorder-1-svgrepo-com.svg',
       ),
     );
   }

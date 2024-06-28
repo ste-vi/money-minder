@@ -51,5 +51,6 @@ export class AuthService {
   removeAuthorization(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('space');
+    localStorage.removeItem('hiddenCategories');
   }
 }

@@ -116,9 +116,10 @@ class CategoryService(
     fun getTopExpensesByCategories(
         spaceId: UUID,
         dateFrom: LocalDateTime,
-        dateTo: LocalDateTime
+        dateTo: LocalDateTime,
+        categoryIdsToExclude: Set<UUID>
     ): List<TopExpenseResponse> {
-        return categoryRepository.findTopExpenses(spaceId, dateFrom, dateTo).map {
+        return categoryRepository.findTopExpenses(spaceId, dateFrom, dateTo, categoryIdsToExclude).map {
             TopExpenseResponse(
                 total = it.getTotal(),
                 category = it.getCategory()?.mapToResponse(),

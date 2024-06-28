@@ -5,16 +5,9 @@ import { CategoryService } from '../../../../services/api/category-service';
 import { TopExpense } from '../../../../models/top-expense';
 import { MatIcon } from '@angular/material/icon';
 import { ViewCategoryExpensesService } from '../../../../services/communication/view-category-expenses-service';
-import {
-  ViewSearchCategoryExpensesService
-} from "../../../../services/communication/view-search-category-expenses-service";
-
-export type ChartOptions = {
-  chart: any | undefined;
-  dataLabels: any | undefined;
-  plotOptions: any | undefined;
-  legend: any | undefined;
-};
+import { ViewSearchCategoryExpensesService } from '../../../../services/communication/view-search-category-expenses-service';
+import { Category } from '../../../../models/category';
+import { EditTopExpensesWidgetService } from '../../../../services/communication/edit-top-expenses-widget-service';
 
 @Component({
   selector: 'app-top-expenses-widget',
@@ -27,17 +20,22 @@ export class TopExpensesWidgetComponent implements OnInit {
   protected readonly currentDate: Date = new Date();
 
   protected topExpenses: TopExpense[] = [];
+  protected topExpensesWithoutHidden: TopExpense[] = [];
   protected moreExpense: TopExpense | undefined = undefined;
-  protected totalExpenses: number = 0;
+  protected totalExpensesAmount: number = 0;
   protected totalExpenseCurrencySign: string = '$';
 
   protected dateFrom: Date;
   protected dateTo: Date;
 
+  protected hiddenCategories: string[] = [];
+  protected isEditView: boolean = false;
+
   constructor(
     private categoryService: CategoryService,
     private viewCategoryExpensesService: ViewCategoryExpensesService,
-    private viewSearchCategoryExpensesService: ViewSearchCategoryExpensesService
+    private viewSearchCategoryExpensesService: ViewSearchCategoryExpensesService,
+    private editTopExpensesWidgetService: EditTopExpensesWidgetService,
   ) {
     const date = new Date();
     this.dateFrom = new Date(date.getFullYear(), date.getMonth(), 2);
@@ -45,10 +43,36 @@ export class TopExpensesWidgetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTopExpenses();
+    this.loadTopExpensesWithoutHidden();
     this.categoryService.refreshTopExpenses$.subscribe(() => {
-      this.loadTopExpenses();
+      this.loadTopExpensesWithoutHidden();
     });
+    this.editTopExpensesWidgetService.modalOpened$.subscribe(() => {
+      this.openEditView();
+    });
+  }
+
+  private loadTopExpensesWithoutHidden() {
+    this.hiddenCategories =
+      JSON.parse(localStorage.getItem('hiddenCategories')!) || [];
+
+    this.categoryService
+      .getTopExpensesByCategories(
+        this.dateFrom,
+        this.dateTo,
+        this.hiddenCategories,
+      )
+      .subscribe((topExpenses) => {
+        this.topExpensesWithoutHidden = topExpenses;
+        this.totalExpenseCurrencySign = topExpenses[0]?.currencySign;
+
+        this.calculateTotalExpensesAmount(this.topExpensesWithoutHidden);
+        this.calculatePercentages(this.topExpensesWithoutHidden);
+
+        if (this.topExpensesWithoutHidden.length > 12) {
+          this.initMoreExpenses();
+        }
+      });
   }
 
   private loadTopExpenses() {
@@ -56,33 +80,42 @@ export class TopExpensesWidgetComponent implements OnInit {
       .getTopExpensesByCategories(this.dateFrom, this.dateTo)
       .subscribe((topExpenses) => {
         this.topExpenses = topExpenses;
-        this.totalExpenses = this.topExpenses.reduce(
-          (total, expense) => total + expense.total,
-          0,
-        );
-        this.topExpenses = topExpenses.map((expense) => {
-          const percentage = (expense.total / this.totalExpenses) * 100;
-          return { ...expense, percentage };
-        });
-        this.totalExpenseCurrencySign = this.topExpenses[0]?.currencySign;
 
-        if (this.topExpenses.length > 12) {
-          const remainingExpenses = this.topExpenses.slice(12);
-          const remainingTotal = remainingExpenses.reduce(
-            (total, expense) => total + expense.total,
-            0,
-          );
-          const remainingPercentage =
-            (remainingTotal / this.totalExpenses) * 100;
+        this.totalExpenseCurrencySign = topExpenses[0]?.currencySign;
 
-          this.moreExpense = {
-            category: undefined,
-            total: remainingTotal,
-            percentage: remainingPercentage,
-            currencySign: this.totalExpenseCurrencySign,
-          };
-        }
+        this.calculateTotalExpensesAmount(topExpenses);
+        this.calculatePercentages(topExpenses);
       });
+  }
+
+  private calculateTotalExpensesAmount(topExpenses: TopExpense[]) {
+    this.totalExpensesAmount = topExpenses.reduce(
+      (total, expense) => total + expense.total,
+      0,
+    );
+  }
+
+  private calculatePercentages(topExpenses: TopExpense[]) {
+    topExpenses.forEach((expense) => {
+      expense.percentage = (expense.total / this.totalExpensesAmount) * 100;
+    });
+  }
+
+  private initMoreExpenses() {
+    const remainingExpenses = this.topExpensesWithoutHidden.slice(12);
+    const remainingTotal = remainingExpenses.reduce(
+      (total, expense) => total + expense.total,
+      0,
+    );
+    const remainingPercentage =
+      (remainingTotal / this.totalExpensesAmount) * 100;
+
+    this.moreExpense = {
+      category: undefined,
+      total: remainingTotal,
+      percentage: remainingPercentage,
+      currencySign: this.totalExpenseCurrencySign,
+    };
   }
 
   openCategoryExpensesPage(topExpense: TopExpense) {
@@ -94,6 +127,39 @@ export class TopExpensesWidgetComponent implements OnInit {
   }
 
   openSearchTopExpenses() {
-    this.viewSearchCategoryExpensesService.openModal()
+    this.viewSearchCategoryExpensesService.openModal();
+  }
+
+  saveUnchecked($event: MouseEvent) {
+    $event.stopPropagation();
+
+    localStorage.setItem(
+      'hiddenCategories',
+      JSON.stringify(this.hiddenCategories),
+    );
+
+    this.loadTopExpensesWithoutHidden();
+    this.isEditView = false;
+  }
+
+  uncheckCategory($event: MouseEvent, category: Category | undefined) {
+    $event.stopPropagation();
+
+    if (category?.id) {
+      const checkbox = $event.target as HTMLInputElement;
+      if (checkbox.checked) {
+        const index = this.hiddenCategories.indexOf(category?.id);
+        if (index !== -1) {
+          this.hiddenCategories.splice(index, 1);
+        }
+      } else {
+        this.hiddenCategories.push(category?.id);
+      }
+    }
+  }
+
+  openEditView() {
+    this.loadTopExpenses();
+    this.isEditView = true;
   }
 }

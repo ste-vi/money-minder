@@ -27,6 +27,7 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
             and t.type = com.stevi.moneyminder.entity.TransactionType.EXPENSE
             and t.date >= :dateFrom 
             and t.date <= :dateTo
+            and c.id not in (:categoryIdsToExclude)
         group by c, t.currency
         order by sum(t.amount) desc
     """
@@ -34,6 +35,7 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
     fun findTopExpenses(
         @Param("spaceId") spaceId: UUID,
         @Param("dateFrom") dateFrom: LocalDateTime,
-        @Param("dateTo") dateTo: LocalDateTime
+        @Param("dateTo") dateTo: LocalDateTime,
+        @Param("categoryIdsToExclude") categoryIdsToExclude: Set<UUID>,
     ): List<TopExpensesProjection>
 }

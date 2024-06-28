@@ -26,12 +26,18 @@ export class CategoryService {
   getTopExpensesByCategories(
     dateFrom: Date,
     dateTo: Date,
+    categoryIdsToExclude?: string[],
   ): Observable<TopExpense[]> {
     let path = this.rootUrl + '/top-expenses?';
     dateFrom.setUTCHours(0, 0, 0, 0);
     dateTo.setUTCHours(0, 0, 0, 0);
     path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
     path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
+
+    if (categoryIdsToExclude) {
+      path = path + '&categoryIdsToExclude=' + categoryIdsToExclude.join(',');
+    }
+
     return this.httpClient.get<TopExpense[]>(path);
   }
 

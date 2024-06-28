@@ -12,6 +12,7 @@ import { MonobankService } from '../../../services/api/monobank-service';
 import { CategoryService } from '../../../services/api/category-service';
 import { TransactionService } from '../../../services/api/transaction-service';
 import { AccountService } from '../../../services/api/account-service';
+import { EditTopExpensesWidgetService } from '../../../services/communication/edit-top-expenses-widget-service';
 
 @Component({
   selector: 'app-header',
@@ -23,7 +24,7 @@ import { AccountService } from '../../../services/api/account-service';
 export class HeaderComponent {
   protected space: Space | undefined = undefined;
 
-  protected showEdit: boolean = false;
+  protected showEditTopExpenses: boolean = false;
   protected showAdd: boolean = false;
   protected showReload: boolean = false;
   protected showUser: boolean = false;
@@ -37,7 +38,8 @@ export class HeaderComponent {
     private monoBankService: MonobankService,
     private categoryService: CategoryService,
     private transactionService: TransactionService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private editTopExpensesWidgetService: EditTopExpensesWidgetService,
   ) {
     this.initButtons();
 
@@ -62,17 +64,17 @@ export class HeaderComponent {
         const currentUrl = this.router.url;
         const path = currentUrl.split('/').pop();
         if (path == 'accounts') {
-          this.showEdit = false;
+          this.showEditTopExpenses = false;
           this.showAdd = true;
           this.showReload = true;
           this.showUser = false;
         } else if (path == 'dashboard') {
-          this.showEdit = false;
+          this.showEditTopExpenses = true;
           this.showAdd = false;
           this.showReload = true;
           this.showUser = false;
         } else if (path == 'settings') {
-          this.showEdit = false;
+          this.showEditTopExpenses = false;
           this.showAdd = false;
           this.showReload = false;
           this.showUser = true;
@@ -105,5 +107,9 @@ export class HeaderComponent {
         if (response.status === 201) {
         }
       });*/
+  }
+
+  editTopExpenses() {
+    this.editTopExpensesWidgetService.openModal();
   }
 }

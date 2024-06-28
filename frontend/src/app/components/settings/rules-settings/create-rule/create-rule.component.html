@@ -41,7 +41,9 @@
                [value]="markAsTransferFromAccount?.name" (click)="selectAccountFrom()">
 
         <div class="update-existing-flag">
-          <input type="checkbox" [checked]="applyToExistingTransactions" [(ngModel)]="applyToExistingTransactions">
+          <div class="checkbox-wrapper">
+            <input type="checkbox" class="checkbox" [checked]="applyToExistingTransactions" [(ngModel)]="applyToExistingTransactions">
+          </div>
           <div>apply to existing transactions?</div>
         </div>
       </div>

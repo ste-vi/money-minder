@@ -39,13 +39,15 @@ class CategoryController(private val categoryService: CategoryService) {
         @RequestParam(required = false) accountId: UUID?,
         @RequestParam(required = false) categoryIds: List<UUID>?,
         @RequestParam(required = false) needReview: Boolean?,
+        @RequestParam(required = false) categoryIdsToExclude: Set<UUID> = emptySet(),
         @RequestParam dateFrom: LocalDateTime,
         @RequestParam dateTo: LocalDateTime
     ): List<TopExpenseResponse> {
         return categoryService.getTopExpensesByCategories(
             SecurityUtil.getCurrentUserSpaceId(),
             dateFrom,
-            dateTo
+            dateTo,
+            categoryIdsToExclude
         )
     }
 }
