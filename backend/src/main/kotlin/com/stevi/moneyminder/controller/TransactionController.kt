@@ -60,8 +60,8 @@ class TransactionController(private var transactionService: TransactionService) 
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    fun updateTransaction(@PathVariable("id") id: UUID, @RequestBody transactionRequest: UpdateTransactionRequest) {
-        transactionService.updateTransaction(id, transactionRequest)
+    fun updateTransaction(@PathVariable("id") id: UUID, @RequestBody transactionRequest: UpdateTransactionRequest): TransactionResponse {
+       return transactionService.updateTransaction(id, transactionRequest)
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

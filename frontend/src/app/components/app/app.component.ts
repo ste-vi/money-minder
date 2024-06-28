@@ -403,5 +403,11 @@ export class AppComponent {
         '../assets/icons/svg/document-add-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'login-2',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/login-2-svgrepo-com.svg',
+      ),
+    );
   }
 }

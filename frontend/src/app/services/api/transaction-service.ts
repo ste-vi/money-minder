@@ -68,12 +68,14 @@ export class TransactionService {
     );
   }
 
-  update(id: string, updateRequest: any) {
-    return this.httpClient.put(this.rootUrl + '/' + id, updateRequest).pipe(
-      tap(() => {
-        this.refreshAccountBalanceSubject.next();
-      }),
-    );
+  update(id: string, updateRequest: any): Observable<Transaction> {
+    return this.httpClient
+      .put<Transaction>(this.rootUrl + '/' + id, updateRequest)
+      .pipe(
+        tap(() => {
+          this.refreshAccountBalanceSubject.next();
+        }),
+      );
   }
 
   delete(transaction: Transaction) {

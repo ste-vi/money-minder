@@ -1,7 +1,8 @@
 import {
   AfterViewChecked,
   Component,
-  ElementRef, HostListener,
+  ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -58,20 +59,16 @@ import { Account } from '../../../../models/account';
 export class TransactionViewComponent implements OnInit, AfterViewChecked {
   protected isOpened: boolean = false;
   protected editName: boolean = false;
+  protected isFromAccountFilterOpened: boolean = false;
   protected isToAccountFilterOpened: boolean = false;
   protected isCategorySelectModalOpened: boolean = false;
 
   protected transaction!: Transaction;
 
+  protected readonly CategoryType = CategoryType;
   protected readonly TransactionType = TransactionType;
 
-  protected transactionForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    amount: new FormControl(Validators.required),
-    toAccount: new FormControl(Validators.required),
-    date: new FormControl(Validators.required),
-    notes: new FormControl(''),
-  });
+  protected transactionForm: FormGroup;
 
   // @ts-ignore
   @ViewChild('amountInput') protected amountInput: ElementRef;
@@ -85,9 +82,11 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     this.transactionForm = new FormGroup({
       name: new FormControl('', Validators.required),
       amount: new FormControl(Validators.required),
+      fromAccount: new FormControl(),
       toAccount: new FormControl(),
+      type: new FormControl(Validators.required),
       date: new FormControl(Validators.required),
-      notes: new FormControl(''),
+      notes: new FormControl(),
     });
   }
 
@@ -97,9 +96,13 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
 
       this.transactionForm.controls['name'].setValue(transaction.name);
       this.transactionForm.controls['date'].setValue(transaction.date);
+      this.transactionForm.controls['fromAccount'].setValue(
+        transaction.account,
+      );
       this.transactionForm.controls['toAccount'].setValue(
         transaction.toAccount,
       );
+      this.transactionForm.controls['type'].setValue(transaction.type);
       this.transactionForm.controls['notes'].setValue(transaction.notes);
       this.transactionForm.controls['amount'].setValue(transaction.amount);
 
@@ -160,41 +163,6 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     this.editName = false;
   }
 
-  save() {
-    if (
-      this.transaction.account.id ===
-      this.transactionForm.controls['toAccount'].value?.id
-    ) {
-      return;
-    }
-
-    let updateRequest = {
-      name: this.transactionForm.controls['name'].value,
-      amount: this.transactionForm.controls['amount'].value,
-      toAccountId: this.transactionForm.controls['toAccount']?.value?.id,
-      date: new Date(this.transactionForm.controls['date'].value),
-      notes: this.transactionForm.controls['notes'].value,
-      categoryId: this.transaction.category?.id,
-    };
-    this.transactionService
-      .update(this.transaction.id, updateRequest)
-      .subscribe((data) => {
-        this.transaction.name = this.transactionForm.controls['name'].value;
-        this.transaction.amount = this.transactionForm.controls['amount'].value;
-        this.transaction.toAccount =
-          this.transactionForm.controls['toAccount']?.value;
-        this.transaction.date = this.transactionForm.controls['date'].value;
-        this.transaction.notes = this.transactionForm.controls['notes'].value;
-        this.closeModal();
-      });
-  }
-
-  delete() {
-    this.transactionService.delete(this.transaction).subscribe((data) => {
-      this.closeModal();
-    });
-  }
-
   selectCategory() {
     this.isCategorySelectModalOpened = true;
   }
@@ -202,6 +170,19 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
   onCategorySelected(category: Category) {
     this.isCategorySelectModalOpened = false;
     this.transaction.category = category;
+  }
+
+  openFromAccountFilter() {
+    if (
+      this.transaction.type !== this.transactionForm.controls['type'].value &&
+      this.transaction.type === TransactionType.INCOME
+    ) {
+      this.isFromAccountFilterOpened = true;
+    }
+  }
+
+  closeFromAccountFilter() {
+    this.isFromAccountFilterOpened = false;
   }
 
   openToAccountFilter() {
@@ -212,9 +193,79 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
     this.isToAccountFilterOpened = false;
   }
 
+  onFromAccountSelected(account: Account) {
+    this.transactionForm.controls['fromAccount'].setValue(account);
+  }
+
   onToAccountSelected(account: Account) {
     this.transactionForm.controls['toAccount'].setValue(account);
   }
 
-  protected readonly CategoryType = CategoryType;
+  showExpensesView() {
+    this.transactionForm.controls['type'].setValue(TransactionType.EXPENSE);
+  }
+
+  showTransferView() {
+    if (this.transaction.type == TransactionType.INCOME) {
+      this.transactionForm.controls['toAccount'].setValue(
+        this.transaction.account,
+      );
+      this.transactionForm.controls['fromAccount'].setValue(undefined);
+    }
+    this.transactionForm.controls['type'].setValue(TransactionType.TRANSFER);
+  }
+
+  save() {
+    let fromAccount = this.transactionForm.controls['fromAccount'].value;
+    let type = this.transactionForm.controls['type'].value;
+    let toAccount = this.transactionForm.controls['toAccount'].value;
+
+    if (
+      type === TransactionType.TRANSFER &&
+      (fromAccount === undefined || toAccount === undefined)
+    ) {
+      return;
+    } else if (
+      type !== TransactionType.TRANSFER &&
+      this.transaction.account.id === toAccount?.id
+    ) {
+      return;
+    }
+
+    let categoryId = this.transaction.category?.id;
+
+    if (this.transaction.type != type && type === TransactionType.TRANSFER) {
+      categoryId = undefined;
+    }
+
+    let updateRequest = {
+      name: this.transactionForm.controls['name'].value,
+      amount: this.transactionForm.controls['amount'].value,
+      fromAccountId: fromAccount?.id,
+      toAccountId: toAccount?.id,
+      type: type,
+      date: new Date(this.transactionForm.controls['date'].value),
+      notes: this.transactionForm.controls['notes'].value,
+      categoryId: categoryId,
+    };
+    this.transactionService
+      .update(this.transaction.id, updateRequest)
+      .subscribe((updatedTransaction: Transaction) => {
+        this.transaction.type = updatedTransaction.type;
+        this.transaction.category = updatedTransaction.category;
+        this.transaction.name = updatedTransaction.name;
+        this.transaction.notes = updatedTransaction.notes;
+        this.transaction.date = updatedTransaction.date;
+        this.transaction.amount = updatedTransaction.amount;
+        this.transaction.fromAccount = updatedTransaction.fromAccount;
+        this.transaction.toAccount = updatedTransaction.toAccount;
+        this.closeModal();
+      });
+  }
+
+  delete() {
+    this.transactionService.delete(this.transaction).subscribe((data) => {
+      this.closeModal();
+    });
+  }
 }

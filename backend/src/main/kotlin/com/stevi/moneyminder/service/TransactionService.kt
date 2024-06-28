@@ -116,7 +116,7 @@ class TransactionService(
     }
 
     @Transactional
-    fun updateTransaction(id: UUID, request: UpdateTransactionRequest) {
+    fun updateTransaction(id: UUID, request: UpdateTransactionRequest): TransactionResponse {
         val transaction = getTransactionById(id)
         transaction.name = request.name
         transaction.notes = request.notes
@@ -132,6 +132,26 @@ class TransactionService(
         request.toAccountId?.let {
             if (request.toAccountId != transaction.toAccount?.id) {
                 transaction.toAccount = accountService.getAccountById(it)
+            }
+        }
+
+        if (request.type != transaction.type) {
+            transaction.type = request.type
+            if (request.type == TransactionType.TRANSFER) {
+                request.fromAccountId?.let {
+                    if (request.fromAccountId != transaction.fromAccount?.id) {
+                        transaction.fromAccount = accountService.getAccountById(it)
+                    }
+                }
+                request.toAccountId?.let {
+                    if (request.toAccountId != transaction.toAccount?.id) {
+                        transaction.toAccount = accountService.getAccountById(it)
+                    }
+                }
+                transaction.category = null
+            } else {
+                transaction.toAccount = null
+                transaction.fromAccount = null
             }
         }
 
@@ -158,7 +178,7 @@ class TransactionService(
             }
         }
 
-        transactionRepository.save(transaction)
+        return transactionRepository.save(transaction).mapToResponse()
     }
 
     @Transactional

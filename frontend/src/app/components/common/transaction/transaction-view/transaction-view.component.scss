@@ -139,6 +139,25 @@
       }
     }
 
+    .transaction-convert {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--secondary-border);
+      padding: 0.5rem;
+
+      .transaction-convert-header {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 0.5rem;
+      }
+
+      .converted-warning {
+        color: #ff1e16;
+      }
+    }
+
     input {
       width: 26px;
       text-align: center;
