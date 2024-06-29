@@ -419,5 +419,17 @@ export class AppComponent {
         '../assets/icons/svg/reorder-1-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'sort',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/sort-svgrepo-com.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'alt-arrow-down',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/alt-arrow-down-svgrepo-com.svg',
+      ),
+    );
   }
 }

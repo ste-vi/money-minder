@@ -6,7 +6,7 @@ import { TopExpense } from '../../../../models/top-expense';
 import { MatIcon } from '@angular/material/icon';
 import { ViewCategoryExpensesService } from '../../../../services/communication/view-category-expenses-service';
 import { ViewSearchCategoryExpensesService } from '../../../../services/communication/view-search-category-expenses-service';
-import { Category } from '../../../../models/category';
+import {Category, CategoryType} from '../../../../models/category';
 import { EditTopExpensesWidgetService } from '../../../../services/communication/edit-top-expenses-widget-service';
 
 @Component({
@@ -60,6 +60,7 @@ export class TopExpensesWidgetComponent implements OnInit {
       .getTopExpensesByCategories(
         this.dateFrom,
         this.dateTo,
+        undefined,
         this.hiddenCategories,
       )
       .subscribe((topExpenses) => {
@@ -162,4 +163,6 @@ export class TopExpensesWidgetComponent implements OnInit {
     this.loadTopExpenses();
     this.isEditView = true;
   }
+
+  protected readonly CategoryType = CategoryType;
 }

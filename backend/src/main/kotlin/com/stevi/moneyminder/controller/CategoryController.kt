@@ -39,6 +39,7 @@ class CategoryController(private val categoryService: CategoryService) {
         @RequestParam(required = false) accountId: UUID?,
         @RequestParam(required = false) categoryIds: List<UUID>?,
         @RequestParam(required = false) needReview: Boolean?,
+        @RequestParam(required = false) categoryType: CategoryType?,
         @RequestParam(required = false) categoryIdsToExclude: Set<UUID> = emptySet(),
         @RequestParam dateFrom: LocalDateTime,
         @RequestParam dateTo: LocalDateTime
@@ -47,6 +48,7 @@ class CategoryController(private val categoryService: CategoryService) {
             SecurityUtil.getCurrentUserSpaceId(),
             dateFrom,
             dateTo,
+            categoryType,
             categoryIdsToExclude
         )
     }

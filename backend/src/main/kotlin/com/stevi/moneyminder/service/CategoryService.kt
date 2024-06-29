@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.stevi.moneyminder.entity.Category
 import com.stevi.moneyminder.entity.CategoryType
 import com.stevi.moneyminder.entity.Space
+import com.stevi.moneyminder.entity.TransactionType
 import com.stevi.moneyminder.entity.mapToResponse
 import com.stevi.moneyminder.exceptions.ResourceNotFoundException
 import com.stevi.moneyminder.model.request.CategoryRequest
@@ -117,9 +118,19 @@ class CategoryService(
         spaceId: UUID,
         dateFrom: LocalDateTime,
         dateTo: LocalDateTime,
+        categoryType: CategoryType?,
         categoryIdsToExclude: Set<UUID>
     ): List<TopExpenseResponse> {
-        return categoryRepository.findTopExpenses(spaceId, dateFrom, dateTo, categoryIdsToExclude).map {
+        val transactionType =
+            if (categoryType != null && categoryType == CategoryType.INCOME) TransactionType.INCOME else TransactionType.EXPENSE
+
+        return categoryRepository.findTopExpenses(
+            spaceId,
+            dateFrom,
+            dateTo,
+            transactionType,
+            categoryIdsToExclude
+        ).map {
             TopExpenseResponse(
                 total = it.getTotal(),
                 category = it.getCategory()?.mapToResponse(),

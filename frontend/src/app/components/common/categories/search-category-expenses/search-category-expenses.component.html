@@ -1,15 +1,38 @@
 <div class="category-expenses-search-container right-modal" *ngIf="isOpen">
   <div class="search-category-expenses-header">
     <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
-    <div></div>
+    <div class="container-header-name" (click)="changeCategoriesType()">
+      <div><b>{{ categoryType === CategoryType.EXPENSE ? 'Expenses' : 'Incomes' }} by category</b></div>
+      <mat-icon svgIcon="alt-arrow-down" class="small-icon"></mat-icon>
+    </div>
+    <mat-icon svgIcon="sort" class="active small-icon" (click)="closeModal()"></mat-icon>
   </div>
 
   <div class="search-category-expenses-body">
+    <div class="total">
+      <div>{{ currentDate | date: 'MMMM yyyy' }}</div>
+      <div><h3>{{ (totalExpensesAmount || 0).toLocaleString() }} {{ totalExpenseCurrencySign }}</h3></div>
+    </div>
 
+    <div class="category-expense" *ngFor="let topExpense of topExpenses"
+         (click)="openCategoryTransactionsView(topExpense)">
+      <div class="category-expense-header">
+        <div class="category-expense-icon">
+          <mat-icon svgIcon="{{ topExpense?.category? topExpense?.category?.icon : 'question' }}"
+                    class="small-icon"></mat-icon>
+        </div>
+        <div>{{ topExpense.category ? topExpense.category.name : 'Uncategorized expense' }}</div>
+        <div> -</div>
+        <div class="secondary-text"> {{ (topExpense.percentage | number:'1.2-2') + ' %' }}</div>
+      </div>
 
+      <div class="category-expense-amount">
+        <div>{{ (topExpense.total || 0).toLocaleString() }} {{ topExpense?.currencySign }}</div>
+        <mat-icon svgIcon="alt-arrow-right" class="small-icon gray-icon"></mat-icon>
+      </div>
+    </div>
 
-
-
-
+    <app-loader *ngIf="isLoading"></app-loader>
   </div>
+
 </div>
