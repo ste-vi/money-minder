@@ -38,7 +38,6 @@ class CategoryController(private val categoryService: CategoryService) {
     fun getTopExpenses(
         @RequestParam(required = false) accountId: UUID?,
         @RequestParam(required = false) categoryIds: List<UUID>?,
-        @RequestParam(required = false) needReview: Boolean?,
         @RequestParam(required = false) categoryType: CategoryType?,
         @RequestParam(required = false) categoryIdsToExclude: Set<UUID> = emptySet(),
         @RequestParam dateFrom: LocalDateTime,
@@ -49,7 +48,8 @@ class CategoryController(private val categoryService: CategoryService) {
             dateFrom,
             dateTo,
             categoryType,
-            categoryIdsToExclude
+            categoryIdsToExclude,
+            accountId
         )
     }
 }

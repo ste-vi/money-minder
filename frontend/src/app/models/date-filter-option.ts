@@ -16,17 +16,17 @@ export const datesFilterOptions: DateFilterOption[] = [
   },
   {
     name: "Current month",
-    dateFrom: new Date(currentYear, currentMonth, 1),
-    dateTo: new Date(currentYear, currentMonth + 1, 0)
+    dateFrom: new Date(currentYear, currentMonth, 2),
+    dateTo: new Date(currentYear, currentMonth + 1, 1)
   },
   {
     name: "Current quarter",
-    dateFrom: new Date(currentYear, Math.floor(currentMonth / 3) * 3, 1),
-    dateTo: new Date(currentYear, Math.floor(currentMonth / 3) * 3 + 3, 0)
+    dateFrom: new Date(currentYear, Math.floor(currentMonth / 3) * 3, 2),
+    dateTo: new Date(currentYear, Math.floor(currentMonth / 3) * 3 + 3, 1)
   },
   {
     name: "Current year",
-    dateFrom: new Date(currentYear, 0, 1),
-    dateTo: new Date(currentYear, 11, 31)
+    dateFrom: new Date(currentYear, 0, 2),
+    dateTo: new Date(currentYear, 11, 32)
   }
 ];

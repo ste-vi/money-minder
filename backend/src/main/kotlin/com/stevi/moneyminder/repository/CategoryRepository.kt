@@ -29,6 +29,7 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
             and t.date >= :dateFrom 
             and t.date <= :dateTo
             and c.id not in (:categoryIdsToExclude)
+            and (:accountId is null or t.account.id = :accountId)
         group by c, t.currency
         order by sum(t.amount) desc
     """
@@ -39,5 +40,6 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
         @Param("dateTo") dateTo: LocalDateTime,
         @Param("transactionType") transactionType: TransactionType,
         @Param("categoryIdsToExclude") categoryIdsToExclude: Set<UUID>,
+        @Param("accountId") accountId: UUID?,
     ): List<TopExpensesProjection>
 }

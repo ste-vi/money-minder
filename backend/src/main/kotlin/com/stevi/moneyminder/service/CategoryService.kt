@@ -119,7 +119,8 @@ class CategoryService(
         dateFrom: LocalDateTime,
         dateTo: LocalDateTime,
         categoryType: CategoryType?,
-        categoryIdsToExclude: Set<UUID>
+        categoryIdsToExclude: Set<UUID>,
+        accountId: UUID?
     ): List<TopExpenseResponse> {
         val transactionType =
             if (categoryType != null && categoryType == CategoryType.INCOME) TransactionType.INCOME else TransactionType.EXPENSE
@@ -129,7 +130,8 @@ class CategoryService(
             dateFrom,
             dateTo,
             transactionType,
-            categoryIdsToExclude
+            categoryIdsToExclude,
+            accountId
         ).map {
             TopExpenseResponse(
                 total = it.getTotal(),

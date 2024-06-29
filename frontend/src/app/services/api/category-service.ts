@@ -27,6 +27,7 @@ export class CategoryService {
     dateFrom: Date,
     dateTo: Date,
     categoryType?: CategoryType,
+    accountId?: string,
     categoryIdsToExclude?: string[],
   ): Observable<TopExpense[]> {
     let path = this.rootUrl + '/top-expenses?';
@@ -40,6 +41,9 @@ export class CategoryService {
     }
     if (categoryType) {
       path = path + '&categoryType=' + categoryType;
+    }
+    if (accountId) {
+      path = path + '&accountId=' + accountId;
     }
 
     return this.httpClient.get<TopExpense[]>(path);

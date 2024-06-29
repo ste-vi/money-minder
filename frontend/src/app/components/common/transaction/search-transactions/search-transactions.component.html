@@ -17,11 +17,11 @@
       </div>
       <div class="search-filters">
         <div class="active clickable" (click)="resetFilters()">Reset</div>
-        <div class="filter" [ngClass]="{'active': accountFilter, 'active-border': accountFilter}"
-             (click)="openAccountFilter()">{{ accountFilter?.name || 'All accounts' }}
-        </div>
         <div class="filter" [ngClass]="{'active': dateFilter, 'active-border': dateFilter}"
              (click)="openDateFilter()">{{ dateFilter?.name || 'All dates' }}
+        </div>
+        <div class="filter" [ngClass]="{'active': accountFilter, 'active-border': accountFilter}"
+             (click)="openAccountFilter()">{{ accountFilter?.name || 'All accounts' }}
         </div>
         <div class="filter" [ngClass]="{'active': needReviewFilter, 'active-border': needReviewFilter}"
              (click)="applyNeedReviewFilter()">Need review
@@ -38,18 +38,18 @@
     </div>
     <app-create-transaction-button></app-create-transaction-button>
   </div>
+
+  <app-transaction-account-filter
+    *ngIf="isAccountFilterOpened"
+    [selectedAccount]="accountFilter"
+    (closed)="closeAccountFilter()"
+    (accountSelected)="onAccountSelected($event)"
+  ></app-transaction-account-filter>
+
+  <app-transaction-date-filter
+    *ngIf="isDateFilterOpened"
+    [dateFilterOption]="dateFilter ? dateFilter : datesFilterOptions[0]"
+    (closed)="closeDateFilter()"
+    (dateFilterOptionSelected)="onDateSelected($event)"
+  ></app-transaction-date-filter>
 </div>
-
-<app-transaction-account-filter
-  *ngIf="isAccountFilterOpened"
-  [selectedAccount]="accountFilter"
-  (closed)="closeAccountFilter()"
-  (accountSelected)="onAccountSelected($event)"
-></app-transaction-account-filter>
-
-<app-transaction-date-filter
-  *ngIf="isDateFilterOpened"
-  [dateFilterOption]="dateFilter ? dateFilter : datesFilterOptions[0]"
-  (closed)="closeDateFilter()"
-  (dateFilterOptionSelected)="onDateSelected($event)"
-></app-transaction-date-filter>

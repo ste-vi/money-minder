@@ -61,6 +61,7 @@ export class TopExpensesWidgetComponent implements OnInit {
         this.dateFrom,
         this.dateTo,
         undefined,
+        undefined,
         this.hiddenCategories,
       )
       .subscribe((topExpenses) => {
