@@ -52,7 +52,7 @@ export class TransactionService {
       path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
     }
     if (dateTo) {
-      dateTo.setUTCHours(0, 0, 0, 0);
+      dateTo.setUTCHours(23, 59, 59, 0);
       path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
     }
 

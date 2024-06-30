@@ -32,7 +32,7 @@ export class CategoryService {
   ): Observable<TopExpense[]> {
     let path = this.rootUrl + '/top-expenses?';
     dateFrom.setUTCHours(0, 0, 0, 0);
-    dateTo.setUTCHours(0, 0, 0, 0);
+    dateTo.setUTCHours(23, 59, 59, 0);
     path = path + '&dateFrom=' + dateFrom.toISOString().slice(0, -1);
     path = path + '&dateTo=' + dateTo.toISOString().slice(0, -1);
 
