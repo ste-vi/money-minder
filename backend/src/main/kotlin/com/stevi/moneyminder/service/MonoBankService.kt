@@ -184,7 +184,7 @@ class MonoBankService(
         val recentTransactionsMonoIds =
             transactionRepository.findMonoBankIdsByDateGreaterThan(
                 account.space.id!!,
-                LocalDateTime.now().minusMonths(1)
+                LocalDateTime.now().minusDays(33)
             )
 
         val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(account.space.id!!)
@@ -227,9 +227,8 @@ class MonoBankService(
 
         if (newTransactions.isNotEmpty()) {
             accountService.updateAccountBalanceFromMonoBank(account, monoTransactions.first().balance)
+            transactionRepository.saveAll(newTransactions)
         }
-
-        transactionRepository.saveAll(newTransactions)
     }
 
     @Transactional

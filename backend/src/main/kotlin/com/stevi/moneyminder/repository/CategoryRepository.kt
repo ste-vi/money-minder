@@ -28,7 +28,7 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
             and t.type = :transactionType
             and t.date >= :dateFrom 
             and t.date <= :dateTo
-            and c.id not in (:categoryIdsToExclude)
+            and (c.id is null or c.id not in (:categoryIdsToExclude))
             and (:accountId is null or t.account.id = :accountId)
         group by c, t.currency
         order by sum(t.amount) desc
