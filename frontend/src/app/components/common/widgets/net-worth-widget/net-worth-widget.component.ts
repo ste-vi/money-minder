@@ -95,6 +95,15 @@ export class NetWorthWidgetComponent {
         style: {
           fontFamily: 'Nunito Sans, sans-serif',
         },
+        labels: {
+          formatter: (number: any) => {
+            return number.toLocaleString('en-US', {
+              maximumFractionDigits: 2,
+              notation: 'compact',
+              compactDisplay: 'short',
+            });
+          },
+        },
       },
       legend: {
         horizontalAlign: 'left',
