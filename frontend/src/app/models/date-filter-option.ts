@@ -27,6 +27,6 @@ export const datesFilterOptions: DateFilterOption[] = [
   {
     name: "Current year",
     dateFrom: new Date(currentYear, 0, 2),
-    dateTo: new Date(currentYear, 11, 32)
+    dateTo: new Date(currentYear, 11, 31)
   }
 ];
