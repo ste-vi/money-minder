@@ -5,7 +5,8 @@ import com.stevi.moneyminder.model.response.CurrencyResponse
 enum class Currency(val code: Int, val fullName: String, val sign: String) {
     UAH(980, "Hryvnia", "₴"),
     USD(840, "United States Dollar", "$"),
-    EUR(978, "Euro", "€");
+    EUR(978, "Euro", "€"),
+    TRY(949, "Turkish Lire", "₺");
 
     companion object {
         fun fromCode(code: Int): Currency {

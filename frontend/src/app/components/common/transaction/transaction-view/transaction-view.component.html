@@ -14,7 +14,7 @@
         <div class="transaction-amount"
              [ngClass]="{'income-color': transactionForm.controls['type'].value == TransactionType.INCOME}">
           <b>
-            {{ this.transactionForm.controls['amount'].value | number:'1.2-2' }} {{ transaction.account.currency.sign }}
+            {{ this.transactionForm.controls['amount'].value | number:'1.2-2' }} {{ transaction.currency.sign }}
           </b>
         </div>
         <div *ngIf="!editName; else nameInputTemplate" class="transaction-name"

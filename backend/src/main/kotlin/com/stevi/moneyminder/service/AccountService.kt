@@ -65,8 +65,8 @@ class AccountService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllMonobankAccounts(): List<AccountMonoBankTokenProjection> {
-        return accountRepository.findAllByMonoBankIdIsNotNull();
+    fun getAllMonobankAccountsAvailableForTransactionSync(): List<AccountMonoBankTokenProjection> {
+        return accountRepository.findAllByMonoBankIdIsNotNull(LocalDateTime.now().minusMinutes(5));
     }
 
     @Transactional(readOnly = true)
@@ -85,6 +85,7 @@ class AccountService(
     @Transactional
     fun updateAccountBalanceFromMonoBank(account: Account, balance: Int) {
         account.balance = balance.toBigDecimal().divide(BigDecimal.valueOf(100))
+        account.transactionsSyncDate = LocalDateTime.now()
         accountRepository.save(account)
         accountBalanceHistoryService.saveHistory(account)
     }
@@ -124,7 +125,8 @@ class AccountService(
             type = AccountType.fromId(accountRequest.typeId),
             space = spaceRepository.findById(spaceId).orElseThrow { ResourceNotFoundException("Entity not found") },
             createdDate = LocalDateTime.now(),
-            default = isDefault
+            default = isDefault,
+            transactionsSyncDate = null
         )
 
         return accountRepository.save(account).mapToResponse();
@@ -142,7 +144,8 @@ class AccountService(
             type = AccountType.CASH,
             space = space,
             createdDate = LocalDateTime.now(),
-            default = true
+            default = true,
+            transactionsSyncDate = null
         )
 
         accountRepository.save(account);

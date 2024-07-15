@@ -52,6 +52,9 @@ open class Account(
     @Column(name = "created_date", nullable = false, updatable = false)
     open var createdDate: LocalDateTime,
 
+    @Column(name = "transaction_sync_date")
+    open var transactionsSyncDate: LocalDateTime?,
+
     @Column(name = "mono_bank_id", nullable = true, updatable = false)
     open var monoBankId: String? = null,
 

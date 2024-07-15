@@ -18,10 +18,9 @@ class MonoBankTransactionScheduler(
     @OptIn(DelicateCoroutinesApi::class)
     @Scheduled(fixedRate = 1000 * 60 * 5)
     fun run() {
-        accountService.getAllMonobankAccounts().stream().forEach { projection ->
+        accountService.getAllMonobankAccountsAvailableForTransactionSync().stream().forEach { projection ->
             GlobalScope.async {
                 monoBankService.updateRecentTransactionsFromMono(projection.getAccount(), projection.getMonoBankToken())
-                Thread.sleep(1000)
             }
         }
     }

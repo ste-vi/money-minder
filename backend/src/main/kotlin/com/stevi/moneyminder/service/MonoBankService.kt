@@ -23,6 +23,7 @@ import java.time.ZoneOffset
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -45,6 +46,8 @@ class MonoBankService(
     private val ruleRepository: RuleRepository,
     @Value("\${monobank.api.url}") private val monoBankUrl: String
 ) {
+
+    private val logger = LoggerFactory.getLogger(MonoBankService::class.java)
 
     @Transactional
     fun linkClient(spaceId: UUID, clientToken: String) {
@@ -142,7 +145,8 @@ class MonoBankService(
                 type = AccountType.BANK_ACCOUNTS,
                 monoBankId = request.id,
                 space = space,
-                createdDate = LocalDateTime.now()
+                createdDate = LocalDateTime.now(),
+                transactionsSyncDate = null
             )
         )
 
@@ -178,56 +182,66 @@ class MonoBankService(
     fun updateRecentTransactionsFromMono(account: Account, monoBankToken: String) {
         val monoBankAccountId = account.monoBankId ?: throw RuntimeException();
 
-        val monoTransactions =
-            fetchResentTransactions(monoBankAccountId, monoBankToken)
+        try {
+            val monoTransactions =
+                fetchResentTransactions(monoBankAccountId, monoBankToken)
 
-        val recentTransactionsMonoIds =
-            transactionRepository.findMonoBankIdsByDateGreaterThan(
-                account.space.id!!,
-                LocalDateTime.now().minusDays(33)
-            )
-
-        val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(account.space.id!!)
-
-        val newTransactions = monoTransactions.stream()
-            .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
-            .map { monoTransaction ->
-                val transactionType =
-                    if (monoTransaction.operationAmount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
-
-                val now = LocalDateTime.now()
-                val zone = ZoneId.of("Europe/Kyiv")
-                val zoneOffSet = zone.rules.getOffset(now)
-                val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, zoneOffSet)
-
-                val amount = monoTransaction.operationAmount.toBigDecimal()
-                    .divide(BigDecimal.valueOf(100))
-                    .abs()
-
-                val transaction = Transaction(
-                    id = null,
-                    name = monoTransaction.description,
-                    notes = monoTransaction.comment,
-                    amount = amount,
-                    currency = Currency.fromCode(monoTransaction.currencyCode),
-                    date = date,
-                    monoBankId = monoTransaction.id,
-                    account = account,
-                    fromAccount = null,
-                    toAccount = null,
-                    category = null,
-                    type = transactionType,
-                    createdDate = date
+            val recentTransactionsMonoIds =
+                transactionRepository.findMonoBankIdsByDateGreaterThan(
+                    account.space.id!!,
+                    LocalDateTime.now().minusDays(33)
                 )
 
-                rules.stream().forEach { rule -> transaction.applyRule(rule) }
+            val rules = ruleRepository.findAllBySpaceIdOrderByConditionTextToApplyAsc(account.space.id!!)
 
-                return@map transaction
-            }.toList()
+            val newTransactions = monoTransactions.stream()
+                .filter { monoTransaction -> !recentTransactionsMonoIds.contains(monoTransaction.id) }
+                .map { monoTransaction ->
+                    val transactionType =
+                        if (monoTransaction.operationAmount.toBigDecimal() > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE
 
-        if (newTransactions.isNotEmpty()) {
-            accountService.updateAccountBalanceFromMonoBank(account, monoTransactions.first().balance)
-            transactionRepository.saveAll(newTransactions)
+                    val now = LocalDateTime.now()
+                    val zone = ZoneId.of("Europe/Kyiv")
+                    val zoneOffSet = zone.rules.getOffset(now)
+                    val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, zoneOffSet)
+
+                    val amount = monoTransaction.operationAmount.toBigDecimal()
+                        .divide(BigDecimal.valueOf(100))
+                        .abs()
+
+                    val transaction = Transaction(
+                        id = null,
+                        name = monoTransaction.description,
+                        notes = monoTransaction.comment,
+                        amount = amount,
+                        currency = Currency.fromCode(monoTransaction.currencyCode),
+                        date = date,
+                        monoBankId = monoTransaction.id,
+                        account = account,
+                        fromAccount = null,
+                        toAccount = null,
+                        category = null,
+                        type = transactionType,
+                        createdDate = date
+                    )
+
+                    rules.stream().forEach { rule -> transaction.applyRule(rule) }
+
+                    return@map transaction
+                }.toList()
+
+            if (newTransactions.isNotEmpty()) {
+                accountService.updateAccountBalanceFromMonoBank(account, monoTransactions.first().balance)
+                transactionRepository.saveAll(newTransactions)
+            }
+        } catch (httpEx: HttpClientErrorException) {
+            if (httpEx.statusCode == HttpStatus.TOO_MANY_REQUESTS) {
+                logger.warn("Too many requests to MonoBank API. Retrying in 1 minute...")
+                Thread.sleep(1000 * 60)
+                updateRecentTransactionsFromMono(account, monoBankToken)
+            }
+        } catch (ex: Exception) {
+            throw RuntimeException("Error fetching recent transactions from Mono: ${ex.message}")
         }
     }
 

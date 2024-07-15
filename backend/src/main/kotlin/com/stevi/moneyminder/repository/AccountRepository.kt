@@ -2,6 +2,7 @@ package com.stevi.moneyminder.repository;
 
 import com.stevi.moneyminder.entity.Account
 import com.stevi.moneyminder.repository.projection.AccountMonoBankTokenProjection
+import java.time.LocalDateTime
 import java.util.*
 import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.JpaRepository
@@ -24,10 +25,10 @@ interface AccountRepository : JpaRepository<Account, UUID> {
         from Account a 
         inner join a.space s
         inner join MonoBankInfo mbf on mbf.space.id = s.id
-        where a.monoBankId is not null
+        where a.monoBankId is not null and (a.transactionsSyncDate > :transactionSyncDate or a.transactionsSyncDate is null)
     """
     )
-    fun findAllByMonoBankIdIsNotNull(): List<AccountMonoBankTokenProjection>
+    fun findAllByMonoBankIdIsNotNull(@Param("transactionSyncDate") transactionSyncDate: LocalDateTime): List<AccountMonoBankTokenProjection>
 
     @Query(
         """
