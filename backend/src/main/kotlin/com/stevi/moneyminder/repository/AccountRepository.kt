@@ -25,7 +25,7 @@ interface AccountRepository : JpaRepository<Account, UUID> {
         from Account a 
         inner join a.space s
         inner join MonoBankInfo mbf on mbf.space.id = s.id
-        where a.monoBankId is not null and (a.transactionsSyncDate > :transactionSyncDate or a.transactionsSyncDate is null)
+        where a.monoBankId is not null and (a.transactionsSyncDate < :transactionSyncDate or a.transactionsSyncDate is null)
     """
     )
     fun findAllByMonoBankIdIsNotNull(@Param("transactionSyncDate") transactionSyncDate: LocalDateTime): List<AccountMonoBankTokenProjection>

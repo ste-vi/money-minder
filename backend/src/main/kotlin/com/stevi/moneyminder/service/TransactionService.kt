@@ -9,6 +9,7 @@ import com.stevi.moneyminder.model.request.CreateTransactionRequest
 import com.stevi.moneyminder.model.request.TransactionSearchRequest
 import com.stevi.moneyminder.model.request.UpdateTransactionRequest
 import com.stevi.moneyminder.model.response.PageResponse
+import com.stevi.moneyminder.model.response.TopExpenseResponse
 import com.stevi.moneyminder.model.response.TransactionResponse
 import com.stevi.moneyminder.repository.CategoryRepository
 import com.stevi.moneyminder.repository.RuleRepository
@@ -28,7 +29,8 @@ class TransactionService(
     private val transactionRepository: TransactionRepository,
     private val categoryRepository: CategoryRepository,
     private val accountService: AccountService,
-    private val ruleRepository: RuleRepository
+    private val ruleRepository: RuleRepository,
+    private val exchangeService: ExchangeService
 ) {
 
     @Transactional(readOnly = true)
@@ -43,7 +45,6 @@ class TransactionService(
             searchRequest.dateTo,
             spaceId
         )
-        // todo: search transfer?
 
         val pageable = PageRequest.of(
             searchRequest.page ?: 0,
@@ -83,6 +84,14 @@ class TransactionService(
             categoryRepository.findById(it).orElseThrow { IllegalArgumentException("Category not found") }
         }
 
+        var currencyRate: BigDecimal? = null
+        if (account.space.primaryCurrency.code != request.currency.code) {
+            val exchangeRate = exchangeService.fetchExchangeRates().find { rate ->
+                rate.currencyCodeA == request.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
+            } ?: throw RuntimeException("Exchange rate not found")
+            currencyRate = BigDecimal.valueOf(exchangeRate.rateBuy)
+        }
+
         val transaction = Transaction(
             id = null,
             name = request.name,
@@ -96,7 +105,8 @@ class TransactionService(
             toAccount = toAccount,
             category = category,
             type = request.type,
-            createdDate = LocalDateTime.now()
+            createdDate = LocalDateTime.now(),
+            currencyRate = currencyRate
         )
 
         rules.stream().forEach { rule -> transaction.applyRule(rule) }

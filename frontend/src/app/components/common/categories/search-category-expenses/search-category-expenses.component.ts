@@ -70,6 +70,7 @@ export class SearchCategoryExpensesComponent {
       this.loadTopExpenses();
       this.isOpen = true;
     });
+    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!).primaryCurrency.sign
   }
 
   private loadTopExpenses() {
@@ -84,8 +85,6 @@ export class SearchCategoryExpensesComponent {
       )
       .subscribe((topExpenses) => {
         this.topExpenses = topExpenses;
-
-        this.totalExpenseCurrencySign = topExpenses[0]?.currencySign;
 
         this.calculateTotalExpensesAmount(topExpenses);
         this.calculatePercentages(topExpenses);

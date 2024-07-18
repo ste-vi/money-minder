@@ -13,6 +13,5 @@
     </cache-template>
 
     <cache alias="exchangeRates" uses-template="default"/>
-    <cache alias="exchangeRate" uses-template="default"/>
 
 </config>

@@ -37,6 +37,11 @@ open class Transaction(
     @Column(name = "amount", nullable = false)
     open var amount: BigDecimal = BigDecimal.ZERO,
 
+    // used for tracking currency rate at a transaction creation date in order to convert amount later for spending history
+    // stores value only when currency is different from space primary currency
+    @Column(name = "currency_rate", nullable = true)
+    open var currencyRate: BigDecimal?,
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "currency", nullable = false, updatable = true)
     open var currency: Currency,

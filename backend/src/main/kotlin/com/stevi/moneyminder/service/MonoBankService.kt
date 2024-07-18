@@ -21,8 +21,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -44,6 +42,7 @@ class MonoBankService(
     private val restTemplate: RestTemplate,
     private val transactionRepository: TransactionRepository,
     private val ruleRepository: RuleRepository,
+    private val exchangeService: ExchangeService,
     @Value("\${monobank.api.url}") private val monoBankUrl: String
 ) {
 
@@ -133,7 +132,7 @@ class MonoBankService(
         }
 
         val currency = Currency.fromCode(request.currencyCode)
-        val accountName = "Monobank ${request.type} (${currency.name})" // todo: check it if for all cards is required?
+        val accountName = "Monobank ${request.type} (${currency.name})"
 
         val savedAccount = accountService.saveAccount(
             Account(
@@ -205,7 +204,7 @@ class MonoBankService(
                     val zoneOffSet = zone.rules.getOffset(now)
                     val date = LocalDateTime.ofEpochSecond(monoTransaction.time, 0, zoneOffSet)
 
-                    val amount = monoTransaction.operationAmount.toBigDecimal()
+                    val amount = monoTransaction.amount.toBigDecimal()
                         .divide(BigDecimal.valueOf(100))
                         .abs()
 
@@ -214,7 +213,7 @@ class MonoBankService(
                         name = monoTransaction.description,
                         notes = monoTransaction.comment,
                         amount = amount,
-                        currency = Currency.fromCode(monoTransaction.currencyCode),
+                        currency = account.currency,
                         date = date,
                         monoBankId = monoTransaction.id,
                         account = account,
@@ -222,10 +221,18 @@ class MonoBankService(
                         toAccount = null,
                         category = null,
                         type = transactionType,
-                        createdDate = date
+                        createdDate = date,
+                        currencyRate = null
                     )
 
                     rules.stream().forEach { rule -> transaction.applyRule(rule) }
+
+                    if (account.space.primaryCurrency.code != account.currency.code) {
+                        val exchangeRate = exchangeService.fetchExchangeRates().find { rate ->
+                            rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
+                        } ?: throw RuntimeException("Exchange rate not found")
+                        transaction.currencyRate = BigDecimal.valueOf(exchangeRate.rateBuy)
+                    }
 
                     return@map transaction
                 }.toList()
@@ -234,6 +241,7 @@ class MonoBankService(
                 accountService.updateAccountBalanceFromMonoBank(account, monoTransactions.first().balance)
                 transactionRepository.saveAll(newTransactions)
             }
+            accountService.updateAccountTransactionSyncDate(account)
         } catch (httpEx: HttpClientErrorException) {
             if (httpEx.statusCode == HttpStatus.TOO_MANY_REQUESTS) {
                 logger.warn("Too many requests to MonoBank API. Retrying in 1 minute...")

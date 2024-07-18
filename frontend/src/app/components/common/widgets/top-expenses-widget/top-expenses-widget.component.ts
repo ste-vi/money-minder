@@ -43,6 +43,7 @@ export class TopExpensesWidgetComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!).primaryCurrency.sign
     this.loadTopExpensesWithoutHidden();
     this.categoryService.refreshTopExpenses$.subscribe(() => {
       this.loadTopExpensesWithoutHidden();
@@ -66,7 +67,6 @@ export class TopExpensesWidgetComponent implements OnInit {
       )
       .subscribe((topExpenses) => {
         this.topExpensesWithoutHidden = topExpenses;
-        this.totalExpenseCurrencySign = topExpenses[0]?.currencySign;
 
         this.calculateTotalExpensesAmount(this.topExpensesWithoutHidden);
         this.calculatePercentages(this.topExpensesWithoutHidden);
@@ -82,8 +82,6 @@ export class TopExpensesWidgetComponent implements OnInit {
       .getTopExpensesByCategories(this.dateFrom, this.dateTo)
       .subscribe((topExpenses) => {
         this.topExpenses = topExpenses;
-
-        this.totalExpenseCurrencySign = topExpenses[0]?.currencySign;
 
         this.calculateTotalExpensesAmount(topExpenses);
         this.calculatePercentages(topExpenses);
@@ -115,8 +113,7 @@ export class TopExpensesWidgetComponent implements OnInit {
     this.moreExpense = {
       category: undefined,
       total: remainingTotal,
-      percentage: remainingPercentage,
-      currencySign: this.totalExpenseCurrencySign,
+      percentage: remainingPercentage
     };
   }
 

@@ -18,3 +18,14 @@ databaseChangeLog:
       changes:
         - sql:
             alter table transactions drop constraint transactions_currency_check;
+  - changeSet:
+      id: add_currency_rate_column
+      author: stef003
+      changes:
+        - addColumn:
+            tableName: transactions
+            columns:
+              - column:
+                  name: currency_rate
+                  type: numeric(38, 2)
+                  defaultValue: NULL

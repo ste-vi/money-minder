@@ -85,9 +85,14 @@ class AccountService(
     @Transactional
     fun updateAccountBalanceFromMonoBank(account: Account, balance: Int) {
         account.balance = balance.toBigDecimal().divide(BigDecimal.valueOf(100))
-        account.transactionsSyncDate = LocalDateTime.now()
         accountRepository.save(account)
         accountBalanceHistoryService.saveHistory(account)
+    }
+
+    @Transactional
+    fun updateAccountTransactionSyncDate(account: Account) {
+        account.transactionsSyncDate = LocalDateTime.now()
+        accountRepository.save(account)
     }
 
     @Transactional
@@ -188,7 +193,8 @@ class AccountService(
             date = LocalDateTime.now(),
             category = null,
             type = if (amount > BigDecimal.ZERO) TransactionType.INCOME else TransactionType.EXPENSE,
-            createdDate = LocalDateTime.now()
+            createdDate = LocalDateTime.now(),
+            currencyRate = null,
         )
         transactionRepository.save(transaction)
     }

@@ -37,6 +37,7 @@ export class CategoryExpensesComponent implements OnInit {
   protected topExpense: TopExpense | undefined;
   protected dateFrom: Date | undefined = undefined;
   protected dateTo: Date | undefined = undefined;
+  protected totalExpenseCurrencySign: string = '$';
 
   constructor(
     private viewCategoryExpensesService: ViewCategoryExpensesService,
@@ -53,6 +54,7 @@ export class CategoryExpensesComponent implements OnInit {
       this.openModal();
       this.loadTransactions();
     });
+    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!).primaryCurrency.sign
   }
 
   private loadTransactions() {

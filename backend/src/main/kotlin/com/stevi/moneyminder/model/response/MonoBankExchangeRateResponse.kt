@@ -5,5 +5,5 @@ data class MonoBankExchangeRateResponse(
     val currencyCodeB: Int,
     val date: Long,
     val rateBuy: Double,
-    val rateSell: Double,
+    val rateSell: Double
 )

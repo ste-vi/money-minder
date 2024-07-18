@@ -19,6 +19,7 @@ class ExchangeService(
 
     @Cacheable("exchangeRates", unless = "#result.isEmpty()")
     fun fetchExchangeRates(): List<MonoBankExchangeRateResponse> {
+        logger.info("Fetching exchange rates from MonoBank...")
         val uri = "$monoBankUrl/bank/currency";
         try {
             val response = restTemplate.exchange<List<MonoBankExchangeRateResponse>>(

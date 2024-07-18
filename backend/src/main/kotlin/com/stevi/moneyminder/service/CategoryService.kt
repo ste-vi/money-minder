@@ -14,6 +14,7 @@ import com.stevi.moneyminder.model.response.CategoryResponse
 import com.stevi.moneyminder.model.response.TopExpenseResponse
 import com.stevi.moneyminder.repository.SpaceRepository
 import java.io.InputStream
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.UUID
 import org.springframework.core.io.ClassPathResource
@@ -136,7 +137,6 @@ class CategoryService(
             TopExpenseResponse(
                 total = it.getTotal(),
                 category = it.getCategory()?.mapToResponse(),
-                currencySign = it.getCurrency().sign
             )
         }
     }

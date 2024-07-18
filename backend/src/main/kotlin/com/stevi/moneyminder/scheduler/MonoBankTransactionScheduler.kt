@@ -1,6 +1,7 @@
 package com.stevi.moneyminder.scheduler
 
 import com.stevi.moneyminder.service.AccountService
+import com.stevi.moneyminder.service.ExchangeService
 import com.stevi.moneyminder.service.MonoBankService
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -16,7 +17,7 @@ class MonoBankTransactionScheduler(
 ) {
 
     @OptIn(DelicateCoroutinesApi::class)
-    @Scheduled(fixedRate = 1000 * 60 * 5)
+    @Scheduled(fixedRate = 1000 * 60 * 3)
     fun run() {
         accountService.getAllMonobankAccountsAvailableForTransactionSync().stream().forEach { projection ->
             GlobalScope.async {

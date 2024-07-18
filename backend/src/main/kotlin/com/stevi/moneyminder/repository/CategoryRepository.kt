@@ -19,9 +19,8 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
     @Query(
         """
         select 
-            sum(t.amount) as total,
-            c as category,
-            t.currency as currency
+            sum(COALESCE(t.amount, 0) * COALESCE(t.currencyRate, 1)) as total,
+            c as category
         from Transaction t 
             left join t.category c 
         where t.account.space.id = :spaceId 
@@ -30,8 +29,8 @@ interface CategoryRepository : JpaRepository<Category, UUID> {
             and t.date <= :dateTo
             and (c.id is null or c.id not in (:categoryIdsToExclude))
             and (:accountId is null or t.account.id = :accountId)
-        group by c, t.currency
-        order by sum(t.amount) desc
+        group by c
+        order by sum(COALESCE(t.amount, 0) * COALESCE(t.currencyRate, 1)) desc
     """
     )
     fun findTopExpenses(

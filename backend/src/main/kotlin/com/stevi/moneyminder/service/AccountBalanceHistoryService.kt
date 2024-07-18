@@ -80,6 +80,9 @@ class AccountBalanceHistoryService(
                     rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
                 } ?: throw RuntimeException("Exchange rate not found")
                 balance = balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
+            } else {
+                Thread.sleep(1000)
+                return convertBalanceToSpaceCurrency(account)
             }
         }
         return balance
