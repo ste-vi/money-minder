@@ -70,7 +70,12 @@ export class SearchCategoryExpensesComponent {
       this.loadTopExpenses();
       this.isOpen = true;
     });
-    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!).primaryCurrency.sign
+
+    if (localStorage.getItem('space')! != null) {
+      this.totalExpenseCurrencySign = JSON.parse(
+        localStorage.getItem('space')!,
+      ).primaryCurrency.sign;
+    }
   }
 
   private loadTopExpenses() {
@@ -81,7 +86,7 @@ export class SearchCategoryExpensesComponent {
         this.dateFilter?.dateTo!,
         this.categoryType,
         this.accountFilter?.id,
-        this.categoriesToIgnore
+        this.categoriesToIgnore,
       )
       .subscribe((topExpenses) => {
         this.topExpenses = topExpenses;
@@ -172,6 +177,6 @@ export class SearchCategoryExpensesComponent {
   onCategoriesUnselected(unselectedCategories: string[]) {
     this.isCategoriesFilterOpened = false;
     this.categoriesToIgnore = unselectedCategories;
-    this.loadTopExpenses()
+    this.loadTopExpenses();
   }
 }
