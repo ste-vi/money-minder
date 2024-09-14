@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
-import { Transaction, TransactionType } from '../../models/transaction';
+import { Transaction } from '../../models/transaction';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { PageResponse } from '../../models/page-response';
-import { Currency } from '../../models/currency';
 
 @Injectable({
   providedIn: 'root',

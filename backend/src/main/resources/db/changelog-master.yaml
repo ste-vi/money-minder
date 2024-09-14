@@ -29,3 +29,14 @@ databaseChangeLog:
                   name: currency_rate
                   type: numeric(38, 2)
                   defaultValue: NULL
+  - changeSet:
+      id: add_password_column
+      author: stef003
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: password
+                  type: varchar(255)
+                  defaultValue: NULL

@@ -5,9 +5,11 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { inject } from '@angular/core';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthComponent } from './auth/auth.component';
+import { ServiceLoginComponent } from './auth/service-login/service-login.component';
 
 export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
+  { path: 'service-login', component: ServiceLoginComponent },
   {
     path: 'accounts',
     component: AccountsComponent,

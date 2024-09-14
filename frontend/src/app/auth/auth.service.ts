@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false,
   );
@@ -14,6 +14,7 @@ export class AuthService {
   constructor(
     private router: Router,
     private jwtHelper: JwtHelperService,
+    private httpClient: HttpClient,
   ) {}
 
   get isLoggedIn(): Observable<boolean> {
@@ -33,6 +34,17 @@ export class AuthService {
 
   loginViaGoogle(): void {
     window.open(environment.apiUrl + '/login', '_self');
+  }
+
+  loginWithCredentials(
+    username: string,
+    password: string,
+  ): Observable<HttpResponse<any>> {
+    let request: any = { username: username, password: password };
+    return this.httpClient.post<any>(environment.apiUrl + '/login', request, {
+      headers: { skip: 'true' },
+      observe: 'response',
+    });
   }
 
   setAccessToken(accessToken: string): void {

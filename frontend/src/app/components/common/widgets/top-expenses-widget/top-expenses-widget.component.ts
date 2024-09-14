@@ -43,7 +43,7 @@ export class TopExpensesWidgetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!).primaryCurrency.sign
+    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!)?.primaryCurrency?.sign
     this.loadTopExpensesWithoutHidden();
     this.categoryService.refreshTopExpenses$.subscribe(() => {
       this.loadTopExpensesWithoutHidden();

@@ -7,7 +7,13 @@ export function authInterceptor(
   next: HttpHandlerFn,
 ) {
   const accessToken = inject(AuthService).getAccessToken();
-
+  if (
+    req.headers.get('skip') ||
+    accessToken === null ||
+    accessToken === undefined
+  ) {
+    return next(req);
+  }
   const reqWithHeader = req.clone({
     headers: req.headers.set('Authorization', accessToken!),
   });

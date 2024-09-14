@@ -32,13 +32,18 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun findByEmail(username: String): User? {
-        return userRepository.findByEmail(username)
+    fun findByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
+    }
+
+    @Transactional(readOnly = true)
+    fun findByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
     }
 
     @Transactional(readOnly = true)
     fun createNewUser(email: String, username: String): User {
-        val user = userRepository.save(User(null, username, email, null))
+        val user = userRepository.save(User(null, username, email, null, null))
         val space = initSpaceForUser(user)
         user.lastLoggedInSpaceId = space.id
         userRepository.save(user)

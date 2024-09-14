@@ -54,7 +54,7 @@ export class CategoryExpensesComponent implements OnInit {
       this.openModal();
       this.loadTransactions();
     });
-    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!).primaryCurrency.sign
+    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!)?.primaryCurrency?.sign
   }
 
   private loadTransactions() {

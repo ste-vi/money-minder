@@ -21,6 +21,9 @@ open class User(
     @Column(name = "email", nullable = false, unique = true)
     open var email: String,
 
+    @Column(name = "password")
+    open var password: String?,
+
     @Column(name = "last_logged_in_space_id")
     open var lastLoggedInSpaceId: UUID?,
 )

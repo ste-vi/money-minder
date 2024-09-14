@@ -81,7 +81,7 @@ class GoogleAuthService(
     }
 
     fun getUri(): String {
-        val authorizationCodeRequestUrl: GoogleAuthorizationCodeRequestUrl = GoogleAuthorizationCodeRequestUrl(
+        val authorizationCodeRequestUrl = GoogleAuthorizationCodeRequestUrl(
             googleProperties.clientId,
             googleProperties.redirectUri,
             listOf(USER_INFO_EMAIL, USER_INFO_PROFILE)
