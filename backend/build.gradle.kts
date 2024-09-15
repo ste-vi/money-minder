@@ -9,7 +9,6 @@ plugins {
 }
 
 group = "com.stevi"
-version = "0.0.1-SNAPSHOT"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -29,7 +28,6 @@ dependencies {
 	implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.google.api-client:google-api-client:2.6.0")
-	implementation("com.google.api-client:google-oauth-client:2.6.0")
 	implementation("com.google.api-client:google-api-client-jackson2:2.6.0")
 
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
