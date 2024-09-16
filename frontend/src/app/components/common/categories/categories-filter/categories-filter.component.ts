@@ -3,6 +3,7 @@ import { MatIcon } from '@angular/material/icon';
 import { NgForOf } from '@angular/common';
 import { CategoryService } from '../../../../services/api/category-service';
 import { Category, CategoryType } from '../../../../models/category';
+import {sideModalOpenClose} from "../../../../animations/side-modal-open-close";
 
 @Component({
   selector: 'app-categories-filter',
@@ -10,6 +11,7 @@ import { Category, CategoryType } from '../../../../models/category';
   imports: [MatIcon, NgForOf],
   templateUrl: './categories-filter.component.html',
   styleUrl: './categories-filter.component.scss',
+  animations: [sideModalOpenClose]
 })
 export class CategoriesFilterComponent {
   @Input()

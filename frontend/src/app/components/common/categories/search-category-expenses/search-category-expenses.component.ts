@@ -17,6 +17,7 @@ import {
 import { TransactionAccountFilterComponent } from '../../transaction/search-transactions/filters/transaction-account-filter/transaction-account-filter.component';
 import { TransactionDateFilterComponent } from '../../transaction/search-transactions/filters/transaction-date-filter/transaction-date-filter.component';
 import { CategoriesFilterComponent } from '../categories-filter/categories-filter.component';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-search-category-expenses',
@@ -37,6 +38,7 @@ import { CategoriesFilterComponent } from '../categories-filter/categories-filte
   ],
   templateUrl: './search-category-expenses.component.html',
   styleUrl: './search-category-expenses.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class SearchCategoryExpensesComponent {
   protected isOpen: boolean = false;

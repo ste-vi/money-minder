@@ -36,7 +36,7 @@
       border-radius: 8px;
       border: 1px solid var(--secondary-border);
       outline: none;
-      font-size: 0.9rem;
+      font-size: 16px;
       font-weight: 550;
 
       &:focus {
@@ -81,7 +81,7 @@
           border: none;
           outline: none;
           color: var(--secondary-text);
-          font-size: 12px;
+          font-size: 14px;
           border-radius: 5px;
         }
 
@@ -195,10 +195,11 @@
           border-radius: 4px;
           box-sizing: border-box;
           resize: none;
-          font-size: 14px;
+          font-size: 16px;
           line-height: 1.1;
           height: 100px;
           border: none;
+          font-family: "Nunito Sans", sans-serif;
           background-color: var(--background);
           margin-top: 0.18rem;
           outline: none;

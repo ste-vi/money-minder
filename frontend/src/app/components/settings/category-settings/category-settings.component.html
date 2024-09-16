@@ -1,5 +1,5 @@
 <div *ngIf="isOpened">
-  <div class="category-settings-container right-modal">
+  <div class="category-settings-container right-modal" [@sideModalOpenClose]>
     <div class="categories-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
       <div><b>Categories</b></div>

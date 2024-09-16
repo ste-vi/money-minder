@@ -5,7 +5,8 @@ import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BankType } from '../../../../models/bank-type';
 import { LinkMonobankService } from '../../../../services/communication/link-monobank-service';
-import {ConnectMonobankComponent} from "../connect-monobank/connect-monobank.component";
+import { ConnectMonobankComponent } from '../connect-monobank/connect-monobank.component';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-select-new-bank',
@@ -13,6 +14,7 @@ import {ConnectMonobankComponent} from "../connect-monobank/connect-monobank.com
   imports: [MatIcon, NgIf, FormsModule, NgForOf, ConnectMonobankComponent],
   templateUrl: './select-new-bank.component.html',
   styleUrl: './select-new-bank.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class SelectNewBankComponent {
   protected isOpened: boolean = false;

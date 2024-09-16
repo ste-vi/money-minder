@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpaceService } from '../../../../services/api/space-service';
 import { Space } from '../../../../models/space';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-create-space',
@@ -14,6 +15,7 @@ import { Space } from '../../../../models/space';
   imports: [NgIf, MatIcon, NgClass, FormsModule, NgForOf, ReactiveFormsModule],
   templateUrl: './create-space.component.html',
   styleUrl: './create-space.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class CreateSpaceComponent {
   protected isOpened: boolean = false;

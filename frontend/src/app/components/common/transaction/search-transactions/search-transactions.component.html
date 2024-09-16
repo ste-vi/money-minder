@@ -1,5 +1,5 @@
 <div *ngIf="isOpened">
-  <div class="transaction-search-container right-modal">
+  <div class="transaction-search-container right-modal" [@sideModalOpenClose]>
     <div class="container-header">
       <div>
         <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>

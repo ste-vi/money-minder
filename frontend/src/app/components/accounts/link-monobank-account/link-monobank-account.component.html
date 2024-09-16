@@ -1,7 +1,7 @@
 <div class="page-mask" *ngIf="isOpened" (click)="closeModal()"></div>
 
 <div *ngIf="isOpened">
-  <div class="monobank-accounts-container right-modal">
+  <div class="monobank-accounts-container right-modal" [@sideModalOpenClose]>
 
     <div class="monobank-accounts-container-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>

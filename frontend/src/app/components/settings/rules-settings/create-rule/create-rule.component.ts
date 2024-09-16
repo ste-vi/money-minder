@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { CreateRuleService } from '../../../../services/communication/create-rule-service';
@@ -12,6 +12,7 @@ import { ActionType } from '../../../../models/action-type';
 import { TransactionDateFilterComponent } from '../../../common/transaction/search-transactions/filters/transaction-date-filter/transaction-date-filter.component';
 import { TransactionAccountFilterComponent } from '../../../common/transaction/search-transactions/filters/transaction-account-filter/transaction-account-filter.component';
 import { Account } from '../../../../models/account';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-create-rule',
@@ -30,6 +31,7 @@ import { Account } from '../../../../models/account';
   ],
   templateUrl: './create-rule.component.html',
   styleUrl: './create-rule.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class CreateRuleComponent {
   protected isOpened: boolean = false;

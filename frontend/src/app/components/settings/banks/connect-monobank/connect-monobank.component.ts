@@ -4,8 +4,9 @@ import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MonobankService } from '../../../../services/api/monobank-service';
-import {SelectNewBankService} from "../../../../services/communication/select-new-bank-service";
-import {BanksService} from "../../../../services/api/banks-service";
+import { SelectNewBankService } from '../../../../services/communication/select-new-bank-service';
+import { BanksService } from '../../../../services/api/banks-service';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-connect-monobank',
@@ -13,6 +14,7 @@ import {BanksService} from "../../../../services/api/banks-service";
   imports: [NgIf, FormsModule, MatIcon, NgForOf],
   templateUrl: './connect-monobank.component.html',
   styleUrl: './connect-monobank.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class ConnectMonobankComponent {
   protected isOpened: boolean = false;

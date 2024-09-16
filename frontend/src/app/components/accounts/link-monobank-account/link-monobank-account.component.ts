@@ -7,6 +7,7 @@ import { MonobankAccount } from '../../../models/monobank-account';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { MonobankAccountCardComponent } from '../../common/banks/accounts/monobank-account-card/monobank-account-card.component';
 import { AccountService } from '../../../services/api/account-service';
+import {sideModalOpenClose} from "../../../animations/side-modal-open-close";
 
 @Component({
   selector: 'app-link-monobank-account',
@@ -20,6 +21,7 @@ import { AccountService } from '../../../services/api/account-service';
   ],
   templateUrl: './link-monobank-account.component.html',
   styleUrl: './link-monobank-account.component.scss',
+  animations: [sideModalOpenClose]
 })
 export class LinkMonobankAccountComponent {
   protected isOpened: boolean = false;

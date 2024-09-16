@@ -1,11 +1,12 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {CategoriesSettingsService} from '../../../services/communication/categories-settings-service';
-import {NgForOf, NgIf} from '@angular/common';
-import {MatIcon} from '@angular/material/icon';
-import {CategoryService} from "../../../services/api/category-service";
-import {Category, CategoryType} from "../../../models/category";
-import {MatTab, MatTabGroup} from "@angular/material/tabs";
-import {LoaderComponent} from "../../common/loader/loader.component";
+import { Component, HostListener, OnInit } from '@angular/core';
+import { CategoriesSettingsService } from '../../../services/communication/categories-settings-service';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { CategoryService } from '../../../services/api/category-service';
+import { Category, CategoryType } from '../../../models/category';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { LoaderComponent } from '../../common/loader/loader.component';
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-category-settings',
@@ -13,6 +14,7 @@ import {LoaderComponent} from "../../common/loader/loader.component";
   imports: [NgIf, MatIcon, NgForOf, MatTabGroup, MatTab, LoaderComponent],
   templateUrl: './category-settings.component.html',
   styleUrl: './category-settings.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class CategorySettingsComponent implements OnInit {
   protected isOpened: boolean = false;

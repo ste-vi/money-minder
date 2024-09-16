@@ -10,6 +10,7 @@ import { SearchTransactionsService } from '../../../../services/communication/se
 import { TransactionService } from '../../../../services/api/transaction-service';
 import { ViewCategoryExpensesService } from '../../../../services/communication/view-category-expenses-service';
 import { TopExpense } from '../../../../models/top-expense';
+import {sideModalOpenClose} from "../../../../animations/side-modal-open-close";
 
 @Component({
   selector: 'app-category-expenses',
@@ -25,6 +26,7 @@ import { TopExpense } from '../../../../models/top-expense';
   ],
   templateUrl: './category-expenses.component.html',
   styleUrl: './category-expenses.component.scss',
+  animations: [sideModalOpenClose]
 })
 export class CategoryExpensesComponent implements OnInit {
   protected isOpen: boolean = false;

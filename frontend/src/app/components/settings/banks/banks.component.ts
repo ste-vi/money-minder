@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { MatIcon } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
@@ -9,6 +9,7 @@ import { BanksService } from '../../../services/api/banks-service';
 import { Bank } from '../../../models/bank';
 import { LinkMonobankAccountService } from '../../../services/communication/link-monobank-account-service';
 import { BankType } from '../../../models/bank-type';
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-banks',
@@ -16,6 +17,7 @@ import { BankType } from '../../../models/bank-type';
   imports: [LoaderComponent, MatIcon, NgForOf, NgIf, SelectNewBankComponent],
   templateUrl: './banks.component.html',
   styleUrl: './banks.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class BanksComponent {
   protected isOpened: boolean = false;

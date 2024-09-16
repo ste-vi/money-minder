@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ViewAccountService } from '../../../services/communication/view-account-service';
 import { Account } from '../../../models/account';
 import { MatIcon } from '@angular/material/icon';
@@ -12,7 +12,8 @@ import { TransactionService } from '../../../services/api/transaction-service';
 import { CreateTransactionButtonComponent } from '../../common/transaction/create-transaction-button/create-transaction-button.component';
 import { AccountService } from '../../../services/api/account-service';
 import { UpdateAccountService } from '../../../services/communication/update-account-service';
-import {UpdateAccountComponent} from "../update-account/update-account.component";
+import { UpdateAccountComponent } from '../update-account/update-account.component';
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-account-view',
@@ -30,6 +31,7 @@ import {UpdateAccountComponent} from "../update-account/update-account.component
   ],
   templateUrl: './account-view.component.html',
   styleUrl: './account-view.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class AccountViewComponent {
   protected isOpen: boolean = false;

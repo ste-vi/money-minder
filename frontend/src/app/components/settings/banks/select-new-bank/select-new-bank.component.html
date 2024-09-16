@@ -1,5 +1,5 @@
 <div *ngIf="isOpened">
-  <div class="select-bank-container right-modal">
+  <div class="select-bank-container right-modal" [@sideModalOpenClose]>
     <div class="select-bank-container-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
       <div><b>Let's connect your bank account</b></div>

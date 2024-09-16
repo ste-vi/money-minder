@@ -1,4 +1,4 @@
-<div class="account-view-container right-modal" *ngIf="isOpen">
+<div class="account-view-container right-modal" *ngIf="isOpen" [@sideModalOpenClose]>
   <div class="view-account-header">
     <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
     <div class="edit-button" (click)="editModal()">Edit</div>

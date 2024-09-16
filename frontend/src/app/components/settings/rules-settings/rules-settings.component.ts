@@ -1,12 +1,13 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
-import {MatIcon} from "@angular/material/icon";
-import {RulesSettingsService} from "../../../services/communication/rules-settings-service";
-import {RuleService} from "../../../services/api/rule-service";
-import {ConditionTypeEnum, Rule} from "../../../models/rule";
-import {CreateRuleService} from "../../../services/communication/create-rule-service";
-import {CreateRuleComponent} from "./create-rule/create-rule.component";
-import {LoaderComponent} from "../../common/loader/loader.component";
+import { Component, HostListener, OnInit } from '@angular/core';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { RulesSettingsService } from '../../../services/communication/rules-settings-service';
+import { RuleService } from '../../../services/api/rule-service';
+import { ConditionTypeEnum, Rule } from '../../../models/rule';
+import { CreateRuleService } from '../../../services/communication/create-rule-service';
+import { CreateRuleComponent } from './create-rule/create-rule.component';
+import { LoaderComponent } from '../../common/loader/loader.component';
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-rules-settings',
@@ -14,6 +15,7 @@ import {LoaderComponent} from "../../common/loader/loader.component";
   imports: [NgIf, MatIcon, NgForOf, CreateRuleComponent, LoaderComponent],
   templateUrl: './rules-settings.component.html',
   styleUrl: './rules-settings.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class RulesSettingsComponent implements OnInit {
   protected isOpened: boolean = false;
@@ -39,7 +41,7 @@ export class RulesSettingsComponent implements OnInit {
   }
 
   private loadRules() {
-    console.log("load rules");
+    console.log('load rules');
     this.ruleService.getRules().subscribe((rules) => {
       this.rules = rules;
       this.isLoading = false;

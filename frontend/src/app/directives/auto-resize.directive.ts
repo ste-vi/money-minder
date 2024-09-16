@@ -23,7 +23,7 @@ export class AutoResizeDirective {
 
     document.body.appendChild(temporarySpan);
 
-    input.style.width = `${temporarySpan.offsetWidth + 2}px`;
+    input.style.width = `${temporarySpan.offsetWidth + 10}px`;
 
     document.body.removeChild(temporarySpan);
   }

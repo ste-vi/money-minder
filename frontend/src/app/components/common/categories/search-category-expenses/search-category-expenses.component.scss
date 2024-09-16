@@ -1,4 +1,5 @@
 .category-expenses-search-container {
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -26,7 +27,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 14px;
     padding-top: 0.5rem;
     padding-bottom: 0.1rem;
     gap: 0.6rem;
@@ -95,7 +96,7 @@
       padding: 0.25rem 0;
       border-bottom: 1px solid var(--secondary-border);
       width: 100%;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
 
       &:active {

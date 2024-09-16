@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { SearchTransactionsService } from '../../../../services/communication/search-transactions-service';
@@ -18,6 +18,7 @@ import {
 } from '../../../../models/date-filter-option';
 import { CreateTransactionButtonComponent } from '../create-transaction-button/create-transaction-button.component';
 import { Category } from '../../../../models/category';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-search-transactions',
@@ -37,6 +38,7 @@ import { Category } from '../../../../models/category';
   ],
   templateUrl: './search-transactions.component.html',
   styleUrl: './search-transactions.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class SearchTransactionsComponent implements OnInit {
   protected isOpened: boolean = false;
@@ -73,10 +75,9 @@ export class SearchTransactionsComponent implements OnInit {
     this.searchTransactionsService.modalOpened$.subscribe((filters) => {
       this.showModal(filters);
 
-      this.transactionService.refreshTransactions$.subscribe(() =>{
-          this.loadTransactions(true);
-        }
-      );
+      this.transactionService.refreshTransactions$.subscribe(() => {
+        this.loadTransactions(true);
+      });
     });
   }
 

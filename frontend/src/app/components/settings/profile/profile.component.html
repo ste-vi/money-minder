@@ -1,5 +1,5 @@
 <div *ngIf="isOpened">
-  <div class="profile-container right-modal">
+  <div class="profile-container right-modal" [@sideModalOpenClose]>
     <div class="profile-container-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
       <div><b>Profile info</b></div>

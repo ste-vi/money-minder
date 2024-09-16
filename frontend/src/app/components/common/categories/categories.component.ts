@@ -1,8 +1,16 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { Category, CategoryType } from '../../../models/category';
 import { CategoryService } from '../../../services/api/category-service';
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-categories',
@@ -10,6 +18,7 @@ import { CategoryService } from '../../../services/api/category-service';
   imports: [MatIcon, NgIf, NgForOf],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class CategoriesComponent implements OnInit {
   protected isSubCategoriesOpened: boolean = false;

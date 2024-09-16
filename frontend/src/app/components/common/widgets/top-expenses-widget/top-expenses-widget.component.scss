@@ -15,7 +15,7 @@
 
   .top-expenses-body {
     padding-top: 0.2rem;
-    font-size: 13px;
+    font-size: 14px;
     animation: fade-in-scale 0.3s ease-in-out;
 
     .top-expense {
@@ -24,13 +24,13 @@
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
+      margin-bottom: 2px;
 
       .tiny-icon {
-        transform: scale(0.7);
+        transform: scale(0.8);
         cursor: pointer;
         color: var(--accent);
         margin-left: -4px;
-        margin-right: -4px;
       }
 
       .top-expense-header {

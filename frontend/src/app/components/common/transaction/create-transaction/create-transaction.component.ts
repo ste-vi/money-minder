@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { DatePipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
 import { TransactionType } from '../../../../models/transaction';
 import { AutoResizeDirective } from '../../../../directives/auto-resize.directive';
@@ -17,6 +17,7 @@ import { TransactionAccountFilterComponent } from '../search-transactions/filter
 import { Account } from '../../../../models/account';
 import { TransactionService } from '../../../../services/api/transaction-service';
 import { CategoriesComponent } from '../../categories/categories.component';
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-create-transaction',
@@ -35,6 +36,7 @@ import { CategoriesComponent } from '../../categories/categories.component';
   ],
   templateUrl: './create-transaction.component.html',
   styleUrl: './create-transaction.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class CreateTransactionComponent {
   protected isOpened: boolean = false;
@@ -204,7 +206,8 @@ export class CreateTransactionComponent {
       accountId: accountId,
       fromAccountId: this.isTransferTabActive ? accountId : null,
       toAccountId: this.isTransferTabActive ? toAccountId : null,
-      currency:   this.transactionForm.controls['account'].value.currency.shortName,
+      currency:
+        this.transactionForm.controls['account'].value.currency.shortName,
       date: new Date(this.transactionForm.controls['date'].value),
       amount: this.transactionForm.controls['amount'].value,
       notes: this.transactionForm.controls['notes'].value,

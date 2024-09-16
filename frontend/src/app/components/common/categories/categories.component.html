@@ -32,7 +32,7 @@
 </div>
 
 <div *ngIf="isSubCategoriesOpened">
-  <div class="categories-container right-modal">
+  <div class="categories-container right-modal" [@sideModalOpenClose]>
     <div class="categories-container-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeSubCategoriesModal()"></mat-icon>
       <div><b> {{ this.parentCategory?.name }} </b></div>

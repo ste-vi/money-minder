@@ -5,6 +5,7 @@ import { ProfileService } from '../../../services/communication/profile-service'
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user';
 import { UserService } from '../../../services/api/user-service';
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ import { UserService } from '../../../services/api/user-service';
   imports: [NgIf, MatIcon],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
+  animations: [sideModalOpenClose],
 })
 export class ProfileComponent {
   protected isOpened: boolean = false;
