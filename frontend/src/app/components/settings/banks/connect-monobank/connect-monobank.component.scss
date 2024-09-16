@@ -21,6 +21,10 @@
     padding: 0.5rem 0.8rem;
     text-align: center;
 
+    .secondary-header-text {
+      text-align: start;
+    }
+
     input {
       width: 100%;
       padding: 0.18rem 0.4rem;
@@ -28,7 +32,7 @@
       border: 1px solid var(--secondary-border);
       outline: none;
       font-weight: 550;
-      text-align: center;
+      text-align: start;
 
       &:focus {
         border: 1px solid var(--accent);

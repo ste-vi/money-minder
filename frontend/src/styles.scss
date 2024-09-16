@@ -249,7 +249,15 @@ input[type=number] {
   background-color: $disabled-color !important;
 }
 
+.not-visible {
+  visibility: hidden;
+}
+
 // modals
+
+// todo: add swipe gestures to close modals
+// todo: try to get free domain and setup ssl + add it under cloudflare
+
 .bottom-modal {
   position: fixed;
   bottom: 0;
@@ -257,7 +265,6 @@ input[type=number] {
   border-top: 1px solid var(--secondary-border);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  animation: rise-from-bottom 0.15s ease-in-out;
   z-index: 10;
   margin-left: auto;
   margin-right: auto;
@@ -287,25 +294,6 @@ input[type=number] {
 }
 
 //animations
-@keyframes rise-from-bottom {
-  from {
-    transform: translateY(100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes rise-from-right {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
 
 @keyframes bubble {
   0% {

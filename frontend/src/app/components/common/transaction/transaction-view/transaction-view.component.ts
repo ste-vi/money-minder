@@ -30,6 +30,7 @@ import { CategoriesComponent } from '../../categories/categories.component';
 import { Category, CategoryType } from '../../../../models/category';
 import { TransactionAccountFilterComponent } from '../search-transactions/filters/transaction-account-filter/transaction-account-filter.component';
 import { Account } from '../../../../models/account';
+import { bottomModalOpenClose } from '../../../../animations/bottom-modal-open-close';
 
 @Component({
   selector: 'app-transaction-view',
@@ -55,6 +56,7 @@ import { Account } from '../../../../models/account';
   ],
   templateUrl: './transaction-view.component.html',
   styleUrl: './transaction-view.component.scss',
+  animations: [bottomModalOpenClose],
 })
 export class TransactionViewComponent implements OnInit, AfterViewChecked {
   protected isOpened: boolean = false;

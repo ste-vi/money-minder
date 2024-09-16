@@ -6,6 +6,7 @@ import { SpaceService } from '../../../services/api/space-service';
 import { MatIcon } from '@angular/material/icon';
 import { CreateSpaceComponent } from './create-space/create-space.component';
 import { CreateSpaceService } from '../../../services/communication/create-space-service';
+import { bottomModalOpenClose } from '../../../animations/bottom-modal-open-close';
 
 @Component({
   selector: 'app-spaces',
@@ -13,6 +14,7 @@ import { CreateSpaceService } from '../../../services/communication/create-space
   imports: [NgIf, MatIcon, NgForOf, NgClass, CreateSpaceComponent],
   templateUrl: './spaces.component.html',
   styleUrl: './spaces.component.scss',
+  animations: [bottomModalOpenClose],
 })
 export class SpacesComponent {
   protected isOpened: boolean = false;

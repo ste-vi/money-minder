@@ -1,4 +1,10 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AutoResizeDirective } from '../../../directives/auto-resize.directive';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
@@ -13,6 +19,7 @@ import { AccountService } from '../../../services/api/account-service';
 import { CurrencyService } from '../../../services/api/currency-service';
 import { UpdateAccountService } from '../../../services/communication/update-account-service';
 import { Account } from '../../../models/account';
+import { bottomModalOpenClose } from '../../../animations/bottom-modal-open-close';
 
 @Component({
   selector: 'app-update-account',
@@ -27,6 +34,7 @@ import { Account } from '../../../models/account';
   ],
   templateUrl: './update-account.component.html',
   styleUrl: './update-account.component.scss',
+  animations: [bottomModalOpenClose],
 })
 export class UpdateAccountComponent implements OnInit {
   protected isOpened: boolean = false;

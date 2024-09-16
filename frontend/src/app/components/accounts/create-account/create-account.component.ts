@@ -1,12 +1,19 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
-import {DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
-import {CreateAccountService} from '../../../services/communication/create-account-service';
-import {MatIcon} from '@angular/material/icon';
-import {CurrencyService} from '../../../services/api/currency-service';
-import {Currency} from '../../../models/currency';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {AutoResizeDirective} from '../../../directives/auto-resize.directive';
-import {AccountService} from '../../../services/api/account-service';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { DecimalPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { CreateAccountService } from '../../../services/communication/create-account-service';
+import { MatIcon } from '@angular/material/icon';
+import { CurrencyService } from '../../../services/api/currency-service';
+import { Currency } from '../../../models/currency';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { AutoResizeDirective } from '../../../directives/auto-resize.directive';
+import { AccountService } from '../../../services/api/account-service';
+import { bottomModalOpenClose } from '../../../animations/bottom-modal-open-close';
 
 @Component({
   selector: 'app-create-account',
@@ -23,6 +30,7 @@ import {AccountService} from '../../../services/api/account-service';
   ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
+  animations: [bottomModalOpenClose],
 })
 export class CreateAccountComponent {
   protected isOpened: boolean = false;

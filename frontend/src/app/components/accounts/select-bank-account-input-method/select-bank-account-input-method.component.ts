@@ -5,6 +5,7 @@ import { NgForOf, NgIf } from '@angular/common';
 import { CreateAccountService } from '../../../services/communication/create-account-service';
 import { AccountType } from '../../../models/account-type';
 import { ViewBanksService } from '../../../services/communication/view-banks-service';
+import { bottomModalOpenClose } from '../../../animations/bottom-modal-open-close';
 
 @Component({
   selector: 'app-select-bank-account-input-method',
@@ -12,6 +13,7 @@ import { ViewBanksService } from '../../../services/communication/view-banks-ser
   imports: [MatIcon, NgForOf, NgIf],
   templateUrl: './select-bank-account-input-method.component.html',
   styleUrl: './select-bank-account-input-method.component.scss',
+  animations: [bottomModalOpenClose],
 })
 export class SelectBankAccountInputMethodComponent {
   protected isOpened: boolean = false;

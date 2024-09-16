@@ -11,6 +11,7 @@ import { NgForOf, NgIf } from '@angular/common';
 import { Category, CategoryType } from '../../../models/category';
 import { CategoryService } from '../../../services/api/category-service';
 import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
+import { bottomModalOpenClose } from '../../../animations/bottom-modal-open-close';
 
 @Component({
   selector: 'app-categories',
@@ -18,7 +19,7 @@ import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
   imports: [MatIcon, NgIf, NgForOf],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
-  animations: [sideModalOpenClose],
+  animations: [sideModalOpenClose, bottomModalOpenClose],
 })
 export class CategoriesComponent implements OnInit {
   protected isSubCategoriesOpened: boolean = false;
