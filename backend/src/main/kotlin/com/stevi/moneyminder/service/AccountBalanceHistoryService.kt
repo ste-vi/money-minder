@@ -77,7 +77,8 @@ class AccountBalanceHistoryService(
             val exchangeRates = exchangeService.fetchExchangeRates()
             if (exchangeRates.isNotEmpty()) {
                 val exchangeRate = exchangeRates.find { rate ->
-                    rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
+                    (rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code)
+                            || (rate.currencyCodeA == account.space.primaryCurrency.code && rate.currencyCodeB == account.currency.code)
                 } ?: throw RuntimeException("Exchange rate not found")
                 balance = balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))
             } else {

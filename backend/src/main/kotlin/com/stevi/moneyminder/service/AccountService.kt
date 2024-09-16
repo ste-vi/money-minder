@@ -283,7 +283,8 @@ class AccountService(
         balance: BigDecimal
     ): BigDecimal {
         val exchangeRate = exchangeRates.find { rate ->
-            rate.currencyCodeA == currency.code && rate.currencyCodeB == primaryCurrency.code
+            (rate.currencyCodeA == currency.code && rate.currencyCodeB == primaryCurrency.code)
+                    || (rate.currencyCodeA == primaryCurrency.code && rate.currencyCodeB == currency.code)
         } ?: throw RuntimeException("Exchange rate not found")
 
         return balance.multiply(BigDecimal.valueOf(exchangeRate.rateBuy))

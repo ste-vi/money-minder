@@ -229,7 +229,8 @@ class MonoBankService(
 
                     if (account.space.primaryCurrency.code != account.currency.code) {
                         val exchangeRate = exchangeService.fetchExchangeRates().find { rate ->
-                            rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
+                            (rate.currencyCodeA == account.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code)
+                                    || (rate.currencyCodeA == account.space.primaryCurrency.code && rate.currencyCodeB == account.currency.code)
                         } ?: throw RuntimeException("Exchange rate not found")
                         transaction.currencyRate = BigDecimal.valueOf(exchangeRate.rateBuy)
                     }

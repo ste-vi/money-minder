@@ -87,7 +87,8 @@ class TransactionService(
         var currencyRate: BigDecimal? = null
         if (account.space.primaryCurrency.code != request.currency.code) {
             val exchangeRate = exchangeService.fetchExchangeRates().find { rate ->
-                rate.currencyCodeA == request.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code
+                (rate.currencyCodeA == request.currency.code && rate.currencyCodeB == account.space.primaryCurrency.code)
+                        || (rate.currencyCodeA == account.space.primaryCurrency.code && rate.currencyCodeB == request.currency.code)
             } ?: throw RuntimeException("Exchange rate not found")
             currencyRate = BigDecimal.valueOf(exchangeRate.rateBuy)
         }
