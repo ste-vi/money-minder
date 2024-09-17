@@ -67,4 +67,8 @@ export class BanksComponent {
       }
     }
   }
+
+  onSwipeRight() {
+    this.closeModal()
+  }
 }

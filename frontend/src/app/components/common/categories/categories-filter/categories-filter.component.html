@@ -1,4 +1,4 @@
-<div class="categories-filter-container right-modal" [@sideModalOpenClose]>
+<div class="categories-filter-container right-modal" [@sideModalOpenClose] (swiperight)="onSwipeRight()">
   <div class="categories-filter-container-header">
     <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
     <div><b>Filter by categories</b></div>

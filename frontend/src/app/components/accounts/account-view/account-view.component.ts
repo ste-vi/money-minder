@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { ViewAccountService } from '../../../services/communication/view-account-service';
 import { Account } from '../../../models/account';
 import { MatIcon } from '@angular/material/icon';
@@ -14,6 +14,7 @@ import { AccountService } from '../../../services/api/account-service';
 import { UpdateAccountService } from '../../../services/communication/update-account-service';
 import { UpdateAccountComponent } from '../update-account/update-account.component';
 import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-account-view',
@@ -44,6 +45,9 @@ export class AccountViewComponent {
   protected searchQuery: string = '';
   protected isLoading: boolean = true;
 
+  protected refreshTransactionsSubscription: Subscription | undefined = undefined;
+  protected updatedAccountSubscription: Subscription | undefined = undefined;
+
   constructor(
     private viewAccountService: ViewAccountService,
     private searchTransactionsService: SearchTransactionsService,
@@ -56,18 +60,20 @@ export class AccountViewComponent {
       this.openModal();
       this.loadTransactions();
 
-      this.transactionService.refreshTransactions$.subscribe(() => {
-        this.accountTransactions = [];
-        this.loadTransactions();
-      });
+      this.refreshTransactionsSubscription =
+        this.transactionService.refreshTransactions$.subscribe(() => {
+          this.accountTransactions = [];
+          this.loadTransactions();
+        });
       this.transactionService.refreshAccountBalance$.subscribe(() => {
         this.loadUpdatedAccount();
       });
-      this.accountService.updatedAccount$.subscribe(() => {
-        this.loadUpdatedAccount();
-        this.accountTransactions = [];
-        this.loadTransactions();
-      });
+      this.updatedAccountSubscription =
+        this.accountService.updatedAccount$.subscribe(() => {
+          this.loadUpdatedAccount();
+          this.accountTransactions = [];
+          this.loadTransactions();
+        });
     });
   }
 
@@ -112,6 +118,8 @@ export class AccountViewComponent {
   closeModal() {
     this.isOpen = false;
     this.currentPage = 0;
+    this.refreshTransactionsSubscription?.unsubscribe();
+    this.updatedAccountSubscription?.unsubscribe();
   }
 
   openSearch() {

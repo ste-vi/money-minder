@@ -79,4 +79,8 @@ export class CreateSpaceComponent {
       });
     }
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

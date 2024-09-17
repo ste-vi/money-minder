@@ -39,4 +39,8 @@ export class SelectNewBankComponent {
       this.linkMonobankService.openModal();
     }
   }
+
+  onSwipeRight() {
+    this.closeModal()
+  }
 }

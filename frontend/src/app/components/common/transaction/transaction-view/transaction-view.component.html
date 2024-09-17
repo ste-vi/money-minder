@@ -1,6 +1,7 @@
 <div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
 
-<div class="transaction-view-container bottom-modal" *ngIf="isOpened" [@bottomModalOpenClose]>
+<div class="transaction-view-container bottom-modal" *ngIf="isOpened" [@bottomModalOpenClose]
+     (swiperight)="onSwipeRight()">
   <form [formGroup]="transactionForm">
     <div class="transaction-view-header">
       <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
@@ -134,7 +135,7 @@
 </div>
 
 <app-transaction-account-filter
-  *ngIf="isFromAccountFilterOpened"
+  *ngIf="isFromAccountFilterOpened && isOpened"
   [selectedAccount]="transactionForm.controls['fromAccount'].value"
   [skipBankAccounts]="!transaction.isBankTransaction"
   (closed)="closeFromAccountFilter()"
@@ -142,14 +143,14 @@
 ></app-transaction-account-filter>
 
 <app-transaction-account-filter
-  *ngIf="isToAccountFilterOpened"
+  *ngIf="isToAccountFilterOpened && isOpened"
   [selectedAccount]="transactionForm.controls['toAccount'].value"
   [skipBankAccounts]="!transaction.isBankTransaction"
   (closed)="closeToAccountFilter()"
   (accountSelected)="onToAccountSelected($event)"
 ></app-transaction-account-filter>
 
-<app-categories *ngIf="isCategorySelectModalOpened"
+<app-categories *ngIf="isCategorySelectModalOpened && isOpened"
                 [type]="this.transactionForm.controls['type'].value === TransactionType.EXPENSE ? CategoryType.EXPENSE : CategoryType.INCOME"
                 (selectedCategory)="onCategorySelected($event)">
 </app-categories>

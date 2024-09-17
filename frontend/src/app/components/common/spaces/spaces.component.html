@@ -1,6 +1,6 @@
 <div class="page-mask" (click)="closeModal()" *ngIf="isOpened"></div>
 
-<div class="spaces-container bottom-modal" *ngIf="isOpened" [@bottomModalOpenClose]>
+<div class="spaces-container bottom-modal" *ngIf="isOpened" [@bottomModalOpenClose] (swiperight)="onSwipeRight()">
   <div class="spaces-container-header">
     <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
     <div><b>Spaces</b></div>

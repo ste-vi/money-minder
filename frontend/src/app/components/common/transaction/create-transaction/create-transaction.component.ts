@@ -227,4 +227,8 @@ export class CreateTransactionComponent {
 
   protected readonly CategoryType = CategoryType;
   protected readonly TransactionType = TransactionType;
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

@@ -81,8 +81,6 @@ export class UpdateAccountComponent implements OnInit {
         this.accountForm.controls['balance'].disable();
       }
 
-      console.log(this.accountForm.controls['currency'].value);
-
       this.showModal();
     });
   }

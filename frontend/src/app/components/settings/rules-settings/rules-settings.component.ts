@@ -41,7 +41,6 @@ export class RulesSettingsComponent implements OnInit {
   }
 
   private loadRules() {
-    console.log('load rules');
     this.ruleService.getRules().subscribe((rules) => {
       this.rules = rules;
       this.isLoading = false;
@@ -63,5 +62,9 @@ export class RulesSettingsComponent implements OnInit {
 
   addRule() {
     this.createRuleService.openModal();
+  }
+
+  onSwipeRight() {
+    this.closeModal();
   }
 }

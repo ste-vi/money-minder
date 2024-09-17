@@ -65,4 +65,8 @@ export class CategoriesComponent implements OnInit {
   selectSubCategory(subCategory: Category) {
     this.selectedCategory.emit(subCategory);
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

@@ -1,6 +1,6 @@
 <div class="page-mask" (click)="closeModal()"></div>
 
-<div class="categories-container bottom-modal" [@bottomModalOpenClose]>
+<div class="categories-container bottom-modal" [@bottomModalOpenClose] (swiperight)="onSwipeRight()">
   <div class="categories-container-header">
     <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
     <div><b>Choose category</b></div>

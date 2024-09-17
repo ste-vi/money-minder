@@ -181,4 +181,8 @@ export class SearchCategoryExpensesComponent {
     this.categoriesToIgnore = unselectedCategories;
     this.loadTopExpenses();
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

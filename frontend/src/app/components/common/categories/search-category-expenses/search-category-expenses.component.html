@@ -1,4 +1,5 @@
-<div class="category-expenses-search-container right-modal" *ngIf="isOpen" [@sideModalOpenClose]>
+<div class="category-expenses-search-container right-modal" *ngIf="isOpen" [@sideModalOpenClose]
+     (swiperight)="onSwipeRight()">
   <div class="search-category-expenses-header">
     <mat-icon svgIcon="arrow-left" class="gray-icon small-icon" (click)="closeModal()"></mat-icon>
     <div class="container-header-name" (click)="changeCategoriesType()">

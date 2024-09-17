@@ -10,7 +10,7 @@ import { SearchTransactionsService } from '../../../../services/communication/se
 import { TransactionService } from '../../../../services/api/transaction-service';
 import { ViewCategoryExpensesService } from '../../../../services/communication/view-category-expenses-service';
 import { TopExpense } from '../../../../models/top-expense';
-import {sideModalOpenClose} from "../../../../animations/side-modal-open-close";
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-category-expenses',
@@ -26,7 +26,7 @@ import {sideModalOpenClose} from "../../../../animations/side-modal-open-close";
   ],
   templateUrl: './category-expenses.component.html',
   styleUrl: './category-expenses.component.scss',
-  animations: [sideModalOpenClose]
+  animations: [sideModalOpenClose],
 })
 export class CategoryExpensesComponent implements OnInit {
   protected isOpen: boolean = false;
@@ -56,11 +56,14 @@ export class CategoryExpensesComponent implements OnInit {
       this.openModal();
       this.loadTransactions();
     });
-    this.totalExpenseCurrencySign = JSON.parse(localStorage.getItem('space')!)?.primaryCurrency?.sign
+    this.totalExpenseCurrencySign = JSON.parse(
+      localStorage.getItem('space')!,
+    )?.primaryCurrency?.sign;
   }
 
   private loadTransactions() {
     this.isLoading = true;
+
     this.transactionService
       .searchTransactions(
         this.currentPage,
@@ -100,5 +103,9 @@ export class CategoryExpensesComponent implements OnInit {
       this.currentPage++;
       this.loadTransactions();
     }
+  }
+
+  onSwipeRight() {
+    this.closeModal();
   }
 }

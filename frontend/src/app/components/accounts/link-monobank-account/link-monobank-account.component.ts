@@ -7,7 +7,7 @@ import { MonobankAccount } from '../../../models/monobank-account';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { MonobankAccountCardComponent } from '../../common/banks/accounts/monobank-account-card/monobank-account-card.component';
 import { AccountService } from '../../../services/api/account-service';
-import {sideModalOpenClose} from "../../../animations/side-modal-open-close";
+import { sideModalOpenClose } from '../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-link-monobank-account',
@@ -21,7 +21,7 @@ import {sideModalOpenClose} from "../../../animations/side-modal-open-close";
   ],
   templateUrl: './link-monobank-account.component.html',
   styleUrl: './link-monobank-account.component.scss',
-  animations: [sideModalOpenClose]
+  animations: [sideModalOpenClose],
 })
 export class LinkMonobankAccountComponent {
   protected isOpened: boolean = false;
@@ -66,5 +66,9 @@ export class LinkMonobankAccountComponent {
           this.accountService.refreshAccounts();
         }
       });
+  }
+
+  onSwipeRight() {
+    this.closeModal();
   }
 }

@@ -52,6 +52,8 @@ export class AccountsComponent {
     this.accountService.updatedAccount$.subscribe(() => {
       this.loadAccounts();
     })
+
+    history.pushState(null, '');
   }
 
   private loadAccounts() {

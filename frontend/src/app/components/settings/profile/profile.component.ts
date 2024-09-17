@@ -48,4 +48,8 @@ export class ProfileComponent {
   logout() {
     this.authService.logout();
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

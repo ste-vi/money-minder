@@ -57,4 +57,8 @@ export class SpacesComponent {
   editSpace(space: Space) {
     this.createSpaceService.openModal(space);
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

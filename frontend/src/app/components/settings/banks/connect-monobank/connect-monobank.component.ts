@@ -47,4 +47,8 @@ export class ConnectMonobankComponent {
       }
     });
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

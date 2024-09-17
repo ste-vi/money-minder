@@ -152,4 +152,8 @@ export class CreateRuleComponent {
         this.closeModal();
       });
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

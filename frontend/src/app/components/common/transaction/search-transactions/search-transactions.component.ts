@@ -19,6 +19,7 @@ import {
 import { CreateTransactionButtonComponent } from '../create-transaction-button/create-transaction-button.component';
 import { Category } from '../../../../models/category';
 import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search-transactions',
@@ -66,6 +67,8 @@ export class SearchTransactionsComponent implements OnInit {
 
   protected needReviewFilter: boolean = false;
 
+  protected refreshTransactionsSubscription: Subscription | undefined = undefined;
+
   constructor(
     private searchTransactionsService: SearchTransactionsService,
     private transactionService: TransactionService,
@@ -75,9 +78,11 @@ export class SearchTransactionsComponent implements OnInit {
     this.searchTransactionsService.modalOpened$.subscribe((filters) => {
       this.showModal(filters);
 
-      this.transactionService.refreshTransactions$.subscribe(() => {
-        this.loadTransactions(true);
-      });
+      this.refreshTransactionsSubscription =
+        this.transactionService.refreshTransactions$.subscribe(() => {
+          this.currentPage = 0;
+          this.loadTransactions(true);
+        });
     });
   }
 
@@ -100,6 +105,7 @@ export class SearchTransactionsComponent implements OnInit {
   closeModal() {
     this.isOpened = false;
     this.currentPage = 0;
+    this.refreshTransactionsSubscription?.unsubscribe();
   }
 
   private loadTransactions(isSearch: boolean = false) {
@@ -189,5 +195,9 @@ export class SearchTransactionsComponent implements OnInit {
 
   openCategoryFilter() {
     // implement
+  }
+
+  onSwipeRight() {
+    this.closeModal();
   }
 }

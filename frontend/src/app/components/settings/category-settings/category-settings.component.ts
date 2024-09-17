@@ -76,4 +76,8 @@ export class CategorySettingsComponent implements OnInit {
     this.isIncomeTabActive = true;
     this.isExpenseTabActive = false;
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }

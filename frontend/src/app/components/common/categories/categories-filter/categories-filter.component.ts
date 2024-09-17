@@ -3,7 +3,7 @@ import { MatIcon } from '@angular/material/icon';
 import { NgForOf } from '@angular/common';
 import { CategoryService } from '../../../../services/api/category-service';
 import { Category, CategoryType } from '../../../../models/category';
-import {sideModalOpenClose} from "../../../../animations/side-modal-open-close";
+import { sideModalOpenClose } from '../../../../animations/side-modal-open-close';
 
 @Component({
   selector: 'app-categories-filter',
@@ -11,7 +11,7 @@ import {sideModalOpenClose} from "../../../../animations/side-modal-open-close";
   imports: [MatIcon, NgForOf],
   templateUrl: './categories-filter.component.html',
   styleUrl: './categories-filter.component.scss',
-  animations: [sideModalOpenClose]
+  animations: [sideModalOpenClose],
 })
 export class CategoriesFilterComponent {
   @Input()
@@ -45,5 +45,9 @@ export class CategoriesFilterComponent {
 
   uncheckCategory(category: Category) {
     this.unselectedCategories.push(category.id!);
+  }
+
+  onSwipeRight() {
+    this.closeModal();
   }
 }

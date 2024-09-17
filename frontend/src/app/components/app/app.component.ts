@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from '../common/nav/nav.component';
 import { HeaderComponent } from '../common/header/header.component';
@@ -47,7 +47,7 @@ import { SearchCategoryExpensesComponent } from '../common/categories/search-cat
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'money-minder';
 
   constructor(
@@ -56,6 +56,17 @@ export class AppComponent {
     protected authService: AuthService,
   ) {
     this.initSvgIcons();
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    // Prevent navigation
+    history.pushState(null, '', window.location.href);
+  }
+
+  ngOnInit() {
+    // Push initial state to prevent back navigation
+    history.pushState(null, '', window.location.href);
   }
 
   private initSvgIcons() {

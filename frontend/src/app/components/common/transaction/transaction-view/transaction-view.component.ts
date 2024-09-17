@@ -270,4 +270,8 @@ export class TransactionViewComponent implements OnInit, AfterViewChecked {
       this.closeModal();
     });
   }
+
+  onSwipeRight() {
+    this.closeModal();
+  }
 }
