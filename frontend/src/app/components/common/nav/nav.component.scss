@@ -8,6 +8,7 @@
   position: fixed;
   bottom: 0;
   background-color: var(--background);
+  box-shadow: 0 10px 40px rgba(29, 22, 23, 0.07);
 
   .nav-item {
     display: flex;
