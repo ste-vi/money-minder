@@ -64,6 +64,10 @@
             background-color: var(--accent);
             color: white;
             padding: 4px;
+
+            .small-icon {
+              scale: (0.8);
+            }
           }
 
           .category-title {
