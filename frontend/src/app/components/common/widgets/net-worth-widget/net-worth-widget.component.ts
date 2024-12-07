@@ -75,7 +75,7 @@ export class NetWorthWidgetComponent {
         enabled: false,
       },
       stroke: {
-        curve: 'monotoneCubic',
+        curve: 'smooth',
       },
       xaxis: {
         type: 'datetime',

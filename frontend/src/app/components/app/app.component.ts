@@ -107,6 +107,12 @@ export class AppComponent implements OnInit {
       ),
     );
     this.matIconRegistry.addSvgIcon(
+      'coffee',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/coffee.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
       'spaces',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/layers-minimalistic-svgrepo-com.svg',
