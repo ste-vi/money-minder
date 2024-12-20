@@ -448,5 +448,23 @@ export class AppComponent implements OnInit {
         '../assets/icons/svg/alt-arrow-down-svgrepo-com.svg',
       ),
     );
+    this.matIconRegistry.addSvgIcon(
+      'car',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/car.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'petrol',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/petrol.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
+      'clothes',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/clothes.svg',
+      ),
+    );
   }
 }

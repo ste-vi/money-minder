@@ -152,9 +152,27 @@
     "type": "EXPENSE"
   },
   {
+    "name": "Clothes",
+    "icon": "clothes",
+    "position": 20,
+    "type": "EXPENSE"
+  },
+  {
+    "name": "Car",
+    "icon": "car",
+    "position": 21,
+    "type": "EXPENSE"
+  },
+  {
+    "name": "Petrol",
+    "icon": "petrol",
+    "position": 22,
+    "type": "EXPENSE"
+  },
+  {
     "name": "Other expense",
     "icon": "graph-down",
-    "position": 20,
+    "position": 23,
     "type": "EXPENSE"
   },
   {
