@@ -17,7 +17,7 @@ interface TransactionRepository : JpaRepository<Transaction, UUID>, JpaSpecifica
     fun findMonoBankIdsByDateGreaterThan(spaceId: UUID, date: LocalDateTime): List<String>
 
     @EntityGraph(attributePaths = ["account", "fromAccount", "toAccount", "category"])
-    override fun findAll(specification: Specification<Transaction>, pageable: Pageable): Page<Transaction>
+    override fun findAll(specification: Specification<Transaction>?, pageable: Pageable): Page<Transaction>
 
     fun existsByAccountId(accountId: UUID): Boolean
 }

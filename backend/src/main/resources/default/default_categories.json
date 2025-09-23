@@ -170,9 +170,15 @@
     "type": "EXPENSE"
   },
   {
+    "name": "Travel",
+    "icon": "travel",
+    "position": 23,
+    "type": "EXPENSE"
+  },
+  {
     "name": "Other expense",
     "icon": "graph-down",
-    "position": 23,
+    "position": 24,
     "type": "EXPENSE"
   },
   {

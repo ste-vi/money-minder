@@ -1,4 +1,4 @@
 export const environment  = {
   production: true,
-  apiUrl: 'https://moneyminder.stefanchak-dev.website/api',
+  apiUrl: 'https://moneyminder.stefanchak.site/api',
 };

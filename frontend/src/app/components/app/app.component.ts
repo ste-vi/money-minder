@@ -329,6 +329,12 @@ export class AppComponent implements OnInit {
       ),
     );
     this.matIconRegistry.addSvgIcon(
+      'travel',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/icons/svg/travel.svg',
+      ),
+    );
+    this.matIconRegistry.addSvgIcon(
       'flame',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
         '../assets/icons/svg/flame-svgrepo-com.svg',

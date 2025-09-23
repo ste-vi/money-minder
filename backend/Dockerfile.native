@@ -1,0 +1,42 @@
+# Build stage with GraalVM
+FROM ghcr.io/graalvm/graalvm-community:21 AS builder
+
+WORKDIR /app
+
+# Copy gradle wrapper files first (these change rarely)
+COPY gradlew .
+COPY gradle gradle
+
+# Make gradlew executable
+RUN chmod +x ./gradlew
+
+# Copy only build configuration files (these change less frequently than source code)
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+
+# Download Gradle and dependencies in separate layers for better caching
+# This will be cached unless build.gradle.kts or settings.gradle.kts change
+RUN ./gradlew --no-daemon dependencies
+
+# Copy source code
+COPY src src
+
+# Build native executable
+RUN ./gradlew --no-daemon nativeCompile
+
+# Use Amazon Linux 2023 as the base for compatibility testing
+FROM amazonlinux:2023
+
+WORKDIR /app
+
+# Install necessary runtime dependencies
+RUN dnf install -y glibc-minimal-langpack
+
+# Copy the native executable from the builder stage
+COPY --from=builder /app/build/native/nativeCompile/moneyminder /app/moneyminder
+
+# Create a volume to extract the binary
+VOLUME /output
+
+# Copy the binary to the output volume when container starts
+CMD ["cp", "/app/moneyminder", "/output/"]

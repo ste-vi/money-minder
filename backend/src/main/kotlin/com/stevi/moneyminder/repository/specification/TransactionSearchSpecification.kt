@@ -26,7 +26,7 @@ class TransactionSearchSpecification(
 
     override fun toPredicate(
         root: Root<Transaction>,
-        query: CriteriaQuery<*>,
+        query: CriteriaQuery<*>?,
         cb: CriteriaBuilder
     ): Predicate? {
         val predicates = mutableListOf<Predicate>()

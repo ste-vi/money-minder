@@ -1,11 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.2.5"
-	id("io.spring.dependency-management") version "1.1.4"
-	kotlin("jvm") version "1.9.23"
-	kotlin("plugin.spring") version "1.9.23"
-	id("org.jetbrains.kotlin.plugin.jpa") version "2.0.0"
+    kotlin("jvm") version "1.9.25"
+    kotlin("plugin.spring") version "1.9.25"
+    id("org.springframework.boot") version "3.4.1"
+    id("io.spring.dependency-management") version "1.1.7"
+    kotlin("plugin.jpa") version "1.9.25"
+    id("org.graalvm.buildtools.native") version "0.11.0"
+    id("org.hibernate.orm") version "6.5.2.Final"
 }
 
 group = "com.stevi"
@@ -16,6 +18,24 @@ java {
 
 repositories {
 	mavenCentral()
+}
+
+configurations {
+    all {
+        exclude(group = "commons-logging", module = "commons-logging")
+    }
+}
+
+tasks.register("buildNativeAmazonLinux") {
+    group = "build"
+    description = "Builds a native executable compatible with Amazon Linux 2023"
+
+    doLast {
+        exec {
+            workingDir(".")
+            commandLine("powershell", "-File", "build-native.ps1")
+        }
+    }
 }
 
 dependencies {
@@ -29,12 +49,13 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.google.api-client:google-api-client:2.6.0")
 	implementation("com.google.api-client:google-api-client-jackson2:2.6.0")
+    implementation("org.hibernate.orm:hibernate-graalvm:6.5.2.Final")
 
-	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
-	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
-	implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
+	implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+	implementation("io.jsonwebtoken:jjwt-impl:0.13.0")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
 
-	implementation("org.liquibase:liquibase-core:4.28.0")
+	implementation("org.liquibase:liquibase-core:4.30.0")
 	runtimeOnly("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.security:spring-security-test")
@@ -48,6 +69,18 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs += "-Xjsr305=strict"
 		jvmTarget = "21"
 	}
+}
+
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
+}
+
+hibernate {
+    enhancement {
+        enableAssociationManagement.set(true)
+    }
 }
 
 tasks.withType<Test> {

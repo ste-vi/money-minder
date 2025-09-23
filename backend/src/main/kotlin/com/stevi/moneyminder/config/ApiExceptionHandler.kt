@@ -21,6 +21,7 @@ class ApiExceptionHandler {
 
     @ExceptionHandler
     fun handleRuntimeException(ex: RuntimeException): ResponseEntity<ApiErrorResponse> {
+        ex.printStackTrace()
         val errorMessage = ApiErrorResponse(
             HttpStatus.INTERNAL_SERVER_ERROR.value(),
             ex.localizedMessage
