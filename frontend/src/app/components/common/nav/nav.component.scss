@@ -9,7 +9,7 @@
   position: fixed;
   bottom: 0;
   background-color: var(--background);
-  box-shadow: 0 10px 40px rgba(29, 22, 23, 0.07);
+  box-shadow: 0 10px 40px rgba(29, 22, 23, 0.10);
 
   .nav-item {
     display: flex;
@@ -32,6 +32,12 @@
   .nav-item-selected {
     color: var(--accent);
   }
+}
 
+@media (display-mode: standalone) {
+  .nav-container {
+    height: 70px;
+    padding-bottom: 10px;
+  }
 }
 

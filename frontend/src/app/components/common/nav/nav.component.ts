@@ -14,6 +14,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class NavComponent {
   protected currentPage: string = '';
+  protected isStandalone: boolean = false;
 
   constructor(private router: Router) {
     router.events.subscribe((event) => {
@@ -25,6 +26,8 @@ export class NavComponent {
         }
       }
     });
+
+    this.isStandalone = window.matchMedia('(display-mode: standalone)').matches;
   }
 
   navigateTo(path: string) {

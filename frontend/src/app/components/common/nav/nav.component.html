@@ -1,4 +1,4 @@
-<div class="nav-container">
+<div class="nav-container" [class.standalone-padding]="isStandalone">
   <div class="nav-item" [class.nav-item-selected]="currentPage === 'accounts'" (click)="navigateTo('/accounts')">
     <mat-icon svgIcon="wallet" class="nav-icon"></mat-icon>
   </div>

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from '../common/nav/nav.component';
 import { HeaderComponent } from '../common/header/header.component';
@@ -20,6 +20,7 @@ import { NgIf } from '@angular/common';
 import { BanksComponent } from '../settings/banks/banks.component';
 import { LinkMonobankAccountComponent } from '../accounts/link-monobank-account/link-monobank-account.component';
 import { SearchCategoryExpensesComponent } from '../common/categories/search-category-expenses/search-category-expenses.component';
+import {PwaUpdateService} from "../../services/pwa-update.service";
 
 @Component({
   selector: 'app-root',
@@ -49,6 +50,8 @@ import { SearchCategoryExpensesComponent } from '../common/categories/search-cat
 })
 export class AppComponent implements OnInit {
   title = 'money-minder';
+
+  private pwaUpdateService = inject(PwaUpdateService);
 
   constructor(
     private matIconRegistry: MatIconRegistry,

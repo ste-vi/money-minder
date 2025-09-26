@@ -90,3 +90,10 @@
 app-net-worth-widget {
   width: 100%;
 }
+
+
+@media (display-mode: standalone) {
+  .dashboard-container {
+    margin-bottom: 56px;
+  }
+}

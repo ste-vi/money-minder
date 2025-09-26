@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -13,6 +13,7 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { authInterceptor } from './inteceptors/token.interceptor';
 import { HammerModule } from '@angular/platform-browser';
 import 'hammerjs';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,5 +27,9 @@ export const appConfig: ApplicationConfig = {
     JwtHelperService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     importProvidersFrom(HammerModule),
-  ],
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+],
 };
