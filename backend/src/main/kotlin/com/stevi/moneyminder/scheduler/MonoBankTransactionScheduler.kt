@@ -1,11 +1,8 @@
 package com.stevi.moneyminder.scheduler
 
 import com.stevi.moneyminder.service.AccountService
-import com.stevi.moneyminder.service.ExchangeService
 import com.stevi.moneyminder.service.MonoBankService
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import java.util.concurrent.TimeUnit
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
@@ -16,13 +13,10 @@ class MonoBankTransactionScheduler(
     private val accountService: AccountService,
 ) {
 
-    @OptIn(DelicateCoroutinesApi::class)
-    @Scheduled(fixedRate = 1000 * 60 * 3)
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.MINUTES)
     fun run() {
-        accountService.getAllMonobankAccountsAvailableForTransactionSync().stream().forEach { projection ->
-            GlobalScope.async {
-                monoBankService.updateRecentTransactionsFromMono(projection.getAccount(), projection.getMonoBankToken())
-            }
+        accountService.getAllMonobankAccountsAvailableForTransactionSync().forEach { projection ->
+            monoBankService.syncAccountTransactionUpdateAsync(projection.getAccount(), projection.getMonoBankToken())
         }
     }
 }

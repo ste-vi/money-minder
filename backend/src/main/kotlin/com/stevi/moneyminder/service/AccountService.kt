@@ -66,7 +66,7 @@ class AccountService(
 
     @Transactional(readOnly = true)
     fun getAllMonobankAccountsAvailableForTransactionSync(): List<AccountMonoBankTokenProjection> {
-        return accountRepository.findAllByMonoBankIdIsNotNull(LocalDateTime.now().minusMinutes(5));
+        return accountRepository.findAllByMonoBankIdIsNotNull(LocalDateTime.now().minusMinutes(9));
     }
 
     @Transactional(readOnly = true)
